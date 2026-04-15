@@ -12,51 +12,42 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f5f1ed 0%, #faf8f6 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8f7f5;
             color: #333;
             min-height: 100vh;
             padding: 40px 20px;
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 900px;
             margin: 0 auto;
             background: white;
-            border-radius: 12px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
             overflow: hidden;
         }
 
         header {
             background: linear-gradient(135deg, #8B4655 0%, #6B3645 100%);
             color: #f5f1ed;
-            padding: 60px 40px;
+            padding: 50px 40px;
             text-align: center;
-            position: relative;
         }
 
         .logo {
-            font-size: 48px;
+            font-size: 44px;
             font-weight: 300;
-            letter-spacing: 4px;
-            margin-bottom: 15px;
+            letter-spacing: 6px;
+            margin-bottom: 12px;
             text-transform: uppercase;
         }
 
         .tagline {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 300;
             letter-spacing: 2px;
-            margin-bottom: 10px;
-            opacity: 0.95;
-        }
-
-        .subtitle {
-            font-size: 14px;
-            letter-spacing: 1px;
-            opacity: 0.85;
-            text-transform: uppercase;
+            opacity: 0.92;
         }
 
         .content {
@@ -64,71 +55,98 @@
         }
 
         .section {
-            margin-bottom: 50px;
+            margin-bottom: 60px;
         }
 
         .section:last-child {
             margin-bottom: 0;
         }
 
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 30px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #8B4655;
+        }
+
         .section-title {
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 600;
             color: #8B4655;
-            margin-bottom: 25px;
-            padding-bottom: 12px;
-            border-bottom: 3px solid #8B4655;
-            display: inline-block;
         }
 
-        .inventory-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
+        .section-subtitle {
+            font-size: 13px;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        .size-card {
-            background: #f9f7f4;
-            border-left: 4px solid #8B4655;
-            padding: 20px;
-            border-radius: 6px;
+        .total-pieces {
+            font-size: 28px;
+            font-weight: 700;
+            color: #8B4655;
+            text-align: right;
+        }
+
+        .total-label {
+            font-size: 11px;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .size-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .size-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: all 0.3s ease;
-            font-size: 16px;
+            padding: 14px 16px;
+            background: #f9f8f6;
+            border-left: 3px solid #8B4655;
+            border-radius: 4px;
+            font-size: 15px;
         }
 
-        .size-card:hover {
-            background: #f5f1ed;
-            box-shadow: 0 4px 12px rgba(139, 70, 85, 0.1);
+        .size-item:hover {
+            background: #f5f3f0;
         }
 
         .size-label {
-            font-weight: 600;
-            color: #8B4655;
-            min-width: 60px;
+            font-weight: 500;
+            color: #333;
+            flex: 1;
         }
 
         .size-quantity {
             background: #8B4655;
-            color: #f5f1ed;
-            padding: 8px 16px;
+            color: white;
+            padding: 6px 14px;
             border-radius: 4px;
             font-weight: 600;
-            font-size: 18px;
+            font-size: 16px;
+            min-width: 50px;
+            text-align: center;
         }
 
         footer {
-            background: #f9f7f4;
+            background: #f9f8f6;
             padding: 40px;
             text-align: center;
-            border-top: 1px solid #e8e4e0;
+            border-top: 1px solid #e8e6e2;
         }
 
         .contact-info {
-            font-size: 14px;
+            font-size: 13px;
             color: #666;
             line-height: 1.8;
         }
@@ -137,14 +155,8 @@
             color: #8B4655;
             display: block;
             margin-top: 10px;
-            font-size: 16px;
-        }
-
-        .divider {
-            width: 60px;
-            height: 2px;
-            background: #8B4655;
-            margin: 30px auto;
+            font-size: 15px;
+            font-weight: 600;
         }
 
         @media (max-width: 768px) {
@@ -154,22 +166,33 @@
 
             .logo {
                 font-size: 36px;
+                letter-spacing: 4px;
             }
 
             .content {
                 padding: 30px 20px;
             }
 
-            .inventory-grid {
-                grid-template-columns: 1fr;
+            .section {
+                margin-bottom: 40px;
             }
 
-            .section-title {
-                font-size: 20px;
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            .total-pieces {
+                text-align: left;
             }
 
             footer {
                 padding: 30px 20px;
+            }
+
+            .section-title {
+                font-size: 20px;
             }
         }
     </style>
@@ -178,199 +201,230 @@
     <div class="container">
         <header>
             <div class="logo">CRTV</div>
-            <div class="tagline">CREATE</div>
-            <div class="subtitle">for the good of others</div>
+            <div class="tagline">CREATE for the good of others</div>
         </header>
 
         <div class="content">
             <section class="section">
-                <h2 class="section-title">Kids Camp Resound Shirt</h2>
-                <p style="color: #999; margin-bottom: 20px; font-size: 14px;">Seafoam Comfort Colors</p>
-                <div class="inventory-grid">
-                    <div class="size-card">
-                        <span class="size-label">YS</span>
+                <div class="section-header">
+                    <div>
+                        <div class="section-title">Kids Camp Resound Shirt</div>
+                        <div class="section-subtitle">Seafoam Comfort Colors</div>
+                    </div>
+                    <div>
+                        <div class="total-label">Total Pieces</div>
+                        <div class="total-pieces">365</div>
+                    </div>
+                </div>
+                <div class="size-list">
+                    <div class="size-item">
+                        <span class="size-label">Youth Small</span>
                         <span class="size-quantity">35</span>
                     </div>
-                    <div class="size-card">
-                        <span class="size-label">YM</span>
+                    <div class="size-item">
+                        <span class="size-label">Youth Medium</span>
                         <span class="size-quantity">35</span>
                     </div>
-                    <div class="size-card">
-                        <span class="size-label">YL</span>
+                    <div class="size-item">
+                        <span class="size-label">Youth Large</span>
                         <span class="size-quantity">35</span>
                     </div>
-                    <div class="size-card">
-                        <span class="size-label">S</span>
+                    <div class="size-item">
+                        <span class="size-label">Small</span>
                         <span class="size-quantity">65</span>
                     </div>
-                    <div class="size-card">
-                        <span class="size-label">M</span>
+                    <div class="size-item">
+                        <span class="size-label">Medium</span>
                         <span class="size-quantity">65</span>
                     </div>
-                    <div class="size-card">
-                        <span class="size-label">L</span>
+                    <div class="size-item">
+                        <span class="size-label">Large</span>
                         <span class="size-quantity">65</span>
                     </div>
-                    <div class="size-card">
+                    <div class="size-item">
                         <span class="size-label">XL</span>
                         <span class="size-quantity">35</span>
                     </div>
-                    <div class="size-card">
+                    <div class="size-item">
                         <span class="size-label">2XL</span>
                         <span class="size-quantity">15</span>
                     </div>
-                    <div class="size-card">
+                    <div class="size-item">
                         <span class="size-label">3XL</span>
                         <span class="size-quantity">10</span>
                     </div>
-                    <div class="size-card">
+                    <div class="size-item">
                         <span class="size-label">4XL</span>
                         <span class="size-quantity">5</span>
                     </div>
                 </div>
             </section>
 
-            <div class="divider"></div>
-
             <section class="section">
-                <h2 class="section-title">Oversize Print Eagle Shirt</h2>
-                <p style="color: #999; margin-bottom: 20px; font-size: 14px;">Combined Orders</p>
-                <div class="inventory-grid">
-                    <div class="size-card">
-                        <span class="size-label">S</span>
+                <div class="section-header">
+                    <div>
+                        <div class="section-title">Oversize Print Eagle Shirt</div>
+                        <div class="section-subtitle">Combined Orders</div>
+                    </div>
+                    <div>
+                        <div class="total-label">Total Pieces</div>
+                        <div class="total-pieces">350</div>
+                    </div>
+                </div>
+                <div class="size-list">
+                    <div class="size-item">
+                        <span class="size-label">Small</span>
                         <span class="size-quantity">21</span>
                     </div>
-                    <div class="size-card">
-                        <span class="size-label">M</span>
+                    <div class="size-item">
+                        <span class="size-label">Medium</span>
                         <span class="size-quantity">70</span>
                     </div>
-                    <div class="size-card">
-                        <span class="size-label">L</span>
+                    <div class="size-item">
+                        <span class="size-label">Large</span>
                         <span class="size-quantity">105</span>
                     </div>
-                    <div class="size-card">
+                    <div class="size-item">
                         <span class="size-label">XL</span>
                         <span class="size-quantity">87</span>
                     </div>
-                    <div class="size-card">
+                    <div class="size-item">
                         <span class="size-label">2XL</span>
                         <span class="size-quantity">35</span>
                     </div>
-                    <div class="size-card">
+                    <div class="size-item">
                         <span class="size-label">3XL</span>
                         <span class="size-quantity">13</span>
                     </div>
-                    <div class="size-card">
+                    <div class="size-item">
                         <span class="size-label">4XL</span>
                         <span class="size-quantity">11</span>
                     </div>
-                    <div class="size-card">
+                    <div class="size-item">
                         <span class="size-label">5XL</span>
                         <span class="size-quantity">8</span>
                     </div>
                 </div>
             </section>
 
-            <div class="divider"></div>
-
             <section class="section">
-                <h2 class="section-title">Hoodie</h2>
-                <div class="inventory-grid">
-                    <div class="size-card">
-                        <span class="size-label">S</span>
+                <div class="section-header">
+                    <div>
+                        <div class="section-title">Hoodie</div>
+                    </div>
+                    <div>
+                        <div class="total-label">Total Pieces</div>
+                        <div class="total-pieces">100</div>
+                    </div>
+                </div>
+                <div class="size-list">
+                    <div class="size-item">
+                        <span class="size-label">Small</span>
                         <span class="size-quantity">6</span>
                     </div>
-                    <div class="size-card">
-                        <span class="size-label">M</span>
+                    <div class="size-item">
+                        <span class="size-label">Medium</span>
                         <span class="size-quantity">20</span>
                     </div>
-                    <div class="size-card">
-                        <span class="size-label">L</span>
+                    <div class="size-item">
+                        <span class="size-label">Large</span>
                         <span class="size-quantity">30</span>
                     </div>
-                    <div class="size-card">
+                    <div class="size-item">
                         <span class="size-label">XL</span>
                         <span class="size-quantity">25</span>
                     </div>
-                    <div class="size-card">
+                    <div class="size-item">
                         <span class="size-label">2XL</span>
                         <span class="size-quantity">10</span>
                     </div>
-                    <div class="size-card">
+                    <div class="size-item">
                         <span class="size-label">3XL</span>
                         <span class="size-quantity">3</span>
                     </div>
-                    <div class="size-card">
+                    <div class="size-item">
                         <span class="size-label">4XL</span>
                         <span class="size-quantity">4</span>
                     </div>
-                    <div class="size-card">
+                    <div class="size-item">
                         <span class="size-label">5XL</span>
                         <span class="size-quantity">2</span>
                     </div>
                 </div>
             </section>
 
-            <div class="divider"></div>
-
             <section class="section">
-                <h2 class="section-title">Jersey</h2>
-                <p style="color: #999; margin-bottom: 20px; font-size: 14px;">Combined Orders</p>
-                <div class="inventory-grid">
-                    <div class="size-card">
-                        <span class="size-label">S</span>
+                <div class="section-header">
+                    <div>
+                        <div class="section-title">Jersey</div>
+                        <div class="section-subtitle">Combined Orders</div>
+                    </div>
+                    <div>
+                        <div class="total-label">Total Pieces</div>
+                        <div class="total-pieces">350</div>
+                    </div>
+                </div>
+                <div class="size-list">
+                    <div class="size-item">
+                        <span class="size-label">Small</span>
                         <span class="size-quantity">21</span>
                     </div>
-                    <div class="size-card">
-                        <span class="size-label">M</span>
+                    <div class="size-item">
+                        <span class="size-label">Medium</span>
                         <span class="size-quantity">70</span>
                     </div>
-                    <div class="size-card">
-                        <span class="size-label">L</span>
+                    <div class="size-item">
+                        <span class="size-label">Large</span>
                         <span class="size-quantity">105</span>
                     </div>
-                    <div class="size-card">
+                    <div class="size-item">
                         <span class="size-label">XL</span>
                         <span class="size-quantity">87</span>
                     </div>
-                    <div class="size-card">
+                    <div class="size-item">
                         <span class="size-label">2XL</span>
                         <span class="size-quantity">35</span>
                     </div>
-                    <div class="size-card">
+                    <div class="size-item">
                         <span class="size-label">3XL</span>
                         <span class="size-quantity">13</span>
                     </div>
-                    <div class="size-card">
+                    <div class="size-item">
                         <span class="size-label">4XL</span>
                         <span class="size-quantity">11</span>
                     </div>
-                    <div class="size-card">
+                    <div class="size-item">
                         <span class="size-label">5XL</span>
                         <span class="size-quantity">8</span>
                     </div>
                 </div>
             </section>
 
-            <div class="divider"></div>
-
             <section class="section">
-                <h2 class="section-title">230 Trucker Hats</h2>
-                <div class="inventory-grid">
-                    <div class="size-card">
-                        <span class="size-label">Camo w/ Patch</span>
+                <div class="section-header">
+                    <div>
+                        <div class="section-title">230 Trucker Hats</div>
+                    </div>
+                    <div>
+                        <div class="total-label">Total Pieces</div>
+                        <div class="total-pieces">230</div>
+                    </div>
+                </div>
+                <div class="size-list">
+                    <div class="size-item">
+                        <span class="size-label">Camo with Embroidered Patch</span>
                         <span class="size-quantity">50</span>
                     </div>
-                    <div class="size-card">
-                        <span class="size-label">Orange w/ Patch</span>
+                    <div class="size-item">
+                        <span class="size-label">Orange with Embroidered Patch</span>
                         <span class="size-quantity">50</span>
                     </div>
-                    <div class="size-card">
-                        <span class="size-label">Grey w/ Patch</span>
+                    <div class="size-item">
+                        <span class="size-label">Grey with Embroidered Patch</span>
                         <span class="size-quantity">50</span>
                     </div>
-                    <div class="size-card">
-                        <span class="size-label">Brown/Tan Raised</span>
+                    <div class="size-item">
+                        <span class="size-label">Brown/Tan with Raised Embroidery</span>
                         <span class="size-quantity">80</span>
                     </div>
                 </div>

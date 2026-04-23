@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Culture of Care — Choose Your Tagline</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f7f5f1;
+      color: #1a1f2e;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .book-label {
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #3d6b5e;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-size: 36px;
+      font-weight: 700;
+      color: #1a1f2e;
+      letter-spacing: -0.5px;
+      margin-bottom: 6px;
+    }
+
+    .header-rule {
+      width: 48px;
+      height: 3px;
+      background: #3d6b5e;
+      margin: 16px auto;
+      border-radius: 2px;
+    }
+
+    .header-sub {
+      font-size: 15px;
+      color: #6b7280;
+    }
+
+    .instruction-box {
+      background: white;
+      border-radius: 12px;
+      padding: 18px 24px;
+      margin-bottom: 28px;
+      border-left: 4px solid #3d6b5e;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      min-height: 64px;
+      display: flex;
+      align-items: center;
+    }
+
+    #instruction {
+      font-size: 15px;
+      line-height: 1.5;
+      color: #374151;
+      transition: opacity 0.2s;
+    }
+
+    .cards {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+
+    .card {
+      background: white;
+      border: 2px solid #e5e3de;
+      border-radius: 12px;
+      padding: 20px 20px 20px 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      transition: border-color 0.18s, background 0.18s, box-shadow 0.18s, opacity 0.18s, transform 0.12s;
+      user-select: none;
+      -webkit-user-select: none;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .card:hover:not(.dimmed) {
+      border-color: #a8c5be;
+      box-shadow: 0 4px 12px rgba(61,107,94,0.1);
+      transform: translateY(-1px);
+    }
+
+    .card:active:not(.dimmed) {
+      transform: translateY(0);
+    }
+
+    .card.gold {
+      border-color: #d4942a;
+      background: #fffbf0;
+      box-shadow: 0 4px 16px rgba(212,148,42,0.15);
+    }
+
+    .card.silver {
+      border-color: #868fa0;
+      background: #f7f8fb;
+      box-shadow: 0 4px 16px rgba(134,143,160,0.15);
+    }
+
+    .card.dimmed {
+      opacity: 0.38;
+      cursor: default;
+      pointer-events: none;
+    }
+
+    .medal-slot {
+      width: 44px;
+      min-width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      border-radius: 50%;
+      background: #f3f2ef;
+      transition: background 0.18s;
+    }
+
+    .card.gold .medal-slot { background: #fef3d5; }
+    .card.silver .medal-slot { background: #eef0f5; }
+
+    .medal-emoji {
+      display: inline-block;
+      line-height: 1;
+    }
+
+    .medal-emoji.pop {
+      animation: medalPop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    @keyframes medalPop {
+      from { transform: scale(0) rotate(-15deg); opacity: 0; }
+      to   { transform: scale(1) rotate(0deg);  opacity: 1; }
+    }
+
+    .card-text {
+      font-size: 16px;
+      line-height: 1.45;
+      color: #1a1f2e;
+      font-weight: 400;
+    }
+
+    .card.gold .card-text { color: #7a4f10; font-weight: 500; }
+    .card.silver .card-text { color: #3a4153; font-weight: 500; }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .clear-btn {
+      background: none;
+      border: none;
+      color: #9ca3af;
+      font-size: 14px;
+      cursor: pointer;
+      padding: 8px 0;
+      text-decoration: underline;
+      text-decoration-color: transparent;
+      transition: color 0.15s, text-decoration-color 0.15s;
+    }
+
+    .clear-btn:hover { color: #6b7280; text-decoration-color: #9ca3af; }
+    .clear-btn.hidden { visibility: hidden; pointer-events: none; }
+
+    .submit-btn {
+      background: #3d6b5e;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 14px 32px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s, opacity 0.15s;
+      letter-spacing: 0.2px;
+    }
+
+    .submit-btn:hover:not(:disabled) { background: #2f5449; transform: translateY(-1px); }
+    .submit-btn:active:not(:disabled) { transform: translateY(0); }
+
+    .submit-btn:disabled {
+      background: #d1d5db;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* Success screen */
+    #success {
+      display: none;
+      text-align: center;
+      background: white;
+      border-radius: 16px;
+      padding: 60px 40px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+    }
+
+    #success.visible { display: block; animation: fadeIn 0.4s ease; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .success-icon { font-size: 56px; margin-bottom: 20px; }
+
+    .success-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: #1a1f2e;
+      margin-bottom: 12px;
+    }
+
+    .success-body {
+      font-size: 15px;
+      color: #6b7280;
+      line-height: 1.6;
+    }
+
+    .success-summary {
+      margin: 28px 0 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      text-align: left;
+      background: #f7f5f1;
+      border-radius: 10px;
+      padding: 20px;
+    }
+
+    .summary-row {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      font-size: 14px;
+    }
+
+    .summary-medal { font-size: 18px; }
+    .summary-text { color: #374151; }
+
+    @media (max-width: 480px) {
+      h1 { font-size: 28px; }
+      .card { padding: 16px 14px 16px 12px; gap: 12px; }
+      .card-text { font-size: 15px; }
+      .medal-slot { width: 38px; min-width: 38px; height: 38px; font-size: 24px; }
+      .submit-btn { padding: 14px 24px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="book-label">Upcoming Book</div>
+      <h1>Culture of Care</h1>
+      <div class="header-rule"></div>
+      <p class="header-sub">Help choose the tagline that says it best.</p>
+    </header>
+
+    <div id="voting">
+      <div class="instruction-box">
+        <p id="instruction">Click your <strong>favorite tagline</strong> to give it the gold 🥇</p>
+      </div>
+
+      <div class="cards" id="cardList"></div>
+
+      <div class="actions">
+        <button class="clear-btn hidden" id="clearBtn" onclick="clearVote()">Clear your vote</button>
+        <button class="submit-btn" id="submitBtn" disabled onclick="submitVote()">Submit Vote</button>
+      </div>
+    </div>
+
+    <div id="success">
+      <div class="success-icon">🙌</div>
+      <div class="success-title">Vote received!</div>
+      <p class="success-body">Thank you for helping shape <em>Culture of Care</em>.<br>Your input means a lot.</p>
+      <div class="success-summary" id="successSummary"></div>
+    </div>
+  </div>
+
+  <script>
+    // ─── CONFIG ──────────────────────────────────────────────────────────────
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzNdKgmx5ZAJRDjyLrjldWUSZrNAP2MY6ucwHoSVcVNrbe-iorB8BObnKSrmjm8Xt4/exec';
+    // ─────────────────────────────────────────────────────────────────────────
+
+    const TAGLINES = [
+      "Grow your church without neglecting your people",
+      "Care for broken lives without burning out your team",
+      "A proven system for care that actually works",
+      "Shaping churches where care is cultural, not accidental",
+      "Developing sustainable systems of care"
+    ];
+
+    let goldIdx = null;
+    let silverIdx = null;
+
+    // Build cards
+    const cardList = document.getElementById('cardList');
+    TAGLINES.forEach((text, i) => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.dataset.index = i;
+      card.innerHTML = `
+        <div class="medal-slot"><span class="medal-emoji" id="medal-${i}"></span></div>
+        <div class="card-text">${text}</div>
+      `;
+      card.addEventListener('click', () => selectCard(i));
+      cardList.appendChild(card);
+    });
+
+    function selectCard(i) {
+      if (i === goldIdx) {
+        goldIdx = null;
+        silverIdx = null;
+      } else if (i === silverIdx) {
+        silverIdx = null;
+      } else if (goldIdx === null) {
+        goldIdx = i;
+      } else if (silverIdx === null) {
+        silverIdx = i;
+      }
+      renderCards();
+    }
+
+    function clearVote() {
+      goldIdx = null;
+      silverIdx = null;
+      renderCards();
+    }
+
+    function renderCards() {
+      const allCards = document.querySelectorAll('.card');
+      const bothChosen = goldIdx !== null && silverIdx !== null;
+
+      allCards.forEach((card, i) => {
+        const medal = document.getElementById(`medal-${i}`);
+        const wasGold = card.classList.contains('gold');
+        const wasSilver = card.classList.contains('silver');
+
+        card.classList.remove('gold', 'silver', 'dimmed');
+        medal.classList.remove('pop');
+
+        if (i === goldIdx) {
+          card.classList.add('gold');
+          if (!wasGold) {
+            medal.textContent = '🥇';
+            void medal.offsetWidth;
+            medal.classList.add('pop');
+          }
+        } else if (i === silverIdx) {
+          card.classList.add('silver');
+          if (!wasSilver) {
+            medal.textContent = '🥈';
+            void medal.offsetWidth;
+            medal.classList.add('pop');
+          }
+        } else {
+          if (wasGold || wasSilver) medal.textContent = '';
+          if (bothChosen) card.classList.add('dimmed');
+        }
+      });
+
+      document.getElementById('submitBtn').disabled = goldIdx === null || silverIdx === null;
+
+      const clearBtn = document.getElementById('clearBtn');
+      clearBtn.classList.toggle('hidden', goldIdx === null && silverIdx === null);
+
+      const instr = document.getElementById('instruction');
+      if (goldIdx === null) {
+        instr.innerHTML = 'Click your <strong>favorite tagline</strong> to give it the gold 🥇';
+      } else if (silverIdx === null) {
+        instr.innerHTML = 'Great pick! Now click your <strong>runner-up</strong> for silver 🥈';
+      } else {
+        instr.innerHTML = "You're all set — submit your vote whenever you're ready.";
+      }
+    }
+
+    async function submitVote() {
+      const btn = document.getElementById('submitBtn');
+      btn.disabled = true;
+      btn.textContent = 'Submitting…';
+
+      try {
+        await fetch(SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            first: TAGLINES[goldIdx],
+            second: TAGLINES[silverIdx]
+          })
+        });
+      } catch (e) {
+        // no-cors opaque responses may surface here; treat as sent
+      }
+
+      // Show success summary
+      document.getElementById('successSummary').innerHTML = `
+        <div class="summary-row"><span class="summary-medal">🥇</span><span class="summary-text">${TAGLINES[goldIdx]}</span></div>
+        <div class="summary-row"><span class="summary-medal">🥈</span><span class="summary-text">${TAGLINES[silverIdx]}</span></div>
+      `;
+      document.getElementById('voting').style.display = 'none';
+      document.getElementById('success').classList.add('visible');
+    }
+  </script>
+</body>
+</html>

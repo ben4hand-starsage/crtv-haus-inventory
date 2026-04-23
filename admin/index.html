@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Culture of Care — Admin Results</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f7f5f1;
+      color: #1a1f2e;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    /* ── Login ── */
+    #loginScreen {
+      max-width: 400px;
+      margin: 80px auto 0;
+      background: white;
+      border-radius: 16px;
+      padding: 48px 40px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+      text-align: center;
+    }
+
+    .lock-icon { font-size: 40px; margin-bottom: 16px; }
+
+    #loginScreen h1 {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    #loginScreen p {
+      font-size: 14px;
+      color: #6b7280;
+      margin-bottom: 28px;
+    }
+
+    .pw-input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e5e3de;
+      border-radius: 8px;
+      font-size: 15px;
+      outline: none;
+      margin-bottom: 12px;
+      transition: border-color 0.15s;
+    }
+
+    .pw-input:focus { border-color: #3d6b5e; }
+
+    .login-btn {
+      width: 100%;
+      background: #3d6b5e;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 13px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .login-btn:hover { background: #2f5449; }
+
+    .error-msg {
+      color: #dc2626;
+      font-size: 13px;
+      margin-top: 10px;
+      min-height: 18px;
+    }
+
+    /* ── Dashboard ── */
+    #dashboard { display: none; max-width: 760px; margin: 0 auto; }
+
+    .dash-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .dash-title-block .book-label {
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #3d6b5e;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .dash-title-block h1 {
+      font-size: 28px;
+      font-weight: 700;
+    }
+
+    .dash-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .refresh-btn {
+      background: white;
+      border: 2px solid #e5e3de;
+      border-radius: 8px;
+      padding: 9px 18px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+      color: #374151;
+    }
+
+    .refresh-btn:hover { border-color: #3d6b5e; background: #f0f7f5; }
+
+    .logout-btn {
+      background: none;
+      border: none;
+      color: #9ca3af;
+      font-size: 13px;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    .stat-row {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+    }
+
+    .stat-card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px 24px;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+      flex: 1;
+      min-width: 140px;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #9ca3af;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    .stat-value {
+      font-size: 36px;
+      font-weight: 700;
+      color: #1a1f2e;
+    }
+
+    .legend {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 16px;
+      font-size: 13px;
+      color: #6b7280;
+    }
+
+    .legend-dot {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-right: 5px;
+    }
+
+    .results-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .result-card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px 24px;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+      position: relative;
+      transition: box-shadow 0.15s;
+    }
+
+    .result-card.winner {
+      border: 2px solid #d4942a;
+      box-shadow: 0 4px 16px rgba(212,148,42,0.12);
+    }
+
+    .winner-badge {
+      position: absolute;
+      top: -1px;
+      right: 16px;
+      background: #d4942a;
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 0 0 6px 6px;
+    }
+
+    .result-tagline {
+      font-size: 15px;
+      font-weight: 600;
+      color: #1a1f2e;
+      margin-bottom: 14px;
+      padding-right: 80px;
+    }
+
+    .bars {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .bar-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .bar-label {
+      font-size: 13px;
+      min-width: 18px;
+      text-align: center;
+    }
+
+    .bar-track {
+      flex: 1;
+      height: 10px;
+      background: #f3f2ef;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 5px;
+      transition: width 0.6s cubic-bezier(0.34, 1, 0.64, 1);
+      width: 0%;
+    }
+
+    .bar-fill.gold-bar { background: #d4942a; }
+    .bar-fill.silver-bar { background: #868fa0; }
+
+    .bar-count {
+      font-size: 13px;
+      font-weight: 600;
+      min-width: 24px;
+      color: #374151;
+    }
+
+    .score-pill {
+      display: inline-block;
+      background: #f3f2ef;
+      border-radius: 6px;
+      padding: 3px 10px;
+      font-size: 12px;
+      color: #6b7280;
+      margin-top: 12px;
+    }
+
+    .score-pill strong { color: #374151; }
+
+    /* Setup instructions */
+    #setupNotice {
+      background: #fffbf0;
+      border: 2px solid #d4942a;
+      border-radius: 12px;
+      padding: 28px;
+      margin-bottom: 28px;
+    }
+
+    #setupNotice h2 {
+      font-size: 17px;
+      margin-bottom: 12px;
+      color: #92400e;
+    }
+
+    #setupNotice ol {
+      font-size: 14px;
+      line-height: 2;
+      color: #374151;
+      padding-left: 20px;
+    }
+
+    #setupNotice code {
+      background: #fef3c7;
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+    }
+
+    pre {
+      background: #1e2433;
+      color: #e2e8f0;
+      border-radius: 8px;
+      padding: 20px;
+      font-size: 12px;
+      line-height: 1.7;
+      overflow-x: auto;
+      margin-top: 16px;
+      white-space: pre;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 60px 20px;
+      color: #9ca3af;
+      font-size: 15px;
+    }
+
+    .no-votes {
+      text-align: center;
+      padding: 60px 20px;
+      background: white;
+      border-radius: 12px;
+      color: #9ca3af;
+      font-size: 15px;
+    }
+
+    @media (max-width: 520px) {
+      #loginScreen { padding: 36px 24px; }
+      .result-tagline { padding-right: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Login ── -->
+  <div id="loginScreen">
+    <div class="lock-icon">🔒</div>
+    <h1>Admin Results</h1>
+    <p>Culture of Care — Tagline Vote</p>
+    <input class="pw-input" type="password" id="pwInput" placeholder="Enter admin password"
+           onkeydown="if(event.key==='Enter') login()">
+    <button class="login-btn" onclick="login()">View Results</button>
+    <div class="error-msg" id="errorMsg"></div>
+  </div>
+
+  <!-- ── Dashboard ── -->
+  <div id="dashboard">
+    <div class="dash-header">
+      <div class="dash-title-block">
+        <div class="book-label">Admin Dashboard</div>
+        <h1>Tagline Results</h1>
+      </div>
+      <div class="dash-actions">
+        <button class="refresh-btn" onclick="loadResults()">↻ Refresh</button>
+        <button class="logout-btn" onclick="logout()">Sign out</button>
+      </div>
+    </div>
+
+    <div id="dashContent">
+      <div class="loading">Loading results…</div>
+    </div>
+  </div>
+
+  <script>
+    // ─── CONFIG — change these two values ───────────────────────────────────
+    const SCRIPT_URL    = 'https://script.google.com/macros/s/AKfycbzNdKgmx5ZAJRDjyLrjldWUSZrNAP2MY6ucwHoSVcVNrbe-iorB8BObnKSrmjm8Xt4/exec';
+    const ADMIN_PASSWORD = 'CultureOfCare2025';
+    // ────────────────────────────────────────────────────────────────────────
+
+    const TAGLINES = [
+      "Grow your church without neglecting your people",
+      "Care for broken lives without burning out your team",
+      "A proven system for care that actually works",
+      "Shaping churches where care is cultural, not accidental",
+      "Developing sustainable systems of care"
+    ];
+
+    const NOT_CONFIGURED = SCRIPT_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
+
+    function login() {
+      const val = document.getElementById('pwInput').value;
+      if (val === ADMIN_PASSWORD) {
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('dashboard').style.display = 'block';
+        loadResults();
+      } else {
+        document.getElementById('errorMsg').textContent = 'Incorrect password.';
+        document.getElementById('pwInput').value = '';
+        document.getElementById('pwInput').focus();
+      }
+    }
+
+    function logout() {
+      document.getElementById('dashboard').style.display = 'none';
+      document.getElementById('loginScreen').style.display = 'block';
+      document.getElementById('pwInput').value = '';
+    }
+
+    async function loadResults() {
+      const el = document.getElementById('dashContent');
+      el.innerHTML = '<div class="loading">Loading results…</div>';
+
+      if (NOT_CONFIGURED) {
+        el.innerHTML = renderSetupNotice();
+        return;
+      }
+
+      try {
+        const res = await fetch(SCRIPT_URL + '?t=' + Date.now());
+        const data = await res.json();
+        el.innerHTML = renderDashboard(data);
+        animateBars(data);
+      } catch (e) {
+        el.innerHTML = `<div class="no-votes">Could not load results. Check your SCRIPT_URL or try refreshing.</div>`;
+      }
+    }
+
+    function renderDashboard(data) {
+      const { total, results } = data;
+
+      // Compute weighted scores and sort
+      const sorted = TAGLINES.map(t => ({
+        tagline: t,
+        first:  results[t]?.first  || 0,
+        second: results[t]?.second || 0,
+        score:  (results[t]?.first || 0) * 2 + (results[t]?.second || 0)
+      })).sort((a, b) => b.score - a.score);
+
+      const maxFirst  = Math.max(...sorted.map(r => r.first),  1);
+      const maxSecond = Math.max(...sorted.map(r => r.second), 1);
+
+      const cards = sorted.map((r, i) => `
+        <div class="result-card ${i === 0 && total > 0 ? 'winner' : ''}" data-first="${r.first}" data-firstmax="${maxFirst}" data-second="${r.second}" data-secondmax="${maxSecond}">
+          ${i === 0 && total > 0 ? '<div class="winner-badge">⭐ Leading</div>' : ''}
+          <div class="result-tagline">${r.tagline}</div>
+          <div class="bars">
+            <div class="bar-row">
+              <span class="bar-label">🥇</span>
+              <div class="bar-track"><div class="bar-fill gold-bar" style="width:0%"></div></div>
+              <span class="bar-count">${r.first}</span>
+            </div>
+            <div class="bar-row">
+              <span class="bar-label">🥈</span>
+              <div class="bar-track"><div class="bar-fill silver-bar" style="width:0%"></div></div>
+              <span class="bar-count">${r.second}</span>
+            </div>
+          </div>
+          <div class="score-pill">Weighted score: <strong>${r.score}</strong> <span style="color:#9ca3af;font-size:11px">(1st×2 + 2nd×1)</span></div>
+        </div>
+      `).join('');
+
+      return `
+        <div class="stat-row">
+          <div class="stat-card"><div class="stat-label">Total Votes</div><div class="stat-value">${total}</div></div>
+        </div>
+        <div class="legend">
+          <span><span class="legend-dot" style="background:#d4942a"></span>1st choice votes</span>
+          <span><span class="legend-dot" style="background:#868fa0"></span>2nd choice votes</span>
+        </div>
+        <div class="results-list">${cards}</div>
+      `;
+    }
+
+    function animateBars(data) {
+      requestAnimationFrame(() => {
+        document.querySelectorAll('.result-card').forEach(card => {
+          const first     = +card.dataset.first;
+          const firstMax  = +card.dataset.firstmax;
+          const second    = +card.dataset.second;
+          const secondMax = +card.dataset.secondmax;
+          const fills = card.querySelectorAll('.bar-fill');
+          fills[0].style.width = (firstMax  > 0 ? (first  / firstMax)  * 100 : 0) + '%';
+          fills[1].style.width = (secondMax > 0 ? (second / secondMax) * 100 : 0) + '%';
+        });
+      });
+    }
+
+    function renderSetupNotice() {
+      return `
+        <div id="setupNotice">
+          <h2>⚙️ One-time setup required</h2>
+          <ol>
+            <li>Go to <strong>sheets.new</strong> to create a new Google Sheet.</li>
+            <li>In the Sheet, click <strong>Extensions → Apps Script</strong>.</li>
+            <li>Delete any existing code and paste the script below.</li>
+            <li>Click <strong>Deploy → New Deployment</strong>.</li>
+            <li>Set type to <strong>Web App</strong>, execute as <strong>Me</strong>, access <strong>Anyone</strong>.</li>
+            <li>Click <strong>Deploy</strong> and copy the Web App URL.</li>
+            <li>Open both <code>vote/index.html</code> and <code>admin/index.html</code> and replace <code>YOUR_GOOGLE_APPS_SCRIPT_URL_HERE</code> with your URL.</li>
+          </ol>
+          <pre>// Paste into Google Apps Script
+function doPost(e) {
+  const lock = LockService.getScriptLock();
+  lock.tryLock(10000);
+  try {
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    if (sheet.getLastRow() === 0) {
+      sheet.appendRow(['Timestamp', 'First Choice (Gold)', 'Second Choice (Silver)']);
+    }
+    const data = JSON.parse(e.postData.contents);
+    sheet.appendRow([new Date().toISOString(), data.first, data.second]);
+    return ContentService.createTextOutput(JSON.stringify({success:true}))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch(err) {
+    return ContentService.createTextOutput(JSON.stringify({error:err.message}))
+      .setMimeType(ContentService.MimeType.JSON);
+  } finally { lock.releaseLock(); }
+}
+
+function doGet(e) {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const rows  = sheet.getDataRange().getValues();
+  const taglines = [
+    "Grow your church without neglecting your people",
+    "Care for broken lives without burning out your team",
+    "A proven system for care that actually works",
+    "Shaping churches where care is cultural, not accidental",
+    "Developing sustainable systems of care"
+  ];
+  const results = {};
+  taglines.forEach(t => { results[t] = {first:0, second:0}; });
+  let total = 0;
+  for (let i = 1; i < rows.length; i++) {
+    if (!rows[i][1] && !rows[i][2]) continue;
+    total++;
+    if (rows[i][1] && results[rows[i][1]] !== undefined) results[rows[i][1]].first++;
+    if (rows[i][2] && results[rows[i][2]] !== undefined) results[rows[i][2]].second++;
+  }
+  return ContentService.createTextOutput(JSON.stringify({total, results, taglines}))
+    .setMimeType(ContentService.MimeType.JSON);
+}</pre>
+        </div>
+        <div class="no-votes">Configure the script URL above to see live results here.</div>
+      `;
+    }
+  </script>
+</body>
+</html>

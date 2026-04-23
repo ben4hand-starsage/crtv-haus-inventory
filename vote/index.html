@@ -403,14 +403,11 @@
       btn.textContent = 'Submitting…';
 
       try {
-        await fetch(SCRIPT_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          body: JSON.stringify({
-            first: TAGLINES[goldIdx],
-            second: TAGLINES[silverIdx]
-          })
-        });
+        const url = new URL(SCRIPT_URL);
+        url.searchParams.set('action', 'vote');
+        url.searchParams.set('first', TAGLINES[goldIdx]);
+        url.searchParams.set('second', TAGLINES[silverIdx]);
+        await fetch(url.toString(), { mode: 'no-cors' });
       } catch (e) {
         // no-cors opaque responses may surface here; treat as sent
       }

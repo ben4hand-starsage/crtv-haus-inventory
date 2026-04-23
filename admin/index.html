@@ -497,26 +497,27 @@
             <li>Open both <code>vote/index.html</code> and <code>admin/index.html</code> and replace <code>YOUR_GOOGLE_APPS_SCRIPT_URL_HERE</code> with your URL.</li>
           </ol>
           <pre>// Paste into Google Apps Script
-function doPost(e) {
-  const lock = LockService.getScriptLock();
-  lock.tryLock(10000);
-  try {
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-    if (sheet.getLastRow() === 0) {
-      sheet.appendRow(['Timestamp', 'First Choice (Gold)', 'Second Choice (Silver)']);
-    }
-    const data = JSON.parse(e.postData.contents);
-    sheet.appendRow([new Date().toISOString(), data.first, data.second]);
-    return ContentService.createTextOutput(JSON.stringify({success:true}))
-      .setMimeType(ContentService.MimeType.JSON);
-  } catch(err) {
-    return ContentService.createTextOutput(JSON.stringify({error:err.message}))
-      .setMimeType(ContentService.MimeType.JSON);
-  } finally { lock.releaseLock(); }
-}
-
 function doGet(e) {
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+
+  // Record a vote when first/second params are present
+  if (e.parameter && e.parameter.first && e.parameter.second) {
+    const lock = LockService.getScriptLock();
+    lock.tryLock(10000);
+    try {
+      if (sheet.getLastRow() === 0) {
+        sheet.appendRow(['Timestamp', 'First Choice (Gold)', 'Second Choice (Silver)']);
+      }
+      sheet.appendRow([new Date().toISOString(), e.parameter.first, e.parameter.second]);
+      return ContentService.createTextOutput(JSON.stringify({success:true}))
+        .setMimeType(ContentService.MimeType.JSON);
+    } catch(err) {
+      return ContentService.createTextOutput(JSON.stringify({error:err.message}))
+        .setMimeType(ContentService.MimeType.JSON);
+    } finally { lock.releaseLock(); }
+  }
+
+  // Otherwise return results
   const rows  = sheet.getDataRange().getValues();
   const taglines = [
     "Grow your church without neglecting your people",

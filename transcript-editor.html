@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transcript Editor</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Georgia', serif;
+            background: #f0f0eb;
+            color: #222;
+            padding: 40px 20px;
+            line-height: 1.6;
+        }
+        .container { max-width: 980px; margin: 0 auto; }
+        header {
+            text-align: center;
+            margin-bottom: 32px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #333;
+        }
+        h1 { font-size: 26px; font-weight: normal; letter-spacing: 1px; text-transform: uppercase; }
+        .subtitle { font-size: 13px; color: #666; margin-top: 6px; }
+
+        .instructions {
+            background: #fff8e6;
+            border: 1px solid #e0c97a;
+            border-radius: 6px;
+            padding: 16px 20px;
+            margin-bottom: 28px;
+            font-size: 13px;
+            line-height: 1.7;
+            color: #5a4a00;
+        }
+        .instructions strong { color: #3a2f00; }
+
+        /* Client dialogue shown as context */
+        .client-line {
+            display: flex;
+            gap: 10px;
+            padding: 10px 16px;
+            background: #f7f7f7;
+            border-left: 4px solid #ccc;
+            margin-bottom: 4px;
+            border-radius: 0 4px 4px 0;
+            font-size: 13.5px;
+            color: #444;
+            line-height: 1.6;
+        }
+        .client-line .who {
+            font-size: 10px;
+            font-weight: bold;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            white-space: nowrap;
+            padding-top: 2px;
+            min-width: 80px;
+        }
+        .shanna-line { border-left-color: #C0392B; }
+        .shanna-line .who { color: #C0392B; }
+        .ashley-line { border-left-color: #C0166A; }
+        .ashley-line .who { color: #C0166A; }
+        .lauren-line { border-left-color: #7B2FBE; }
+        .lauren-line .who { color: #7B2FBE; }
+        .joshua-line { border-left-color: #0B7A4E; }
+        .joshua-line .who { color: #0B7A4E; }
+        .melanie-line { border-left-color: #C05A00; }
+        .melanie-line .who { color: #C05A00; }
+
+        /* Counselor entry card */
+        .entry {
+            background: white;
+            border: 2px solid #2E5090;
+            border-radius: 8px;
+            margin: 12px 0 20px 0;
+            overflow: hidden;
+        }
+
+        .entry-header {
+            background: #2E5090;
+            color: white;
+            padding: 10px 16px;
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .entry-num {
+            background: rgba(255,255,255,0.2);
+            border-radius: 12px;
+            padding: 2px 8px;
+            font-size: 10px;
+        }
+        .entry-dialogue {
+            padding: 13px 16px;
+            font-size: 14px;
+            background: #f0f4ff;
+            border-bottom: 1px solid #d0d8f0;
+            color: #1a3a6b;
+            font-style: italic;
+        }
+        .entry-dialogue .ben-label {
+            font-size: 10px;
+            font-weight: bold;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            color: #2E5090;
+            margin-bottom: 5px;
+            font-style: normal;
+        }
+
+        .fields {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+        .field { padding: 14px 16px; }
+        .field:first-child { border-right: 1px solid #eee; }
+        .field label {
+            display: block;
+            font-size: 10px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+        .field label.lbl2 { color: #1a3a6b; }
+        .field label.lbl3 { color: #0B7A4E; }
+        .field textarea {
+            width: 100%;
+            min-height: 72px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 8px 10px;
+            font-size: 13px;
+            font-family: 'Georgia', serif;
+            line-height: 1.5;
+            resize: vertical;
+            color: #222;
+            background: white;
+        }
+        .field textarea:focus {
+            outline: none;
+            border-color: #2E5090;
+            box-shadow: 0 0 0 2px rgba(46,80,144,0.12);
+        }
+        .field textarea.col2 { border-left: 3px solid #1a3a6b; }
+        .field textarea.col3 { border-left: 3px solid #0B7A4E; }
+
+        /* Sticky bottom bar */
+        .sticky-bar {
+            position: sticky;
+            bottom: 0;
+            background: white;
+            border-top: 2px solid #2E5090;
+            padding: 14px 20px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-top: 32px;
+            border-radius: 8px 8px 0 0;
+            box-shadow: 0 -4px 16px rgba(0,0,0,0.1);
+            z-index: 100;
+        }
+        .btn {
+            padding: 10px 22px;
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-family: 'Georgia', serif;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+            transition: all 0.2s;
+        }
+        .btn-primary { background: #2E5090; color: white; }
+        .btn-primary:hover { background: #1a3a6b; }
+        .btn-secondary { background: #f0f0f0; color: #333; border: 1px solid #ccc; }
+        .btn-secondary:hover { background: #e0e0e0; }
+        #status { font-size: 13px; color: #0B7A4E; font-style: italic; flex: 1; }
+
+        #output-area { display: none; margin-top: 24px; }
+        #output-area h2 { font-size: 16px; font-weight: normal; margin-bottom: 12px; color: #333; }
+        #output-text {
+            width: 100%;
+            height: 220px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            padding: 12px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            background: #1e1e1e;
+            color: #d4d4d4;
+            resize: vertical;
+        }
+        .copy-btn-wrap { margin-top: 10px; text-align: right; }
+        .note { font-size: 12px; color: #888; margin-top: 8px; }
+
+        @media (max-width: 650px) {
+            .fields { grid-template-columns: 1fr; }
+            .field:first-child { border-right: none; border-bottom: 1px solid #eee; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <header>
+        <h1>Transcript Editor</h1>
+        <p class="subtitle">Client responses are shown in grey above each of your turns for context.</p>
+    </header>
+
+    <div class="instructions">
+        <strong>How to use:</strong> Each of your counselor turns (blue cards) is preceded by what the clients said. Use that context to fill in <span style="color:#1a3a6b;font-weight:bold">Column 2 — Skill</span> and <span style="color:#0B7A4E;font-weight:bold">Column 3 — Internal Thoughts</span>. When done, click <strong>"Export My Notes"</strong> and paste the result into Claude.
+    </div>
+
+    <div id="timeline"></div>
+
+    <div class="sticky-bar">
+        <button type="button" class="btn btn-primary" onclick="exportNotes()">Export My Notes</button>
+        <button type="button" class="btn btn-secondary" onclick="clearThoughts()">Clear All Column 3</button>
+        <span id="status"></span>
+    </div>
+
+    <div id="output-area">
+        <h2>Paste this into Claude:</h2>
+        <textarea id="output-text" readonly></textarea>
+        <div class="copy-btn-wrap">
+            <button class="btn btn-primary" onclick="copyOutput()">Copy to Clipboard</button>
+        </div>
+        <p class="note">Once copied, paste it into the Claude chat and the final transcript.html will be updated with your notes.</p>
+    </div>
+
+</div>
+
+<script>
+// Full session timeline: each item is either a client line or a counselor turn
+const timeline = [
+    // --- COUNSELOR TURN 1 ---
+    { type: 'counselor', id: 1,
+      dialogue: "Well, hey, my name is Ben and I just want to remind you everything we say in this room today is confidential. I know we've been here for a few weeks and you were referred here. I'm super happy to be here with you guys. And I just want to know what you guys thought about your last session, your last week, because it's been a whole week since we've been here.",
+      skill: "Informed Consent and Confidentiality Statement",
+      thoughts: "I intended to greet the family with a warm, upbeat tone while also reminding them of the privacy they had while in session." },
+
+    // --- COUNSELOR TURN 2 ---
+    { type: 'counselor', id: 2,
+      dialogue: "And has there been any progress? What's the vibe like in the home? And I want to give everybody 30 seconds. We see a timer up here. And so just make sure to be mindful of that as everybody goes. Who wants to go first?",
+      skill: "Structuring the session & fostering expression",
+      thoughts: "I wanted the family to reflect on their past week and start the session with their progress (or lack thereof) in mind." },
+
+    { type: 'client', who: 'Shanna', cls: 'shanna', text: "I'll go first." },
+
+    // --- COUNSELOR TURN 3 ---
+    { type: 'counselor', id: 3,
+      dialogue: "Let's go, Shanna.",
+      skill: "",
+      thoughts: "" },
+
+    { type: 'client', who: 'Shanna', cls: 'shanna', text: "All right. Well, I don't really know how, I mean, I feel like we left and everyone is just saying it's all my fault and like no one really wanted to spend time with me this week. And I just," },
+
+    // --- COUNSELOR TURN 4 ---
+    { type: 'counselor', id: 4,
+      dialogue: "Emme.",
+      skill: "Active Listening / Minimal Encourager",
+      thoughts: "" },
+
+    { type: 'client', who: 'Shanna', cls: 'shanna', text: "I just, I really feel really down and I just, I don't, people keep saying it's my fault, but I don't think it's my fault. And I just, I need you to tell them that it's not my fault. And do you think you can do that for me? Like, because I need to." },
+
+    // --- COUNSELOR TURN 5 ---
+    { type: 'counselor', id: 5,
+      dialogue: "Yeah. Yeah.",
+      skill: "Active Listening / Minimal Encourager",
+      thoughts: "" },
+
+    // --- COUNSELOR TURN 6 ---
+    { type: 'counselor', id: 6,
+      dialogue: "Well, Shanna, I know what I can do. I can tell you thank you for sharing all that. That's very vulnerable of you. And I'm super, well, we're up to that 30 seconds, but let me finish. I think I'm super proud of you for sharing that because it takes a lot to admit that you feel upset.",
+      skill: "Validation / Affirmation",
+      thoughts: "" },
+
+    { type: 'client', who: 'Shanna', cls: 'shanna', text: "Well, but I'm not done. I'm not done. Okay." },
+
+    // --- COUNSELOR TURN 7 ---
+    { type: 'counselor', id: 7,
+      dialogue: "Who wants to go next?",
+      skill: "Facilitating Group Process / Redirecting",
+      thoughts: "" },
+
+    { type: 'client', who: 'Shanna', cls: 'shanna', text: "Can I talk more?" },
+    { type: 'client', who: 'Ashley', cls: 'ashley', text: "I'll go next." },
+
+    // --- COUNSELOR TURN 8 ---
+    { type: 'counselor', id: 8,
+      dialogue: "Unfortunately, Shanna, I want to give everybody else a turn, but I am looking forward to coming back to you. Go ahead, Ashley.",
+      skill: "Managing Group Dynamics / Limit-Setting",
+      thoughts: "" },
+
+    { type: 'client', who: 'Ashley', cls: 'ashley', text: "Um, I feel… overwhelmed. You know, I feel like I want to have more time with my dad and I don't want Shanna to feel like we're saying it's all her fault, but she keeps taking it that way no matter how many times we say it's not her fault. So it's exhausting to try to prove to her something she doesn't want to believe." },
+
+    // --- COUNSELOR TURN 9 ---
+    { type: 'counselor', id: 9,
+      dialogue: "Yeah. Yeah.",
+      skill: "Active Listening / Minimal Encourager",
+      thoughts: "" },
+
+    { type: 'client', who: 'Ashley', cls: 'ashley', text: "But I did like that last week she was able to be quiet long enough for us to talk and kind of share some emotions." },
+    { type: 'client', who: 'Shanna', cls: 'shanna', text: "But I do want to delete." },
+
+    // --- COUNSELOR TURN 10 ---
+    { type: 'counselor', id: 10,
+      dialogue: "Hey. Yeah. What I hear you saying is that you have some feelings, but it's not getting across. You have some ways that you view the situation and it's like there's a there's like some fuzz in the signal. It's not communicating well. Thank you for sharing that. Lauren.",
+      skill: "Reflection / Paraphrasing; Redirecting",
+      thoughts: "" },
+
+    { type: 'client', who: 'Ashley', cls: 'ashley', text: "Yeah." },
+    { type: 'client', who: 'Lauren', cls: 'lauren', text: "Yeah, everything's just been kind of awkward. It just feels like a lot of tension, even though nobody really says there's tension, but there is. You could feel it just in the air. I'm a little less anxious than I was last week. I guess, you know, I had exams and that was kind of playing into the anxiety I felt, but there's still a lot of anxiety that I'm feeling about just the way that everybody is relating to each other, I guess." },
+    { type: 'client', who: 'Shanna', cls: 'shanna', text: "Lauren, you can talk to me. You can talk to me." },
+
+    // --- COUNSELOR TURN 11 ---
+    { type: 'counselor', id: 11,
+      dialogue: "Yeah. Yeah, yeah, I haven't. For sure. Yeah, having anxiety, especially when we come to our homes, which is like a safe place, right? You want that atmosphere to feel peaceful. Let's go, Josh. How are we doing, man? Good to see you here this week.",
+      skill: "Normalizing / Validation; Redirecting",
+      thoughts: "" },
+
+    { type: 'client', who: 'Joshua', cls: 'joshua', text: "We're doing. The best way to put it is… a background character." },
+
+    // --- COUNSELOR TURN 12 ---
+    { type: 'counselor', id: 12,
+      dialogue: "You feel like a background character?",
+      skill: "Reflection of Feeling / Paraphrasing",
+      thoughts: "" },
+
+    { type: 'client', who: 'Joshua', cls: 'joshua', text: "Yeah, that's the best way to put that." },
+
+    // --- COUNSELOR TURN 13 ---
+    { type: 'counselor', id: 13,
+      dialogue: "Yeah, tell me about that.",
+      skill: "Open-Ended Question / Exploration",
+      thoughts: "" },
+
+    { type: 'client', who: 'Joshua', cls: 'joshua', text: "Back. So. The normal 9 to 5, come home, but it still feels like regardless who's there. Nobody wants to say nothing to nobody. It's like a bunch of noise, like tunnel vision, and it's just like going through motions, like fast forward pretty much." },
+
+    // --- COUNSELOR TURN 14 ---
+    { type: 'counselor', id: 14,
+      dialogue: "Mm. Mm.",
+      skill: "Active Listening / Minimal Encourager",
+      thoughts: "" },
+
+    // --- COUNSELOR TURN 15 ---
+    { type: 'counselor', id: 15,
+      dialogue: "Yeah, yeah. Wow. That's really insightful, man. Melanie, I know you're under the weather, but maybe you can give me 3 words or one sentence.",
+      skill: "Affirmation; Redirecting",
+      thoughts: "" },
+
+    { type: 'client', who: 'Melanie', cls: 'melanie', text: "No, it's okay. Sorry, guys. I hope everyone can hear me okay. I don't know if I'll get this out. There's something that I've sort of been wanting, it's been heavy on me since we started here that I've been wanting to say, and that is, I'm not judging Shanna or my dad. But when they met each other, they were both married. I feel like there's a double standard going on about my identity, who I am as a person, the choices that my sister has made not being good enough when the way that they got together wasn't perfect either. So after last week, I just kind of feel like I'm at the end of the road. I'm sort of at a stalemate here. I mean, I ended the last session saying we're all started today. If I cannot be accepted as a person, I don't know what more I can say." },
+
+    // --- COUNSELOR TURN 16 ---
+    { type: 'counselor', id: 16,
+      dialogue: "Yeah, and you use the term at the end of the road, and I know that can feel pretty heavy. It can feel a little hopeless and dark. But from my perspective, looking at you guys, you're all in a room, like you're still talking. And you're not, it's not too far gone. The fact that you're here is massively huge. And so I affirm that that is that is a tough feeling, but I also want to bring hope that that we're on the right path.",
+      skill: "Instilling Hope / Reframing",
+      thoughts: "" },
+
+    // --- COUNSELOR TURN 17 ---
+    { type: 'counselor', id: 17,
+      dialogue: "Now, I appreciate you all sharing and there's something that I kind of sense from everybody's statements that there's a bit of like an isolation, you know, from Lauren's anxiety, to the miscommunication that could feel isolating. Josh, you said everybody was like had tunnel vision. I would love to hear more, Josh, because you had a really insightful statement there. I'd love to hear more about that tunnel vision that you feel is in the home when you come home.",
+      skill: "Summarizing / Identifying Themes; Open-Ended Exploration",
+      thoughts: "" },
+
+    { type: 'client', who: 'Shanna', cls: 'shanna', text: "I, I would like to talk first. I…" },
+
+    // --- COUNSELOR TURN 18 ---
+    { type: 'counselor', id: 18,
+      dialogue: "Well, Shanna, I definitely, I definitely am excited to get back to you. I do want to hear what Josh has to say.",
+      skill: "Managing Group Process / Gentle Redirection",
+      thoughts: "" },
+
+    { type: 'client', who: 'Shanna', cls: 'shanna', text: "Well, then let me talk first." },
+
+    // --- COUNSELOR TURN 19 ---
+    { type: 'counselor', id: 19,
+      dialogue: "Well, Shanna, the interesting thing is that this is like a mini home environment. And so what I'm trying to demonstrate is respect. Like when I talk to Josh, he respects when I ask for him to, you know, obey the time limit or we're all going to take our turns. And so I actually want to foster that respect in this room because if we can't do it in this room, it's really hard to do it at home. So let's practice that. Josh, I'd love to hear more about that.",
+      skill: "Using the Session as a Microcosm; Limit-Setting; Therapeutic Modeling",
+      thoughts: "" },
+
+    { type: 'client', who: 'Joshua', cls: 'joshua', text: "Pretty much just solid. When I come to the door, that's what it is." },
+
+    // --- COUNSELOR TURN 20 ---
+    { type: 'counselor', id: 20,
+      dialogue: "It's just silent.",
+      skill: "Reflection / Paraphrasing",
+      thoughts: "" },
+
+    { type: 'client', who: 'Joshua', cls: 'joshua', text: "You got, it's silent and—" },
+    { type: 'client', who: 'Shanna', cls: 'shanna', text: "It's silent because you make it that way, Josh." },
+    { type: 'client', who: 'Joshua', cls: 'joshua', text: "From up. Well, I'm trying to say it without hurting your feelings, honey. But as soon as I hit the door, I hear 15 things that everybody's done wrong. Like, can I breathe for two seconds, please?" },
+
+    // --- COUNSELOR TURN 21 ---
+    { type: 'counselor', id: 21,
+      dialogue: "Thank you. How does it? How does it?",
+      skill: "Affirmation; Open-Ended Question",
+      thoughts: "" },
+
+    { type: 'client', who: 'Shanna', cls: 'shanna', text: "I am sorry that you don't want to know what has gone on all day. Why is that? I thought we were in this together and now you're saying you want to come home and you don't want to have anything to do with me?" },
+    { type: 'client', who: 'Joshua', cls: 'joshua', text: "No, I want to be able to take my shoes off before I hear that. I don't hear nothing about Warren, which is usually a good thing because she does run away. But either Ashley has been over there too much. The grandkids, you don't need to see enough or you do see too much. Or Melanie is, to be honest, honey, I've never heard you say one good thing about the girl. And it's like, I get it. Like, it's a different surrounding. We ain't been doing this together forever. But I don't know how to put into words like I want it out to work and it ain't working." },
+
+    // --- COUNSELOR TURN 22 (formerly 23 in original) ---
+    { type: 'counselor', id: 22,
+      dialogue: "So I would love to hear Ashley, what's it like to hear Josh say that? That when he gets home, he feels just like an overwhelming, a coldness maybe leading to him kind of shutting down. What's it like to hear him say that?",
+      skill: "Circular Questioning / Amplifying",
+      thoughts: "" },
+
+    { type: 'client', who: 'Shanna', cls: 'shanna', text: "Ohh." },
+    { type: 'client', who: 'Ashley', cls: 'ashley', text: "I mean, it's…" },
+    { type: 'client', who: 'Shanna', cls: 'shanna', text: "Are you wanting a divorce, Josh?" },
+    { type: 'client', who: 'Ashley', cls: 'ashley', text: "It's tough to hear him having struggles." },
+
+    // --- COUNSELOR TURN 23 ---
+    { type: 'counselor', id: 23,
+      dialogue: "Hey, Shanna, let's not, let's stay in the moment, Shanna. That's jumping ahead. I promise you, we don't need to, we don't even need to go there yet. We are so far from that, Shanna. Ashley, same question.",
+      skill: "Grounding / Redirecting; De-escalation",
+      thoughts: "" },
+
+    { type: 'client', who: 'Shanna', cls: 'shanna', text: "But…" },
+    { type: 'client', who: 'Ashley', cls: 'ashley', text: "It's tough to know that like he's always in the middle and, you know, because, you know, they got together and my mom, you know, was with him when they got together, you know, we've lost the contact with our mom. We don't talk to our mom and we have talked to Shanna the whole time. But, you know, now if we're not being accepted, you know, it's driving a wedge from our dad, which is tough for him because he's caught in the middle of trying to keep everybody happy and it's hard. And the more we try to say something about it, the more, you know, Shanna is feeling attacked. And that's where we just, where do we go from there? Because if you're not going to listen, so what we have to say is we're at the end of the road." },
+
+    // --- COUNSELOR TURN 24 ---
+    { type: 'counselor', id: 24,
+      dialogue: "Mhm.",
+      skill: "Active Listening / Minimal Encourager",
+      thoughts: "" },
+
+    { type: 'client', who: 'Shanna', cls: 'shanna', text: "But Ashley, I don't think it's the wedge. I don't think there's a wedge. I think you're putting the wedge there and I need you to take the wedge away." },
+    { type: 'client', who: 'Ashley', cls: 'ashley', text: "Well, we try to take the wedge away, but you don't listen to our side. You hear what we say, and then it all gets blocked, and what we feel isn't ever understood by you. So it's just no matter what we say is like it doesn't actually happen. It's just us making up some story." },
+
+    // --- COUNSELOR TURN 25 ---
+    { type: 'counselor', id: 25,
+      dialogue: "Right. Okay, so Lauren, Ashley said she feels like the communication between her and Shanna is blocked. Do you feel the same kind of block?",
+      skill: "Circular Questioning / Linking Members",
+      thoughts: "" },
+
+    { type: 'client', who: 'Lauren', cls: 'lauren', text: "Yeah, but I, I just, I don't express myself as strongly as Ashley, just because I feel like I can't." },
+
+    // --- COUNSELOR TURN 26 ---
+    { type: 'counselor', id: 26,
+      dialogue: "Mhm.",
+      skill: "Active Listening / Minimal Encourager",
+      thoughts: "" },
+
+    { type: 'client', who: 'Ashley', cls: 'ashley', text: "Well, it's hard for you, it's your mom." },
+
+    // --- COUNSELOR TURN 27 ---
+    { type: 'counselor', id: 27,
+      dialogue: "Yeah.",
+      skill: "Active Listening / Minimal Encourager",
+      thoughts: "" },
+
+    { type: 'client', who: 'Shanna', cls: 'shanna', text: "So, so you're all, you're all ganging up on me again, and I don't, why is nobody listening to me?" },
+
+    // --- COUNSELOR TURN 28 ---
+    { type: 'counselor', id: 28,
+      dialogue: "So, I… Well, well, hold on, let me… Well, I think we hear you loud and clear, Shanna. And I would love to hear, Melanie, when you hear that word block, do you sense there's a block in communication?",
+      skill: "Validation; Redirecting",
+      thoughts: "" },
+
+    { type: 'client', who: 'Melanie', cls: 'melanie', text: "Yeah, I think that, um… Something that my dad has…" },
+    { type: 'client', who: 'Shanna', cls: 'shanna', text: "Well, of course she agrees." },
+
+    // --- COUNSELOR TURN 29 ---
+    { type: 'counselor', id: 29,
+      dialogue: "Hey, Shanna, remember, we're going to practice respect, right? If we can give respect, then we can get respect. And it sounds like you want respect, you want to be included. So I want to challenge you. This is an opportunity to foster that, but we got to give it, right? We got to give respect in order to get it. So let's hear from Melanie and it's all going to result, right, in fostering respect for each other. Melanie, let's continue.",
+      skill: "Limit-Setting; Therapeutic Challenge; Reframing",
+      thoughts: "" },
+
+    { type: 'client', who: 'Melanie', cls: 'melanie', text: "I think one thing that I've learned from my mom and, you know, she's exhibiting it quite well at the moment, unfortunately, in some ways, is like having personal boundaries. I feel like it's harder for you Ashley because you rely on them for babysitting, but I feel like we both were raised to know how we want to be treated, how we're willing to be treated. Especially Ben, like you said, like we're supposed to feel safe in our home. And if we can't feel safe in our home, if we feel unsafe emotionally, then of course we're going to protect ourselves. Of course we're going to put up some walls." },
+
+    // --- COUNSELOR TURN 30 ---
+    { type: 'counselor', id: 30,
+      dialogue: "Yeah.",
+      skill: "Active Listening / Minimal Encourager",
+      thoughts: "" },
+
+    { type: 'client', who: 'Shanna', cls: 'shanna', text: "So you're telling me that you don't feel safe here, that I have made such an unsafe home?" },
+
+    // --- COUNSELOR TURN 31 ---
+    { type: 'counselor', id: 31,
+      dialogue: "Well, hold on, let's end it at that. I think that's a great question. I would love for people to answer that question, but leave it at that. Do you not feel safe at home? That's a great question, Shanna. Josh, do you feel safe at home?",
+      skill: "Amplifying / Expanding a Client Question; Circular Questioning",
+      thoughts: "" },
+
+    { type: 'client', who: 'Joshua', cls: 'joshua', text: "Yeah." },
+
+    // --- COUNSELOR TURN 32 ---
+    { type: 'counselor', id: 32,
+      dialogue: "That's great. Ashley, do you feel safe at home?",
+      skill: "Circular Questioning",
+      thoughts: "" },
+
+    { type: 'client', who: 'Ashley', cls: 'ashley', text: "I mean, for me, I don't live there, so I'm fine at home, but coming over and those in those conversations with them, it can be emotionally unsafe. You know, physically, I'm fine there, but I feel like I have to watch what I say because I don't want to—" },
+
+    // --- COUNSELOR TURN 33 ---
+    { type: 'counselor', id: 33,
+      dialogue: "Yeah, in that home, yeah, when you come over. Yeah. Sure. Yeah.",
+      skill: "Active Listening / Minimal Encourager",
+      thoughts: "" },
+
+    { type: 'client', who: 'Ashley', cls: 'ashley', text: "I don't care about her. And that's not true. I do care. Like, that's why we're here." },
+
+    // --- COUNSELOR TURN 34 ---
+    { type: 'counselor', id: 34,
+      dialogue: "Yeah. Yeah, Melanie, do you feel safe at home?",
+      skill: "Circular Questioning",
+      thoughts: "" },
+
+    { type: 'client', who: 'Melanie', cls: 'melanie', text: "No, emotionally, no. With my dad, always. Dad, you have always made me feel safe, but I don't feel safe in that house." },
+
+    // --- COUNSELOR TURN 35 ---
+    { type: 'counselor', id: 35,
+      dialogue: "Yeah. Okay, Lauren, do you feel safe? But actually, Shanna, I haven't heard any, I haven't heard anybody blame you. I've just asked simply how they feel. So, Lauren, how do you feel at home? Do you feel safe?",
+      skill: "Reframing; Circular Questioning",
+      thoughts: "" },
+
+    { type: 'client', who: 'Shanna', cls: 'shanna', text: "So I'm at fault, Melanie. That's what you're saying is that it's all my fault?" },
+    { type: 'client', who: 'Lauren', cls: 'lauren', text: "I feel physically safe, but I feel like I can't be authentic, like I can't be honest. I feel like I can't take up any space and I kind of just feel like everybody else's emotions are given to me just all the time. Like I just absorb all of it. And I don't have any." },
+
+    // --- COUNSELOR TURN 36 ---
+    { type: 'counselor', id: 36,
+      dialogue: "Yeah. Yeah.",
+      skill: "Active Listening / Minimal Encourager",
+      thoughts: "" },
+
+    { type: 'client', who: 'Shanna', cls: 'shanna', text: "Why don't you talk to me, Lauren? Why don't you talk to me?" },
+
+    // --- COUNSELOR TURN 37 ---
+    { type: 'counselor', id: 37,
+      dialogue: "Well…",
+      skill: "Active Listening / Holding Space",
+      thoughts: "" },
+
+    { type: 'client', who: 'Lauren', cls: 'lauren', text: "Because I feel like… I feel like you don't really listen. Like the same thing that Ashley said and Melanie said, I feel like I say what's bothering me and I open up and I'm met with like just a reflection of your own opinions and beliefs. You don't actually listen." },
+
+    // --- COUNSELOR TURN 38 ---
+    { type: 'counselor', id: 38,
+      dialogue: "Yeah.",
+      skill: "Active Listening / Minimal Encourager",
+      thoughts: "" },
+
+    { type: 'client', who: 'Shanna', cls: 'shanna', text: "So, so my own flesh and blood is telling me that the you don't, you don't." },
+
+    // --- COUNSELOR TURN 39 ---
+    { type: 'counselor', id: 39,
+      dialogue: "So we have 30 seconds left. We have 30 seconds left.",
+      skill: "Structuring / Time Management",
+      thoughts: "" },
+
+    { type: 'client', who: 'Shanna', cls: 'shanna', text: "I don't." },
+
+    // --- COUNSELOR TURN 40 ---
+    { type: 'counselor', id: 40,
+      dialogue: "We have 30 seconds left, Shanna. So here's what I'm going to do. Because we have 21 seconds left. I want to, I think my biggest takeaway is I want to offer you guys a tool. It's a tool that you can use at home and it's going to help you tremendously. Something that I saw during this session is we attach feelings with judgments. So in trying to explain how you feel, often, and I've heard it from all of you, is we're taking shots at other people unintentionally. You're meaning well, you're trying to get your point across, but that can induce some defensiveness. So the tool I want to talk about is I feel statements. And here's how I feel statements don't work. You can't say like, I feel Josh is being an idiot right now. That's not an I feel statement, right? That's funny. And you'll get some laughs, but in the home, that's just going to result in more defensiveness. So I want us to work on this week. When you're communicating, you say, I feel angry, I feel unheard, I feel upset. And then stop right there. Don't attach it to some judgment about someone else.",
+      skill: "Psychoeducation; Teaching Communication Skills (I-Statements)",
+      thoughts: "" },
+
+    { type: 'client', who: 'Joshua', cls: 'joshua', text: "Yeah." },
+
+    // --- COUNSELOR TURN 41 ---
+    { type: 'counselor', id: 41,
+      dialogue: "I'm going to send you guys, I'm going to email you guys a little pamphlet with some examples on your way home at the office today. I'll get your emails and we'll send it out. But it's a super helpful tool that can help you have these conversations in like a safe environment. So can I get you guys to commit to trying that this week using some I feel statements?",
+      skill: "Between-Session Homework Assignment; Building Commitment / Behavioral Agreement",
+      thoughts: "" },
+
+    { type: 'client', who: 'Ashley', cls: 'ashley', text: "Yes." },
+
+    // --- COUNSELOR TURN 42 ---
+    { type: 'counselor', id: 42,
+      dialogue: "Hey, I've seen a lot of growth. I've seen a lot of growth. You guys are talking more than you were the first session. You guys are actually sharing some pretty heavy stuff. So I'm proud of you guys, and I'm thankful for you, and I can't wait to see you guys next week.",
+      skill: "Affirmation / Positive Reinforcement; Closing / Termination of Session",
+      thoughts: "" }
+];
+
+function buildTimeline() {
+    const container = document.getElementById('timeline');
+    timeline.forEach(item => {
+        if (item.type === 'client') {
+            const div = document.createElement('div');
+            div.className = `client-line ${item.cls}-line`;
+            div.innerHTML = `<span class="who">${item.who}:</span><span>${item.text}</span>`;
+            container.appendChild(div);
+        } else {
+            const div = document.createElement('div');
+            div.className = 'entry';
+            div.innerHTML = `
+                <div class="entry-header">
+                    Counselor Turn <span class="entry-num">#${item.id}</span>
+                </div>
+                <div class="entry-dialogue">
+                    <div class="ben-label">Ben Forehand:</div>
+                    ${item.dialogue}
+                </div>
+                <div class="fields">
+                    <div class="field">
+                        <label class="lbl2">Column 2 — Skill / Intervention</label>
+                        <textarea class="col2" id="skill-${item.id}">${item.skill}</textarea>
+                    </div>
+                    <div class="field">
+                        <label class="lbl3">Column 3 — Internal Thoughts &amp; Intentions</label>
+                        <textarea class="col3" id="thoughts-${item.id}" placeholder="What were you thinking or intending here?">${item.thoughts}</textarea>
+                    </div>
+                </div>
+            `;
+            container.appendChild(div);
+        }
+    });
+}
+
+function exportNotes() {
+    const counselorItems = timeline.filter(i => i.type === 'counselor');
+    const lines = counselorItems.map(e => {
+        const skill = document.getElementById(`skill-${e.id}`).value.trim();
+        const thoughts = document.getElementById(`thoughts-${e.id}`).value.trim();
+        return `--- Turn ${e.id} ---\nSKILL: ${skill || '(blank)'}\nTHOUGHTS: ${thoughts || '(blank)'}`;
+    }).join('\n\n');
+
+    const output = `Here are my notes for all counselor turns in the transcript. Please update transcript.html with these:\n\n${lines}`;
+    document.getElementById('output-text').value = output;
+    document.getElementById('output-area').style.display = 'block';
+    document.getElementById('output-area').scrollIntoView({ behavior: 'smooth' });
+    document.getElementById('status').textContent = 'Ready to copy!';
+}
+
+function copyOutput() {
+    const ta = document.getElementById('output-text');
+    ta.select();
+    navigator.clipboard.writeText(ta.value).then(() => {
+        document.getElementById('status').textContent = 'Copied to clipboard!';
+        setTimeout(() => document.getElementById('status').textContent = '', 3000);
+    });
+}
+
+function clearThoughts() {
+    if (!confirm('Clear all Column 3 (Internal Thoughts) entries?')) return;
+    timeline.filter(i => i.type === 'counselor').forEach(e => {
+        document.getElementById(`thoughts-${e.id}`).value = '';
+    });
+}
+
+buildTimeline();
+</script>
+</body>
+</html>

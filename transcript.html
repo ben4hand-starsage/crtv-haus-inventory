@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Session Transcript</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: #f5f5f0;
+            color: #222;
+            padding: 50px 20px;
+            line-height: 1.7;
+        }
+
+        .container { max-width: 1100px; margin: 0 auto; }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 24px;
+            border-bottom: 3px solid #333;
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: normal;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .meta { font-size: 13px; color: #666; letter-spacing: 0.5px; }
+
+        .cast {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 32px;
+            padding: 20px 24px;
+            background: white;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+        }
+
+        .cast-member {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+        }
+
+        .cast-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        thead th {
+            background: #2a2a2a;
+            color: white;
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 14px 18px;
+            text-align: left;
+            font-weight: normal;
+        }
+
+        thead th:nth-child(1) { width: 42%; }
+        thead th:nth-child(2) { width: 26%; }
+        thead th:nth-child(3) { width: 32%; }
+
+        tbody tr { border-bottom: 1px solid #e5e5e5; }
+        tbody tr:last-child { border-bottom: none; }
+
+        td {
+            padding: 14px 18px;
+            font-size: 14px;
+            vertical-align: top;
+            line-height: 1.65;
+        }
+
+        .speaker {
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        tr.counselor { background: #fafafa; }
+        tr.counselor td.col2 { background: #f0f4ff; }
+        tr.counselor td.col3 { background: #f0f9f4; }
+
+        tr.client td.col2,
+        tr.client td.col3 {
+            background: #f7f7f7;
+            color: #bbb;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        .skill {
+            font-size: 13px;
+            color: #1a3a6b;
+            font-weight: bold;
+            line-height: 1.5;
+        }
+
+        .thoughts {
+            font-size: 13px;
+            color: #1a4a2e;
+            font-style: italic;
+            line-height: 1.6;
+        }
+
+        .blank { color: #ccc; font-size: 12px; }
+
+        .ben     { color: #2E5090; }
+        .shanna  { color: #C0392B; }
+        .lauren  { color: #7B2FBE; }
+        .joshua  { color: #0B7A4E; }
+        .ashley  { color: #C0166A; }
+        .melanie { color: #C05A00; }
+
+        @media (max-width: 700px) {
+            table, thead, tbody, tr, th, td { display: block; }
+            thead { display: none; }
+            td { padding: 10px 14px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <header>
+        <h1>Written Session Transcript</h1>
+        <p class="meta">Counselor: Ben Forehand &nbsp;|&nbsp; 10-Minute Excerpt</p>
+    </header>
+
+    <div class="cast">
+        <div class="cast-member"><div class="cast-dot" style="background:#2E5090"></div> Ben Forehand (Counselor)</div>
+        <div class="cast-member"><div class="cast-dot" style="background:#C0392B"></div> Shanna Honaker</div>
+        <div class="cast-member"><div class="cast-dot" style="background:#7B2FBE"></div> Lauren Kaylor</div>
+        <div class="cast-member"><div class="cast-dot" style="background:#0B7A4E"></div> Joshua Isaac</div>
+        <div class="cast-member"><div class="cast-dot" style="background:#C0166A"></div> Ashley Howell</div>
+        <div class="cast-member"><div class="cast-dot" style="background:#C05A00"></div> Melanie Hirsch</div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Speaker &amp; Verbatim Dialogue</th>
+                <th>Skill / Theoretical Intervention</th>
+                <th>Internal Thoughts &amp; Intentions</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <!-- Merged Turn 1+2 -->
+            <tr class="counselor">
+                <td><div class="speaker ben">Counselor (Ben Forehand):</div>
+                Well, hey, my name is Ben and I just want to remind you everything we say in this room today is confidential. I know we've been here for a few weeks and you were referred here. I'm super happy to be here with you guys. And I just want to know what you guys thought about your last session, your last week, because it's been a whole week since we've been here. Has there been any progress? What's the vibe like in the home? And I want to give everybody 30 seconds. We see a timer up here. And so just make sure to be mindful of that as everybody goes. Who wants to go first?</td>
+                <td class="col2"><span class="skill">Informed Consent, Confidentiality Statement, Joining. Structuring the Session &amp; Fostering Expression.</span></td>
+                <td class="col3"><span class="thoughts">I intended to greet the family with a warm, upbeat tone while also reminding them of the privacy they had while in session. I wanted the family to reflect on their past week and start the session with their progress (or lack thereof) in mind.</span></td>
+            </tr>
+
+            <!-- Shanna -->
+            <tr class="client">
+                <td><div class="speaker shanna">Shanna Honaker:</div>I'll go first.</td>
+                <td class="col2">—</td><td class="col3">—</td>
+            </tr>
+
+            <!-- Turn 3 -->
+            <tr class="counselor">
+                <td><div class="speaker ben">Counselor (Ben Forehand):</div>
+                Let's go, Shanna.</td>
+                <td class="col2"><span class="blank">—</span></td>
+                <td class="col3"><span class="blank">—</span></td>
+            </tr>
+
+            <!-- Shanna -->
+            <tr class="client">
+                <td><div class="speaker shanna">Shanna Honaker:</div>All right. Well, I don't really know how, I mean, I feel like we left and everyone is just saying it's all my fault and like no one really wanted to spend time with me this week. And I just,</td>
+                <td class="col2">—</td><td class="col3">—</td>
+            </tr>
+
+            <!-- Turn 4 -->
+            <tr class="counselor">
+                <td><div class="speaker ben">Counselor (Ben Forehand):</div>
+                Hmm…</td>
+                <td class="col2"><span class="skill">Active Listening / Minimal Encourager</span></td>
+                <td class="col3"><span class="blank">—</span></td>
+            </tr>
+
+            <!-- Shanna -->
+            <tr class="client">
+                <td><div class="speaker shanna">Shanna Honaker:</div>I just, I really feel really down and I just, I don't, people keep saying it's my fault, but I don't think it's my fault. And I just, I need you to tell them that it's not my fault. And do you think you can do that for me? Like, because I need to.</td>
+                <td class="col2">—</td><td class="col3">—</td>
+            </tr>
+
+            <!-- Turn 5 -->
+            <tr class="counselor">
+                <td><div class="speaker ben">Counselor (Ben Forehand):</div>
+                Yeah. Yeah.</td>
+                <td class="col2"><span class="skill">Active Listening / Minimal Encourager</span></td>
+                <td class="col3"><span class="blank">—</span></td>
+            </tr>
+
+            <!-- Turn 6 -->
+            <tr class="counselor">
+                <td><div class="speaker ben">Counselor (Ben Forehand):</div>
+                Well, Shanna, I know what I can do. I can tell you thank you for sharing all that. That's very vulnerable of you. And I'm super, well, we're up to that 30 seconds, but let me finish. I think I'm super proud of you for sharing that because it takes a lot to admit that you feel upset.</td>
+                <td class="col2"><span class="skill">Validation and Affirmation. Boundary Setting and Reinforcement</span></td>
+                <td class="col3"><span class="thoughts">I wanted to validate Shanna while also sticking to the boundaries of the session.</span></td>
+            </tr>
+
+            <!-- Shanna -->
+            <tr class="client">
+                <td><div class="speaker shanna">Shanna Honaker:</div>Well, but I'm not done. I'm not done. Okay.</td>
+                <td class="col2">—</td><td class="col3">—</td>
+            </tr>
+
+            <!-- Turn 7 -->
+            <tr class="counselor">
+                <td><div class="speaker ben">Counselor (Ben Forehand):</div>
+                Who wants to go next?</td>
+                <td class="col2"><span class="skill">Facilitating Group Process &amp; Redirecting</span></td>
+                <td class="col3"><span class="thoughts">Shanna is a textbook dominator so I had to keep the conversation moving away from her so she didn't take up all the time in the session.</span></td>
+            </tr>
+
+            <!-- Shanna / Ashley -->
+            <tr class="client">
+                <td><div class="speaker shanna">Shanna Honaker:</div>Can I talk more?</td>
+                <td class="col2">—</td><td class="col3">—</td>
+            </tr>
+            <tr class="client">
+                <td><div class="speaker ashley">Ashley Howell:</div>I'll go next.</td>
+                <td class="col2">—</td><td class="col3">—</td>
+            </tr>
+
+            <!-- Turn 8 -->
+            <tr class="counselor">
+                <td><div class="speaker ben">Counselor (Ben Forehand):</div>
+                Unfortunately, Shanna, I want to give everybody else a turn, but I am looking forward to coming back to you. Go ahead, Ashley.</td>
+                <td class="col2"><span class="skill">Acknowledge and Redirect</span></td>
+                <td class="col3"><span class="thoughts">At this point, Shanna was doing what Shanna does. She wasn't picking up on her behavior and its consequences and effects.</span></td>
+            </tr>
+
+            <!-- Ashley -->
+            <tr class="client">
+                <td><div class="speaker ashley">Ashley Howell:</div>Um, I feel… overwhelmed. You know, I feel like I want to have more time with my dad and I don't want Shanna to feel like we're saying it's all her fault, but she keeps taking it that way no matter how many times we say it's not her fault. So it's exhausting to try to prove to her something she doesn't want to believe.</td>
+                <td class="col2">—</td><td class="col3">—</td>
+            </tr>
+
+            <!-- Turn 9 -->
+            <tr class="counselor">
+                <td><div class="speaker ben">Counselor (Ben Forehand):</div>
+                Yeah. Yeah.</td>
+                <td class="col2"><span class="skill">Active Listening / Minimal Encourager</span></td>
+                <td class="col3"><span class="blank">—</span></td>
+            </tr>
+
+            <!-- Ashley / Shanna -->
+            <tr class="client">
+                <td><div class="speaker ashley">Ashley Howell:</div>But I did like that last week she was able to be quiet long enough for us to talk and kind of share some emotions.</td>
+                <td class="col2">—</td><td class="col3">—</td>
+            </tr>
+            <tr class="client">
+                <td><div class="speaker shanna">Shanna Honaker:</div>But I do want to delete.</td>
+                <td class="col2">—</td><td class="col3">—</td>
+            </tr>
+
+            <!-- Turn 10 -->
+            <tr class="counselor">
+                <td><div class="speaker ben">Counselor (Ben Forehand):</div>
+                Yeah. What I hear you saying is that you have some feelings, but it's not getting across. You have some ways that you view the situation and it's like there's like some fuzz in the signal. It's not communicating well. Thank you for sharing that. Lauren.</td>
+                <td class="col2"><span class="skill">Reflection &amp; Paraphrasing; Redirecting</span></td>
+                <td class="col3"><span class="thoughts">I wanted to join with the group and demonstrate my awareness of their feelings to build rapport.</span></td>
+            </tr>
+
+            <!-- Ashley / Lauren / Shanna -->
+            <tr class="client">
+                <td><div class="speaker ashley">Ashley Howell:</div>Yeah.</td>
+                <td class="col2">—</td><td class="col3">—</td>
+            </tr>
+            <tr class="client">
+                <td><div class="speaker lauren">Lauren Kaylor:</div>Yeah, everything's just been kind of awkward. It just feels like a lot of tension, even though nobody really says there's tension, but there is. You could feel it just in the air. I'm a little less anxious than I was last week. I guess, you know, I had exams and that was kind of playing into the anxiety I felt, but there's still a lot of anxiety that I'm feeling about just the way that everybody is relating to each other, I guess.</td>
+                <td class="col2">—</td><td class="col3">—</td>
+            </tr>
+            <tr class="client">
+                <td><div class="speaker shanna">Shanna Honaker:</div>Lauren, you can talk to me. You can talk to me.</td>
+                <td class="col2">—</td><td class="col3">—</td>
+            </tr>
+
+            <!-- Turn 11 -->
+            <tr class="counselor">
+                <td><div class="speaker ben">Counselor (Ben Forehand):</div>
+                Yeah. Yeah, yeah, I haven't. For sure. Yeah, having anxiety, especially when we come to our homes, which is like a safe place, right? You want that atmosphere to feel peaceful. Let's go, Josh. How are we doing, man? Good to see you here this week.</td>
+                <td class="col2"><span class="skill">Normalizing &amp; Validation. Redirecting</span></td>
+                <td class="col3"><span class="thoughts">I wanted to restate what I was hearing into a "goal" that the family could latch on to. I was sensing there wasn't an alignment for 'why' the family was in session. I figured if we could all unite toward a common goal, peace, we might be able to use it as an anchor for intervention.</span></td>
+            </tr>
+
+            <!-- Joshua -->
+            <tr class="client">
+                <td><div class="speaker joshua">Joshua Isaac:</div>The best way to put it is… a background character.</td>
+                <td class="col2">—</td><td class="col3">—</td>
+            </tr>
+
+            <!-- Turn 12 -->
+            <tr class="counselor">
+                <td><div class="speaker ben">Counselor (Ben Forehand):</div>
+                You feel like a background character?</td>
+                <td class="col2"><span class="skill">Reflection of Feeling / Paraphrasing</span></td>
+                <td class="col3"><span class="blank">—</span></td>
+            </tr>
+
+            <!-- Joshua -->
+            <tr class="client">
+                <td><div class="speaker joshua">Joshua Isaac:</div>Yeah, that's the best way to put that.</td>
+                <td class="col2">—</td><td class="col3">—</td>
+            </tr>
+
+            <!-- Turn 13 -->
+            <tr class="counselor">
+                <td><div class="speaker ben">Counselor (Ben Forehand):</div>
+                Yeah, tell me about that.</td>
+                <td class="col2"><span class="skill">Open-Ended Question &amp; Exploration</span></td>
+                <td class="col3"><span class="thoughts">I felt like Joshua was offering some really great insight and I wanted him to keep exploring it.</span></td>
+            </tr>
+
+            <!-- Joshua -->
+            <tr class="client">
+                <td><div class="speaker joshua">Joshua Isaac:</div>So, the normal 9 to 5, come home, but it still feels like regardless who's there. Nobody wants to say nothing to nobody. It's like a bunch of noise, like tunnel vision, and it's just like going through motions, like fast forward pretty much.</td>
+                <td class="col2">—</td><td class="col3">—</td>
+            </tr>
+
+            <!-- Turn 14 -->
+            <tr class="counselor">
+                <td><div class="speaker ben">Counselor (Ben Forehand):</div>
+                Mm. Mm.</td>
+                <td class="col2"><span class="blank">—</span></td>
+                <td class="col3"><span class="blank">—</span></td>
+            </tr>
+
+            <!-- Turn 15 -->
+            <tr class="counselor">
+                <td><div class="speaker ben">Counselor (Ben Forehand):</div>
+                Yeah, yeah. Wow. That's really insightful, man. Melanie, I know you're under the weather, but maybe you can give me 3 words or one sentence.</td>
+                <td class="col2"><span class="blank">—</span></td>
+                <td class="col3"><span class="blank">—</span></td>
+            </tr>
+
+            <!-- Melanie -->
+            <tr class="client">
+                <td><div class="speaker melanie">Melanie Hirsch:</div>No, it's okay. Sorry, guys. I hope everyone can hear me okay. I don't know if I'll get this out. There's something that I've sort of been wanting, it's been heavy on me since we started here that I've been wanting to say, and that is, I'm not judging Shanna or my dad. But when they met each other, they were both married. I feel like there's a double standard going on about my identity, who I am as a person, the choices that my sister has made not being good enough when the way that they got together wasn't perfect either. So after last week, I just kind of feel like I'm at the end of the road. I'm sort of at a stalemate here. I mean, I ended the last session saying we're all started today. If I cannot be accepted as a person, I don't know what more I can say.</td>
+                <td class="col2">—</td><td class="col3">—</td>
+            </tr>
+
+            <!-- Turn 16 -->
+            <tr class="counselor">
+                <td><div class="speaker ben">Counselor (Ben Forehand):</div>
+                Yeah, and you use the term at the end of the road, and I know that can feel pretty heavy. It can feel a little hopeless and dark. But from my perspective, looking at you guys, you're all in a room, like you're still talking. And you're not, it's not too far gone. The fact that you're here is massively huge. And so I affirm that that is a tough feeling, but I also want to bring hope that we're on the right path.</td>
+                <td class="col2"><span class="skill">Reframing Toward Positivity</span></td>
+                <td class="col3"><span class="thoughts">The whole family tends to gravitate towards criticism and cynicism. I felt the need to shift the focus towards hope and where we were heading instead of only where we were coming from.</span></td>
+            </tr>
+
+            <!-- Turn 17 -->
+            <tr class="counselor">
+                <td><div class="speaker ben">Counselor (Ben Forehand):</div>
+                Now, I appreciate you all sharing and there's something that I kind of sense from everybody's statements that there's a bit of like an isolation, you know, from Lauren's anxiety, to the miscommunication that could feel isolating. Josh, you said everybody was like had tunnel vision. I would love to hear more, Josh, because you had a really insightful statement there. I'd love to hear more about that tunnel vision that you feel is in the home when you come home.</td>
+                <td class="col2"><span class="skill">Summarizing &amp; Identifying Themes</span></td>
+                <td class="col3"><span class="thoughts">At this point I was ready to comment on the first theme I was seeing. There's an overall coldness and isolation. People don't feel safe to express themselves and be accepted for who they are. I also wanted to come back to Josh because it seemed very insightful when he was speaking.</span></td>
+            </tr>
+
+            <!-- Shanna -->
+            <tr class="client">
+                <td><div class="speaker shanna">Shanna Honaker:</div>I, I would like to talk first. I…</td>
+                <td class="col2">—</td><td class="col3">—</td>
+            </tr>
+
+            <!-- Turn 18 -->
+            <tr class="counselor">
+                <td><div class="speaker ben">Counselor (Ben Forehand):</div>
+                Well, Shanna, I definitely, I definitely am excited to get back to you. I do want to hear what Josh has to say.</td>
+                <td class="col2"><span class="skill">Group Management and Redirection</span></td>
+                <td class="col3"><span class="thoughts">I didn't want to lose the insight Josh had.</span></td>
+            </tr>
+
+            <!-- Shanna -->
+            <tr class="client">
+                <td><div class="speaker shanna">Shanna Honaker:</div>Well, then let me talk first.</td>
+                <td class="col2">—</td><td class="col3">—</td>
+            </tr>
+
+            <!-- Turn 19 -->
+            <tr class="counselor">
+                <td><div class="speaker ben">Counselor (Ben Forehand):</div>
+                Well, Shanna, the interesting thing is that this is like a mini home environment. And so what I'm trying to demonstrate is respect. Like when I talk to Josh, he respects when I ask for him to, you know, obey the time limit or we're all going to take our turns. And so I actually want to foster that respect in this room because if we can't do it in this room, it's really hard to do it at home. So let's practice that. Josh, I'd love to hear more about that.</td>
+                <td class="col2"><span class="skill">Using the Session as a Microcosm. Boundary Setting.</span></td>
+                <td class="col3"><span class="thoughts">I wanted to show the group that the counseling office is a microcosm of the family unit and how it works. By me demonstrating boundaries I was showing the group that they too can demonstrate boundaries within conversation and relationships.</span></td>
+            </tr>
+
+            <!-- Joshua -->
+            <tr class="client">
+                <td><div class="speaker joshua">Joshua Isaac:</div>Pretty much just solid. When I come to the door, that's what it is.</td>
+                <td class="col2">—</td><td class="col3">—</td>
+            </tr>
+
+            <!-- Turn 20 -->
+            <tr class="counselor">
+                <td><div class="speaker ben">Counselor (Ben Forehand):</div>
+                It's just silent.</td>
+                <td class="col2"><span class="skill">Reflection</span></td>
+                <td class="col3"><span class="thoughts">I was pretty frustrated at this point because due to Shanna's interruptions I felt like Josh went back into his shell and lost the inner examination he was journeying into.</span></td>
+            </tr>
+
+            <!-- Joshua / Shanna / Joshua -->
+            <tr class="client">
+                <td><div class="speaker joshua">Joshua Isaac:</div>You got, it's silent and—</td>
+                <td class="col2">—</td><td class="col3">—</td>
+            </tr>
+            <tr class="client">
+                <td><div class="speaker shanna">Shanna Honaker:</div>It's silent because you make it that way, Josh.</td>
+                <td class="col2">—</td><td class="col3">—</td>
+            </tr>
+            <tr class="client">
+                <td><div class="speaker joshua">Joshua Isaac:</div>Well, I'm trying to say it without hurting your feelings, honey. But as soon as I hit the door, I hear 15 things that everybody's done wrong. Like, can I breathe for two seconds, please?</td>
+                <td class="col2">—</td><td class="col3">—</td>
+            </tr>
+
+            <!-- Turn 21 -->
+            <tr class="counselor">
+                <td><div class="speaker ben">Counselor (Ben Forehand):</div>
+                Thank you. How does it? How does it?</td>
+                <td class="col2"><span class="blank">—</span></td>
+                <td class="col3"><span class="blank">—</span></td>
+            </tr>
+
+            <!-- Shanna / Joshua -->
+            <tr class="client">
+                <td><div class="speaker shanna">Shanna Honaker:</div>I am sorry that you don't want to know what has gone on all day. Why is that? I thought we were in this together and now you're saying you want to come home and you don't want to have anything to do with me?</td>
+                <td class="col2">—</td><td class="col3">—</td>
+            </tr>
+            <tr class="client">
+                <td><div class="speaker joshua">Joshua Isaac:</div>No, I want to be able to take my shoes off before I hear that. I don't hear nothing about Warren, which is usually a good thing because she does run away. But either Ashley has been over there too much. The grandkids, you don't need to see enough or you do see too much. Or Melanie is, to be honest, honey, I've never heard you say one good thing about the girl. And it's like, I get it. Like, it's a different surrounding. We ain't been doing this together forever. But I don't know how to put into words like I want it out to work and it ain't working.</td>
+                <td class="col2">—</td><td class="col3">—</td>
+            </tr>
+
+            <!-- Turn 22 -->
+            <tr class="counselor">
+                <td><div class="speaker ben">Counselor (Ben Forehand):</div>
+                So I would love to hear Ashley, what's it like to hear Josh say that? That when he gets home, he feels just like an overwhelming, a coldness maybe leading to him kind of shutting down. What's it like to hear him say that?</td>
+                <td class="col2"><span class="skill">Circular Questioning</span></td>
+                <td class="col3"><span class="thoughts">I felt Josh shift from introspection to defense and I wanted to foster conversation in the silent members of the family through circular questioning.</span></td>
+            </tr>
+
+            <!-- Shanna / Ashley / Shanna / Ashley -->
+            <tr class="client">
+                <td><div class="speaker shanna">Shanna Honaker:</div>Ohh.</td>
+                <td class="col2">—</td><td class="col3">—</td>
+            </tr>
+            <tr class="client">
+                <td><div class="speaker ashley">Ashley Howell:</div>I mean, it's…</td>
+                <td class="col2">—</td><td class="col3">—</td>
+            </tr>
+            <tr class="client">
+                <td><div class="speaker shanna">Shanna Honaker:</div>Are you wanting a divorce, Josh?</td>
+                <td class="col2">—</td><td class="col3">—</td>
+            </tr>
+            <tr class="client">
+                <td><div class="speaker ashley">Ashley Howell:</div>It's tough to hear him having struggles.</td>
+                <td class="col2">—</td><td class="col3">—</td>
+            </tr>
+
+            <!-- Turn 23 -->
+            <tr class="counselor">
+                <td><div class="speaker ben">Counselor (Ben Forehand):</div>
+                Hey, Shanna, let's not, let's stay in the moment, Shanna. That's jumping ahead. I promise you, we don't need to, we don't even need to go there yet. We are so far from that, Shanna. Ashley, same question.</td>
+                <td class="col2"><span class="skill">Grounding. Redirecting and De-escalation</span></td>
+                <td class="col3"><span class="thoughts">Shanna jumped into what I can only imagine is a response for attention and support. She continually wants to feel wanted and needed. This could be a way to garner attention and get people to say that she is wanted.</span></td>
+            </tr>
+
+            <!-- Shanna / Ashley -->
+            <tr class="client">
+                <td><div class="speaker shanna">Shanna Honaker:</div>But…</td>
+                <td class="col2">—</td><td class="col3">—</td>
+            </tr>
+            <tr class="client">
+                <td><div class="speaker ashley">Ashley Howell:</div>It's tough to know that like he's always in the middle and, you know, because, you know, they got together and my mom, you know, was with him when they got together, you know, we've lost the contact with our mom. We don't talk to our mom and we have talked to Shanna the whole time. But, you know, now if we're not being accepted, you know, it's driving a wedge from our dad, which is tough for him because he's caught in the middle of trying to keep everybody happy and it's hard. And the more we try to say something about it, the more, you know, Shanna is feeling attacked. And that's where we just, where do we go from there? Because if you're not going to listen, so what we have to say is we're at the end of the road.</td>
+                <td class="col2">—</td><td class="col3">—</td>
+            </tr>
+
+            <!-- Turn 24 -->
+            <tr class="counselor">
+                <td><div class="speaker ben">Counselor (Ben Forehand):</div>
+                Mhm.</td>
+                <td class="col2"><span class="blank">—</span></td>
+                <td class="col3"><span class="blank">—</span></td>
+            </tr>
+
+            <!-- Shanna / Ashley -->
+            <tr class="client">
+                <td><div class="speaker shanna">Shanna Honaker:</div>But Ashley, I don't think it's the wedge. I don't think there's a wedge. I think you're putting the wedge there and I need you to take the wedge away.</td>
+                <td class="col2">—</td><td class="col3">—</td>
+            </tr>
+            <tr class="client">
+                <td><div class="speaker ashley">Ashley Howell:</div>Well, we try to take the wedge away, but you don't listen to our side. You hear what we say, and then it all gets blocked, and what we feel isn't ever understood by you. So it's just no matter what we say is like it doesn't actually happen. It's just us making up some story.</td>
+                <td class="col2">—</td><td class="col3">—</td>
+            </tr>
+
+            <!-- Turn 25 -->
+            <tr class="counselor">
+                <td><div class="speaker ben">Counselor (Ben Forehand):</div>
+                Right. Okay, so Lauren, Ashley said she feels like the communication between her and Shanna is blocked. Do you feel the same kind of block?</td>
+                <td class="col2"><span class="skill">Circular Questioning</span></td>
+                <td class="col3"><span class="thoughts">I was hoping to identify another theme here.</span></td>
+            </tr>
+
+            <!-- Lauren -->
+            <tr class="client">
+                <td><div class="speaker lauren">Lauren Kaylor:</div>Yeah, but I, I just, I don't express myself as strongly as Ashley, just because I feel like I can't.</td>
+                <td class="col2">—</td><td class="col3">—</td>
+            </tr>
+
+            <!-- Turn 26 -->
+            <tr class="counselor">
+                <td><div class="speaker ben">Counselor (Ben Forehand):</div>
+                Mhm.</td>
+                <td class="col2"><span class="skill">Minimal Encouragement</span></td>
+                <td class="col3"><span class="thoughts">The lack of safety in the home is a common recurring theme. People are afraid to be authentic for fear of rejection and attack.</span></td>
+            </tr>
+
+            <!-- Ashley -->
+            <tr class="client">
+                <td><div class="speaker ashley">Ashley Howell:</div>Well, it's hard for you, it's your mom.</td>
+                <td class="col2">—</td><td class="col3">—</td>
+            </tr>
+
+            <!-- Turn 27 -->
+            <tr class="counselor">
+                <td><div class="speaker ben">Counselor (Ben Forehand):</div>
+                Yeah.</td>
+                <td class="col2"><span class="blank">—</span></td>
+                <td class="col3"><span class="blank">—</span></td>
+            </tr>
+
+            <!-- Shanna -->
+            <tr class="client">
+                <td><div class="speaker shanna">Shanna Honaker:</div>So, so you're all, you're all ganging up on me again, and I don't, why is nobody listening to me?</td>
+                <td class="col2">—</td><td class="col3">—</td>
+            </tr>
+
+            <!-- Turn 28 -->
+            <tr class="counselor">
+                <td><div class="speaker ben">Counselor (Ben Forehand):</div>
+                So, I… Well, well, hold on, let me… Well, I think we hear you loud and clear, Shanna. And I would love to hear, Melanie, when you hear that word block, do you sense there's a block in communication?</td>
+                <td class="col2"><span class="skill">Validation and Redirecting</span></td>
+                <td class="col3"><span class="thoughts">Again I was strongly demonstrating boundaries as a therapist to show that I could have respect for somebody but also hold a firm line. The family does not know how to set clear boundaries for communication so they just isolate and shut down.</span></td>
+            </tr>
+
+            <!-- Melanie / Shanna -->
+            <tr class="client">
+                <td><div class="speaker melanie">Melanie Hirsch:</div>Yeah, I think that, um… Something that my dad has…</td>
+                <td class="col2">—</td><td class="col3">—</td>
+            </tr>
+            <tr class="client">
+                <td><div class="speaker shanna">Shanna Honaker:</div>Well, of course she agrees.</td>
+                <td class="col2">—</td><td class="col3">—</td>
+            </tr>
+
+            <!-- Turn 29 -->
+            <tr class="counselor">
+                <td><div class="speaker ben">Counselor (Ben Forehand):</div>
+                Hey, Shanna, remember, we're going to practice respect, right? If we can give respect, then we can get respect. And it sounds like you want respect, you want to be included. So I want to challenge you. This is an opportunity to foster that, but we got to give it, right? We got to give respect in order to get it. So let's hear from Melanie and it's all going to result, right, in fostering respect for each other. Melanie, let's continue.</td>
+                <td class="col2"><span class="skill">Boundary Setting and Therapist Challenge</span></td>
+                <td class="col3"><span class="thoughts">I wanted to highlight to the family a method that would help create more safety within the family's communication habits. I view this as the main issue: people are not able to safely communicate with each other and therefore there is much defensiveness and attacking and trying to get needs met.</span></td>
+            </tr>
+
+            <!-- Melanie -->
+            <tr class="client">
+                <td><div class="speaker melanie">Melanie Hirsch:</div>I think one thing that I've learned from my mom and, you know, she's exhibiting it quite well at the moment, unfortunately, in some ways, is like having personal boundaries. I feel like, I know, and Ashley, I feel like it's harder for you because you rely on them for babysitting, but I feel like we both were raised to know like how we want to be treated, how we're willing to be treated, especially Ben, like you said, like we're supposed to feel safe in our home. And if we can't feel safe in our home, if we feel unsafe emotionally, like then of course we're going to protect ourselves. Of course we're going to like, put up some walls.</td>
+                <td class="col2">—</td><td class="col3">—</td>
+            </tr>
+
+            <!-- Turn 30 -->
+            <tr class="counselor">
+                <td><div class="speaker ben">Counselor (Ben Forehand):</div>
+                Yeah.</td>
+                <td class="col2"><span class="blank">—</span></td>
+                <td class="col3"><span class="blank">—</span></td>
+            </tr>
+
+            <!-- Shanna -->
+            <tr class="client">
+                <td><div class="speaker shanna">Shanna Honaker:</div>So you're telling me that you don't feel safe here, that I have made such an unsafe home?</td>
+                <td class="col2">—</td><td class="col3">—</td>
+            </tr>
+
+            <!-- Turn 31 -->
+            <tr class="counselor">
+                <td><div class="speaker ben">Counselor (Ben Forehand):</div>
+                Well, hold on, let's end it at that. I think that's a great question. I would love for people to answer that question, but leave it at that. Do you not feel safe at home? That's a great question, Shanna. Josh, do you feel safe at home?</td>
+                <td class="col2"><span class="skill">Circular Questioning</span></td>
+                <td class="col3"><span class="thoughts">Shanna was trying to dominate the conversation so I was using circular questioning to highlight some of the non-speaking family members.</span></td>
+            </tr>
+
+            <!-- Joshua -->
+            <tr class="client">
+                <td><div class="speaker joshua">Joshua Isaac:</div>Yeah.</td>
+                <td class="col2">—</td><td class="col3">—</td>
+            </tr>
+
+            <!-- Turn 32 -->
+            <tr class="counselor">
+                <td><div class="speaker ben">Counselor (Ben Forehand):</div>
+                That's great. Ashley, do you feel safe at home?</td>
+                <td class="col2"><span class="blank">—</span></td>
+                <td class="col3"><span class="blank">—</span></td>
+            </tr>
+
+            <!-- Ashley -->
+            <tr class="client">
+                <td><div class="speaker ashley">Ashley Howell:</div>I mean, for me, I don't live there, so I'm fine at home, but coming over and those in those conversations with them, it can be emotionally unsafe. You know, physically, I'm, you know, fine there, but I feel like I have to watch what I say because I don't want to—</td>
+                <td class="col2">—</td><td class="col3">—</td>
+            </tr>
+
+            <!-- Turn 33 -->
+            <tr class="counselor">
+                <td><div class="speaker ben">Counselor (Ben Forehand):</div>
+                Yeah, in that home, yeah, when you come over. Yeah. Sure. Yeah.</td>
+                <td class="col2"><span class="blank">—</span></td>
+                <td class="col3"><span class="blank">—</span></td>
+            </tr>
+
+            <!-- Ashley -->
+            <tr class="client">
+                <td><div class="speaker ashley">Ashley Howell:</div>I don't care about her. And that's not true. I do care. Like, that's why we're here.</td>
+                <td class="col2">—</td><td class="col3">—</td>
+            </tr>
+
+            <!-- Turn 34 -->
+            <tr class="counselor">
+                <td><div class="speaker ben">Counselor (Ben Forehand):</div>
+                Yeah. Yeah, Melanie, do you feel safe at home?</td>
+                <td class="col2"><span class="skill">Circular Questioning</span></td>
+                <td class="col3"><span class="blank">—</span></td>
+            </tr>
+
+            <!-- Melanie -->
+            <tr class="client">
+                <td><div class="speaker melanie">Melanie Hirsch:</div>No, emotionally, no. With my dad, always. Dad, you have always made me feel safe, but I don't feel safe in that house.</td>
+                <td class="col2">—</td><td class="col3">—</td>
+            </tr>
+
+            <!-- Turn 35 -->
+            <tr class="counselor">
+                <td><div class="speaker ben">Counselor (Ben Forehand):</div>
+                Yeah. Okay, Lauren, do you feel safe? But actually, Shanna, I haven't heard any, I haven't heard anybody blame you. I've just asked simply how they feel. So, Lauren, how do you feel at home? Do you feel safe?</td>
+                <td class="col2"><span class="skill">Circular Questioning — Therapist Challenging</span></td>
+                <td class="col3"><span class="thoughts">I wanted to highlight to Shanna that I actually didn't hear anybody attacking her as she feels they are doing. Shanna took everything personally and this was contributing toward a hostile communication environment.</span></td>
+            </tr>
+
+            <!-- Shanna / Lauren -->
+            <tr class="client">
+                <td><div class="speaker shanna">Shanna Honaker:</div>So I'm at fault, Melanie. That's what you're saying is that it's all my fault?</td>
+                <td class="col2">—</td><td class="col3">—</td>
+            </tr>
+            <tr class="client">
+                <td><div class="speaker lauren">Lauren Kaylor:</div>I feel physically safe, but I feel like I can't be authentic, like I can't be honest. I feel like I can't take up any space and I kind of just feel like everybody else's emotions are given to me just all the time. Like I just absorb all of it. And I don't have any.</td>
+                <td class="col2">—</td><td class="col3">—</td>
+            </tr>
+
+            <!-- Turn 36 -->
+            <tr class="counselor">
+                <td><div class="speaker ben">Counselor (Ben Forehand):</div>
+                Yeah. Yeah.</td>
+                <td class="col2"><span class="blank">—</span></td>
+                <td class="col3"><span class="blank">—</span></td>
+            </tr>
+
+            <!-- Shanna -->
+            <tr class="client">
+                <td><div class="speaker shanna">Shanna Honaker:</div>Why don't you talk to me, Lauren? Why don't you talk to me?</td>
+                <td class="col2">—</td><td class="col3">—</td>
+            </tr>
+
+            <!-- Turn 37 -->
+            <tr class="counselor">
+                <td><div class="speaker ben">Counselor (Ben Forehand):</div>
+                Well…</td>
+                <td class="col2"><span class="blank">—</span></td>
+                <td class="col3"><span class="blank">—</span></td>
+            </tr>
+
+            <!-- Lauren -->
+            <tr class="client">
+                <td><div class="speaker lauren">Lauren Kaylor:</div>Because I feel like… I feel like you don't really listen. Like the same thing that Ashley said and Melanie said, I feel like I say what's bothering me and I open up and I'm met with like just a reflection of your own opinions and beliefs. You don't actually listen.</td>
+                <td class="col2">—</td><td class="col3">—</td>
+            </tr>
+
+            <!-- Turn 38 -->
+            <tr class="counselor">
+                <td><div class="speaker ben">Counselor (Ben Forehand):</div>
+                Yeah.</td>
+                <td class="col2"><span class="blank">—</span></td>
+                <td class="col3"><span class="blank">—</span></td>
+            </tr>
+
+            <!-- Shanna -->
+            <tr class="client">
+                <td><div class="speaker shanna">Shanna Honaker:</div>So, so my own flesh and blood is telling me that the you don't, you don't.</td>
+                <td class="col2">—</td><td class="col3">—</td>
+            </tr>
+
+            <!-- Turn 39 -->
+            <tr class="counselor">
+                <td><div class="speaker ben">Counselor (Ben Forehand):</div>
+                So we have 30 seconds left. We have 30 seconds left.</td>
+                <td class="col2"><span class="skill">Time Management</span></td>
+                <td class="col3"><span class="thoughts">I had some final statements I wanted to make so I needed to manage the time in order to get them out.</span></td>
+            </tr>
+
+            <!-- Shanna -->
+            <tr class="client">
+                <td><div class="speaker shanna">Shanna Honaker:</div>I don't.</td>
+                <td class="col2">—</td><td class="col3">—</td>
+            </tr>
+
+            <!-- Turn 40 -->
+            <tr class="counselor">
+                <td><div class="speaker ben">Counselor (Ben Forehand):</div>
+                We have 30 seconds left, Shanna. So here's what I'm going to do. Because we have 21 seconds left. I want to, I think my biggest takeaway is I want to offer you guys a tool. It's a tool that you can use at home and it's going to help you tremendously. Something that I saw during this session is we attach feelings with judgments. So in trying to explain how you feel, often, and I've heard it from all of you, is we're taking shots at other people unintentionally. You're meaning well, you're trying to get your point across, but that can induce some defensiveness. So the tool I want to talk about is I feel statements. And here's how I feel statements don't work. You can't say like, I feel Josh is being an idiot right now. That's not an I feel statement, right? That's funny. And you'll get some laughs, but in the home, that's just going to result in more defensiveness. So I want us to work on this week. When you're communicating, you say, I feel angry, I feel unheard, I feel upset. And then stop right there. Don't attach it to some judgment about someone else.</td>
+                <td class="col2"><span class="skill">Psychoeducation; Teaching Communication Skills (I-Statements)</span></td>
+                <td class="col3"><span class="thoughts">I strongly believe in giving people tools they can practically use outside of this session. I saw much damage being done to relationships as a result of their communication styles. I believe they all want peace in the home but their inability to foster healthy communication with each other was undermining their goal. The I feel statements are a very helpful way to disarm people when sharing what they are wanting and needing without slipping into attacking and defending.</span></td>
+            </tr>
+
+            <!-- Joshua -->
+            <tr class="client">
+                <td><div class="speaker joshua">Joshua Isaac:</div>Yeah.</td>
+                <td class="col2">—</td><td class="col3">—</td>
+            </tr>
+
+            <!-- Turn 41 -->
+            <tr class="counselor">
+                <td><div class="speaker ben">Counselor (Ben Forehand):</div>
+                I'm going to send you guys, I'm going to email you guys a little pamphlet with some examples on your way home at the office today. I'll get your emails and we'll send it out. But it's a super helpful tool that can help you have these conversations in like a safe environment. So can I get you guys to commit to trying that this week using some I feel statements?</td>
+                <td class="col2"><span class="blank">—</span></td>
+                <td class="col3"><span class="blank">—</span></td>
+            </tr>
+
+            <!-- Ashley -->
+            <tr class="client">
+                <td><div class="speaker ashley">Ashley Howell:</div>Yes.</td>
+                <td class="col2">—</td><td class="col3">—</td>
+            </tr>
+
+            <!-- Turn 42 -->
+            <tr class="counselor">
+                <td><div class="speaker ben">Counselor (Ben Forehand):</div>
+                Hey, I've seen a lot of growth. I've seen a lot of growth. You guys are talking more than you were the first session. You guys are actually sharing some pretty heavy stuff. So I'm proud of you guys, and I'm thankful for you, and I can't wait to see you guys next week.</td>
+                <td class="col2"><span class="blank">—</span></td>
+                <td class="col3"><span class="blank">—</span></td>
+            </tr>
+
+        </tbody>
+    </table>
+
+</div>
+</body>
+</html>

@@ -430,7 +430,57 @@
             gap: 8px;
             align-items: center;
         }
-        .cat-select-row select { flex: 1; }
+        .custom-cat-select { flex: 1; position: relative; }
+        .custom-cat-trigger {
+            display: flex; align-items: center; gap: 8px;
+            padding: 10px 12px;
+            border: 1.5px solid #e0ddd5;
+            border-radius: 8px;
+            background: #fff;
+            cursor: pointer;
+            font-size: 14px; font-weight: 600; color: #1a1a1a;
+            user-select: none;
+            transition: border-color 0.15s;
+        }
+        .custom-cat-trigger:hover { border-color: #ccc; }
+        .custom-cat-select.open .custom-cat-trigger { border-color: #E84B2B; }
+        .custom-cat-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; display: none; }
+        .custom-cat-dot.visible { display: block; }
+        .custom-cat-label { flex: 1; }
+        .custom-cat-arrow { color: #bbb; font-size: 11px; margin-left: auto; }
+        .custom-cat-options {
+            display: none;
+            position: absolute; top: calc(100% + 4px); left: 0; right: 0;
+            background: #fff;
+            border: 1.5px solid #e0ddd5;
+            border-radius: 8px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+            z-index: 50;
+            overflow: hidden;
+            max-height: 220px; overflow-y: auto;
+        }
+        .custom-cat-select.open .custom-cat-options { display: block; }
+        .custom-cat-option {
+            display: flex; align-items: center; gap: 8px;
+            padding: 9px 12px;
+            cursor: pointer;
+            font-size: 13px; font-weight: 700; color: #333;
+            transition: background 0.1s;
+        }
+        .custom-cat-option:hover { background: #f5f4ee; }
+        .custom-cat-option.selected { background: #fde8e4; color: #E84B2B; }
+        .custom-cat-option .opt-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+        .custom-cat-option .opt-name { flex: 1; }
+        .btn-cat-delete {
+            width: 22px; height: 22px;
+            border: none; background: transparent;
+            border-radius: 5px; cursor: pointer;
+            font-size: 13px; color: #ccc;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+            transition: background 0.1s, color 0.1s;
+        }
+        .btn-cat-delete:hover { background: #fde8e4; color: #E84B2B; }
         .btn-add-cat-inline {
             width: 38px; height: 38px;
             border: 1.5px dashed #ddd;
@@ -839,9 +889,14 @@
         <div class="form-field">
             <label>Category</label>
             <div class="cat-select-row">
-                <select id="todo-cat-select">
-                    <option value="">— No category —</option>
-                </select>
+                <div class="custom-cat-select" id="custom-cat-select">
+                    <div class="custom-cat-trigger" onclick="toggleCatDropdown(event)">
+                        <span class="custom-cat-dot" id="custom-cat-dot"></span>
+                        <span class="custom-cat-label" id="custom-cat-label">— No category —</span>
+                        <span class="custom-cat-arrow">▾</span>
+                    </div>
+                    <div class="custom-cat-options" id="custom-cat-options"></div>
+                </div>
                 <button class="btn-add-cat-inline" type="button" onclick="toggleInlineCatForm()" title="Add new category">+</button>
             </div>
             <div class="inline-cat-form" id="inline-cat-form">
@@ -1024,16 +1079,71 @@ function renderSidebar() {
 }
 
 function renderCatSelect() {
-    const sel = document.getElementById('todo-cat-select');
-    const cur = sel.value;
-    sel.innerHTML = '<option value="">— No category —</option>';
+    const opts = document.getElementById('custom-cat-options');
+    opts.innerHTML = '';
+
+    // "No category" option
+    const none = document.createElement('div');
+    none.className = 'custom-cat-option' + (selectedCatId === '' ? ' selected' : '');
+    none.innerHTML = `<div class="opt-dot" style="background:transparent;border:1.5px solid #ddd"></div><span class="opt-name">— No category —</span>`;
+    none.onclick = (e) => { e.stopPropagation(); setCatSelection(''); closeCatDropdown(); };
+    opts.appendChild(none);
+
     categories.forEach(cat => {
-        const opt = document.createElement('option');
-        opt.value = cat.id;
-        opt.textContent = cat.name;
-        sel.appendChild(opt);
+        const el = document.createElement('div');
+        el.className = 'custom-cat-option' + (selectedCatId === cat.id ? ' selected' : '');
+        el.innerHTML = `
+            <div class="opt-dot" style="background:${cat.color}"></div>
+            <span class="opt-name">${escHtml(cat.name)}</span>
+            <button class="btn-cat-delete" title="Delete category" onclick="deleteCatFromDropdown(event,'${cat.id}')">🗑</button>
+        `;
+        el.onclick = (e) => { if (e.target.closest('.btn-cat-delete')) return; e.stopPropagation(); setCatSelection(cat.id); closeCatDropdown(); };
+        opts.appendChild(el);
     });
-    if (cur) sel.value = cur;
+
+    // update trigger display
+    const cat = categories.find(c => c.id === selectedCatId);
+    const dot = document.getElementById('custom-cat-dot');
+    const label = document.getElementById('custom-cat-label');
+    if (cat) {
+        dot.style.background = cat.color;
+        dot.classList.add('visible');
+        label.textContent = cat.name;
+    } else {
+        dot.classList.remove('visible');
+        label.textContent = '— No category —';
+    }
+}
+
+let selectedCatId = '';
+
+function setCatSelection(id) {
+    selectedCatId = id;
+    renderCatSelect();
+}
+
+function toggleCatDropdown(e) {
+    if (e) e.stopPropagation();
+    document.getElementById('custom-cat-select').classList.toggle('open');
+}
+
+function closeCatDropdown() {
+    document.getElementById('custom-cat-select').classList.remove('open');
+}
+
+function deleteCatFromDropdown(e, id) {
+    e.stopPropagation();
+    if (!confirm('Delete this category? Tasks in it will become uncategorized.')) return;
+    const idx = categories.findIndex(c => c.id === id);
+    if (idx === -1) return;
+    const removed = categories.splice(idx, 1)[0];
+    todos.forEach(t => { if (t.category_id === id) t.category_id = ''; });
+    if (activeFilter === id) activeFilter = 'all';
+    if (selectedCatId === id) selectedCatId = '';
+    renderAll();
+    api({action: 'delete_category', id}, (err) => {
+        if (err) { categories.splice(idx, 0, removed); renderAll(); toast('Failed to sync'); }
+    });
 }
 
 function renderList() {
@@ -1136,7 +1246,7 @@ function openAddModal() {
     document.getElementById('todo-modal-title').textContent = 'Add Task';
     document.getElementById('todo-save-btn').textContent = 'Add Task';
     document.getElementById('todo-title-input').value = '';
-    document.getElementById('todo-cat-select').value = activeFilter !== 'all' ? activeFilter : '';
+    setCatSelection(activeFilter !== 'all' ? activeFilter : '');
     document.getElementById('todo-notes-input').value = '';
     document.getElementById('inline-cat-form').classList.remove('open');
     document.getElementById('inline-cat-name').value = '';
@@ -1171,7 +1281,7 @@ function saveInlineCategory() {
         if (err || !data) { categories = categories.filter(c => c.id !== tempId); renderCatSelect(); toast('Failed to save category'); return; }
         const cat = categories.find(c => c.id === tempId);
         if (cat) { cat.id = data.id; }
-        document.getElementById('todo-cat-select').value = data.id;
+        setCatSelection(data.id);
         renderSidebar();
     });
 }
@@ -1183,7 +1293,7 @@ function openEditModal(id) {
     document.getElementById('todo-modal-title').textContent = 'Edit Task';
     document.getElementById('todo-save-btn').textContent = 'Save';
     document.getElementById('todo-title-input').value = todo.title;
-    document.getElementById('todo-cat-select').value = todo.category_id || '';
+    setCatSelection(todo.category_id || '');
     document.getElementById('todo-notes-input').value = todo.notes || '';
     openModal('todo-modal');
     setTimeout(() => document.getElementById('todo-title-input').focus(), 50);
@@ -1192,7 +1302,7 @@ function openEditModal(id) {
 function saveTodo() {
     const title = document.getElementById('todo-title-input').value.trim();
     if (!title) { toast('Please enter a task title'); return; }
-    const category_id = document.getElementById('todo-cat-select').value;
+    const category_id = selectedCatId;
     const notes = document.getElementById('todo-notes-input').value.trim();
     const btn = document.getElementById('todo-save-btn');
     btn.disabled = true;
@@ -1332,6 +1442,11 @@ function openModal(id) {
 function closeModal(id) {
     document.getElementById(id).classList.remove('open');
 }
+
+// Close cat dropdown on outside click
+document.addEventListener('click', (e) => {
+    if (!e.target.closest('#custom-cat-select')) closeCatDropdown();
+});
 
 // Close modals on overlay click
 document.querySelectorAll('.modal-overlay').forEach(overlay => {

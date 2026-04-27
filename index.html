@@ -3,444 +3,332 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRTV Haus - Inventory</title>
+    <title>CRTV Haus — Inventory</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #f8f7f5;
-            color: #333;
+            font-family: 'Nunito', sans-serif;
+            background: #EDEBE3;
+            color: #1a1a1a;
             min-height: 100vh;
-            padding: 40px 20px;
         }
 
-        .container {
-            max-width: 900px;
+        /* NAV */
+        nav {
+            background: #EDEBE3;
+            padding: 16px 48px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(0,0,0,0.08);
+            max-width: 960px;
             margin: 0 auto;
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
-            overflow: hidden;
         }
 
-        header {
-            background: linear-gradient(135deg, #8B4655 0%, #6B3645 100%);
-            color: #f5f1ed;
-            padding: 50px 40px;
-            text-align: center;
+        .nav-logo {
+            font-size: 20px;
+            font-weight: 800;
+            color: #E84B2B;
+            letter-spacing: 1px;
         }
 
-        .logo {
-            font-size: 44px;
-            font-weight: 300;
-            letter-spacing: 6px;
-            margin-bottom: 12px;
-            text-transform: uppercase;
+        .nav-tagline {
+            font-size: 12px;
+            font-weight: 600;
+            color: #999;
+            letter-spacing: 0.5px;
         }
 
-        .tagline {
-            font-size: 16px;
-            font-weight: 300;
-            letter-spacing: 2px;
-            opacity: 0.92;
+        /* PAGE HEADER */
+        .page-header {
+            padding: 32px 48px 20px;
+            max-width: 960px;
+            margin: 0 auto;
         }
 
+        .page-header h1 {
+            font-size: 32px;
+            font-weight: 800;
+            color: #E84B2B;
+            line-height: 1;
+        }
+
+        .page-header p {
+            font-size: 13px;
+            font-weight: 600;
+            color: #aaa;
+            margin-top: 4px;
+            letter-spacing: 0.3px;
+        }
+
+        /* GRID */
         .content {
-            padding: 50px 40px;
+            padding: 0 48px 32px;
+            max-width: 960px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
         }
 
         .section {
-            margin-bottom: 60px;
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
         }
 
-        .section:last-child {
-            margin-bottom: 0;
-        }
-
+        /* SECTION HEADER */
         .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            margin-bottom: 30px;
-            padding-bottom: 16px;
-            border-bottom: 2px solid #8B4655;
-        }
-
-        .section-title {
-            font-size: 22px;
-            font-weight: 600;
-            color: #8B4655;
-        }
-
-        .section-subtitle {
-            font-size: 13px;
-            color: #999;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .total-pieces {
-            font-size: 28px;
-            font-weight: 700;
-            color: #8B4655;
-            text-align: right;
-        }
-
-        .total-label {
-            font-size: 11px;
-            color: #999;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            display: block;
-            margin-bottom: 4px;
-        }
-
-        .size-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .size-item {
+            padding: 12px 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 14px 16px;
-            background: #f9f8f6;
-            border-left: 3px solid #8B4655;
-            border-radius: 4px;
-            font-size: 15px;
+            border-bottom: 1px solid #f0f0f0;
         }
 
-        .size-item:hover {
-            background: #f5f3f0;
+        .section-title {
+            font-size: 14px;
+            font-weight: 800;
+            color: #1a1a1a;
         }
 
-        .size-label {
-            font-weight: 500;
-            color: #333;
-            flex: 1;
-        }
-
-        .size-quantity {
-            background: #8B4655;
-            color: white;
-            padding: 6px 14px;
-            border-radius: 4px;
+        .section-subtitle {
+            font-size: 11px;
             font-weight: 600;
-            font-size: 16px;
-            min-width: 50px;
-            text-align: center;
+            color: #bbb;
+            margin-top: 1px;
         }
 
+        .total-badge {
+            background: #E84B2B;
+            color: #fff;
+            border-radius: 20px;
+            padding: 4px 12px;
+            text-align: center;
+            display: flex;
+            align-items: baseline;
+            gap: 5px;
+        }
+
+        .total-num {
+            font-size: 18px;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .total-lbl {
+            font-size: 10px;
+            font-weight: 600;
+            opacity: 0.75;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* SIZE CHIPS */
+        .size-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+            gap: 1px;
+            background: #f5f5f5;
+        }
+
+        .size-chip {
+            background: #fff;
+            padding: 10px 6px;
+            text-align: center;
+            transition: background 0.1s;
+        }
+
+        .size-chip:hover { background: #fdf9f8; }
+
+        .chip-label {
+            font-size: 10px;
+            font-weight: 700;
+            color: #bbb;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 3px;
+        }
+
+        .chip-qty {
+            font-size: 20px;
+            font-weight: 800;
+            color: #1a1a1a;
+            line-height: 1;
+        }
+
+        /* FOOTER */
         footer {
-            background: #f9f8f6;
-            padding: 40px;
-            text-align: center;
-            border-top: 1px solid #e8e6e2;
+            padding: 20px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid rgba(0,0,0,0.08);
         }
 
-        .contact-info {
-            font-size: 13px;
-            color: #666;
-            line-height: 1.8;
+        .footer-brand {
+            font-size: 14px;
+            font-weight: 800;
+            color: #E84B2B;
         }
 
-        .contact-info strong {
-            color: #8B4655;
-            display: block;
-            margin-top: 10px;
-            font-size: 15px;
+        .footer-contact {
+            font-size: 12px;
             font-weight: 600;
+            color: #999;
+            text-align: right;
+            line-height: 1.7;
         }
 
-        @media (max-width: 768px) {
-            header {
-                padding: 40px 20px;
-            }
-
-            .logo {
-                font-size: 36px;
-                letter-spacing: 4px;
-            }
-
-            .content {
-                padding: 30px 20px;
-            }
-
-            .section {
-                margin-bottom: 40px;
-            }
-
-            .section-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 12px;
-            }
-
-            .total-pieces {
-                text-align: left;
-            }
-
-            footer {
-                padding: 30px 20px;
-            }
-
-            .section-title {
-                font-size: 20px;
-            }
+        @media (max-width: 600px) {
+            nav, .page-header { padding: 16px; }
+            .content { grid-template-columns: 1fr; padding: 0 12px 24px; }
+            .section { grid-column: span 1; }
+            footer { flex-direction: column; gap: 10px; padding: 16px; text-align: center; }
+            .footer-contact { text-align: center; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div class="logo">CRTV</div>
-            <div class="tagline">CREATE for the good of others</div>
-        </header>
 
-        <div class="content">
-            <section class="section">
-                <div class="section-header">
-                    <div>
-                        <div class="section-title">Kids Camp Resound Shirt</div>
-                        <div class="section-subtitle">Seafoam Comfort Colors</div>
-                    </div>
-                    <div>
-                        <div class="total-label">Total Pieces</div>
-                        <div class="total-pieces">365</div>
-                    </div>
-                </div>
-                <div class="size-list">
-                    <div class="size-item">
-                        <span class="size-label">Youth Small</span>
-                        <span class="size-quantity">35</span>
-                    </div>
-                    <div class="size-item">
-                        <span class="size-label">Youth Medium</span>
-                        <span class="size-quantity">35</span>
-                    </div>
-                    <div class="size-item">
-                        <span class="size-label">Youth Large</span>
-                        <span class="size-quantity">35</span>
-                    </div>
-                    <div class="size-item">
-                        <span class="size-label">Small</span>
-                        <span class="size-quantity">65</span>
-                    </div>
-                    <div class="size-item">
-                        <span class="size-label">Medium</span>
-                        <span class="size-quantity">65</span>
-                    </div>
-                    <div class="size-item">
-                        <span class="size-label">Large</span>
-                        <span class="size-quantity">65</span>
-                    </div>
-                    <div class="size-item">
-                        <span class="size-label">XL</span>
-                        <span class="size-quantity">35</span>
-                    </div>
-                    <div class="size-item">
-                        <span class="size-label">2XL</span>
-                        <span class="size-quantity">15</span>
-                    </div>
-                    <div class="size-item">
-                        <span class="size-label">3XL</span>
-                        <span class="size-quantity">10</span>
-                    </div>
-                    <div class="size-item">
-                        <span class="size-label">4XL</span>
-                        <span class="size-quantity">5</span>
-                    </div>
-                </div>
-            </section>
+    <nav>
+        <div class="nav-logo">CRTV HAUS</div>
+        <div class="nav-tagline">Create for the good of others</div>
+    </nav>
 
-            <section class="section">
-                <div class="section-header">
-                    <div>
-                        <div class="section-title">Oversize Print Eagle Shirt</div>
-                        <div class="section-subtitle">Combined Orders</div>
-                    </div>
-                    <div>
-                        <div class="total-label">Total Pieces</div>
-                        <div class="total-pieces">350</div>
-                    </div>
-                </div>
-                <div class="size-list">
-                    <div class="size-item">
-                        <span class="size-label">Small</span>
-                        <span class="size-quantity">21</span>
-                    </div>
-                    <div class="size-item">
-                        <span class="size-label">Medium</span>
-                        <span class="size-quantity">70</span>
-                    </div>
-                    <div class="size-item">
-                        <span class="size-label">Large</span>
-                        <span class="size-quantity">105</span>
-                    </div>
-                    <div class="size-item">
-                        <span class="size-label">XL</span>
-                        <span class="size-quantity">87</span>
-                    </div>
-                    <div class="size-item">
-                        <span class="size-label">2XL</span>
-                        <span class="size-quantity">35</span>
-                    </div>
-                    <div class="size-item">
-                        <span class="size-label">3XL</span>
-                        <span class="size-quantity">13</span>
-                    </div>
-                    <div class="size-item">
-                        <span class="size-label">4XL</span>
-                        <span class="size-quantity">11</span>
-                    </div>
-                    <div class="size-item">
-                        <span class="size-label">5XL</span>
-                        <span class="size-quantity">8</span>
-                    </div>
-                </div>
-            </section>
-
-            <section class="section">
-                <div class="section-header">
-                    <div>
-                        <div class="section-title">Hoodie</div>
-                    </div>
-                    <div>
-                        <div class="total-label">Total Pieces</div>
-                        <div class="total-pieces">100</div>
-                    </div>
-                </div>
-                <div class="size-list">
-                    <div class="size-item">
-                        <span class="size-label">Small</span>
-                        <span class="size-quantity">6</span>
-                    </div>
-                    <div class="size-item">
-                        <span class="size-label">Medium</span>
-                        <span class="size-quantity">20</span>
-                    </div>
-                    <div class="size-item">
-                        <span class="size-label">Large</span>
-                        <span class="size-quantity">30</span>
-                    </div>
-                    <div class="size-item">
-                        <span class="size-label">XL</span>
-                        <span class="size-quantity">25</span>
-                    </div>
-                    <div class="size-item">
-                        <span class="size-label">2XL</span>
-                        <span class="size-quantity">10</span>
-                    </div>
-                    <div class="size-item">
-                        <span class="size-label">3XL</span>
-                        <span class="size-quantity">3</span>
-                    </div>
-                    <div class="size-item">
-                        <span class="size-label">4XL</span>
-                        <span class="size-quantity">4</span>
-                    </div>
-                    <div class="size-item">
-                        <span class="size-label">5XL</span>
-                        <span class="size-quantity">2</span>
-                    </div>
-                </div>
-            </section>
-
-            <section class="section">
-                <div class="section-header">
-                    <div>
-                        <div class="section-title">Jersey</div>
-                        <div class="section-subtitle">Combined Orders</div>
-                    </div>
-                    <div>
-                        <div class="total-label">Total Pieces</div>
-                        <div class="total-pieces">350</div>
-                    </div>
-                </div>
-                <div class="size-list">
-                    <div class="size-item">
-                        <span class="size-label">Small</span>
-                        <span class="size-quantity">21</span>
-                    </div>
-                    <div class="size-item">
-                        <span class="size-label">Medium</span>
-                        <span class="size-quantity">70</span>
-                    </div>
-                    <div class="size-item">
-                        <span class="size-label">Large</span>
-                        <span class="size-quantity">105</span>
-                    </div>
-                    <div class="size-item">
-                        <span class="size-label">XL</span>
-                        <span class="size-quantity">87</span>
-                    </div>
-                    <div class="size-item">
-                        <span class="size-label">2XL</span>
-                        <span class="size-quantity">35</span>
-                    </div>
-                    <div class="size-item">
-                        <span class="size-label">3XL</span>
-                        <span class="size-quantity">13</span>
-                    </div>
-                    <div class="size-item">
-                        <span class="size-label">4XL</span>
-                        <span class="size-quantity">11</span>
-                    </div>
-                    <div class="size-item">
-                        <span class="size-label">5XL</span>
-                        <span class="size-quantity">8</span>
-                    </div>
-                </div>
-            </section>
-
-            <section class="section">
-                <div class="section-header">
-                    <div>
-                        <div class="section-title">230 Trucker Hats</div>
-                    </div>
-                    <div>
-                        <div class="total-label">Total Pieces</div>
-                        <div class="total-pieces">230</div>
-                    </div>
-                </div>
-                <div class="size-list">
-                    <div class="size-item">
-                        <span class="size-label">Camo with Embroidered Patch</span>
-                        <span class="size-quantity">50</span>
-                    </div>
-                    <div class="size-item">
-                        <span class="size-label">Orange with Embroidered Patch</span>
-                        <span class="size-quantity">50</span>
-                    </div>
-                    <div class="size-item">
-                        <span class="size-label">Grey with Embroidered Patch</span>
-                        <span class="size-quantity">50</span>
-                    </div>
-                    <div class="size-item">
-                        <span class="size-label">Brown/Tan with Raised Embroidery</span>
-                        <span class="size-quantity">80</span>
-                    </div>
-                </div>
-            </section>
-        </div>
-
-        <footer>
-            <div class="contact-info">
-                <strong>CRTV HAUS</strong>
-                Ben + Emily Forehand, Owners
-                <br><br>
-                <strong>Info@creativehaus.com</strong>
-                <br>
-                901.303.1670 (cell)
-            </div>
-        </footer>
+    <div class="page-header">
+        <h1>Inventory</h1>
+        <p>Current stock — all items</p>
     </div>
+
+    <div class="content">
+
+        <section class="section section">
+            <div class="section-header">
+                <div>
+                    <div class="section-title">Resound Camp Shirts</div>
+                    <div class="section-subtitle">Seafoam Comfort Colors</div>
+                </div>
+                <div class="total-badge">
+                    <span class="total-num">857</span>
+                    <span class="total-lbl">pcs</span>
+                </div>
+            </div>
+            <div class="size-grid">
+                <div class="size-chip"><div class="chip-label">Youth S</div><div class="chip-qty">35</div></div>
+                <div class="size-chip"><div class="chip-label">Youth M</div><div class="chip-qty">35</div></div>
+                <div class="size-chip"><div class="chip-label">Youth L</div><div class="chip-qty">35</div></div>
+                <div class="size-chip"><div class="chip-label">Small</div><div class="chip-qty">175</div></div>
+                <div class="size-chip"><div class="chip-label">Medium</div><div class="chip-qty">210</div></div>
+                <div class="size-chip"><div class="chip-label">Large</div><div class="chip-qty">192</div></div>
+                <div class="size-chip"><div class="chip-label">XL</div><div class="chip-qty">93</div></div>
+                <div class="size-chip"><div class="chip-label">2XL</div><div class="chip-qty">44</div></div>
+                <div class="size-chip"><div class="chip-label">3XL</div><div class="chip-qty">20</div></div>
+                <div class="size-chip"><div class="chip-label">4XL</div><div class="chip-qty">15</div></div>
+                <div class="size-chip"><div class="chip-label">5XL</div><div class="chip-qty">3</div></div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-header">
+                <div>
+                    <div class="section-title">Oversize Eagle Shirt</div>
+                    <div class="section-subtitle">Combined Orders</div>
+                </div>
+                <div class="total-badge">
+                    <span class="total-num">332</span>
+                    <span class="total-lbl">pcs</span>
+                </div>
+            </div>
+            <div class="size-grid">
+                <div class="size-chip"><div class="chip-label">Small</div><div class="chip-qty">10</div></div>
+                <div class="size-chip"><div class="chip-label">Medium</div><div class="chip-qty">67</div></div>
+                <div class="size-chip"><div class="chip-label">Large</div><div class="chip-qty">105</div></div>
+                <div class="size-chip"><div class="chip-label">XL</div><div class="chip-qty">87</div></div>
+                <div class="size-chip"><div class="chip-label">2XL</div><div class="chip-qty">35</div></div>
+                <div class="size-chip"><div class="chip-label">3XL</div><div class="chip-qty">13</div></div>
+                <div class="size-chip"><div class="chip-label">4XL</div><div class="chip-qty">9</div></div>
+                <div class="size-chip"><div class="chip-label">5XL</div><div class="chip-qty">6</div></div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-header">
+                <div>
+                    <div class="section-title">Resound Jersey</div>
+                    <div class="section-subtitle">Combined Orders</div>
+                </div>
+                <div class="total-badge">
+                    <span class="total-num">254</span>
+                    <span class="total-lbl">pcs</span>
+                </div>
+            </div>
+            <div class="size-grid">
+                <div class="size-chip"><div class="chip-label">Small</div><div class="chip-qty">21</div></div>
+                <div class="size-chip"><div class="chip-label">Medium</div><div class="chip-qty">70</div></div>
+                <div class="size-chip"><div class="chip-label">Large</div><div class="chip-qty">70</div></div>
+                <div class="size-chip"><div class="chip-label">XL</div><div class="chip-qty">47</div></div>
+                <div class="size-chip"><div class="chip-label">2XL</div><div class="chip-qty">26</div></div>
+                <div class="size-chip"><div class="chip-label">3XL</div><div class="chip-qty">6</div></div>
+                <div class="size-chip"><div class="chip-label">4XL</div><div class="chip-qty">8</div></div>
+                <div class="size-chip"><div class="chip-label">5XL</div><div class="chip-qty">6</div></div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-header">
+                <div>
+                    <div class="section-title">Hoodie</div>
+                </div>
+                <div class="total-badge">
+                    <span class="total-num">100</span>
+                    <span class="total-lbl">pcs</span>
+                </div>
+            </div>
+            <div class="size-grid">
+                <div class="size-chip"><div class="chip-label">Small</div><div class="chip-qty">6</div></div>
+                <div class="size-chip"><div class="chip-label">Medium</div><div class="chip-qty">20</div></div>
+                <div class="size-chip"><div class="chip-label">Large</div><div class="chip-qty">30</div></div>
+                <div class="size-chip"><div class="chip-label">XL</div><div class="chip-qty">25</div></div>
+                <div class="size-chip"><div class="chip-label">2XL</div><div class="chip-qty">10</div></div>
+                <div class="size-chip"><div class="chip-label">3XL</div><div class="chip-qty">3</div></div>
+                <div class="size-chip"><div class="chip-label">4XL</div><div class="chip-qty">4</div></div>
+                <div class="size-chip"><div class="chip-label">5XL</div><div class="chip-qty">2</div></div>
+            </div>
+        </section>
+
+        <section class="section section">
+            <div class="section-header">
+                <div>
+                    <div class="section-title">Resound Trucker Hats</div>
+                    <div class="section-subtitle">Embroidered Patch</div>
+                </div>
+                <div class="total-badge">
+                    <span class="total-num">170</span>
+                    <span class="total-lbl">pcs</span>
+                </div>
+            </div>
+            <div class="size-grid">
+                <div class="size-chip"><div class="chip-label">Orange</div><div class="chip-qty">16</div></div>
+                <div class="size-chip"><div class="chip-label">Camo</div><div class="chip-qty">42</div></div>
+                <div class="size-chip"><div class="chip-label">Grey</div><div class="chip-qty">32</div></div>
+                <div class="size-chip"><div class="chip-label">Brown/Tan</div><div class="chip-qty">80</div></div>
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        <div class="footer-brand">CRTV HAUS</div>
+        <div class="footer-contact">
+            Ben + Emily Forehand · Info@creativehaus.com · 901.303.1670
+        </div>
+    </footer>
+
 </body>
 </html>

@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ben's TO DO</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: #F0EEE6;
+            color: #1a1a1a;
+            min-height: 100vh;
+        }
+
+        /* ---- SETUP BANNER ---- */
+        #setup-banner {
+            max-width: 700px;
+            margin: 48px auto;
+            padding: 0 24px;
+        }
+        .setup-card {
+            background: #fff;
+            border-radius: 14px;
+            padding: 32px 36px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+        .setup-card h1 { font-size: 24px; font-weight: 800; color: #E84B2B; margin-bottom: 6px; }
+        .setup-card p { font-size: 14px; color: #666; font-weight: 600; margin-bottom: 20px; }
+        .setup-steps { counter-reset: step; }
+        .setup-step {
+            counter-increment: step;
+            display: flex;
+            gap: 14px;
+            margin-bottom: 18px;
+            align-items: flex-start;
+        }
+        .step-num {
+            width: 26px; height: 26px;
+            background: #E84B2B; color: #fff;
+            border-radius: 50%;
+            font-size: 12px; font-weight: 800;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        .step-body { flex: 1; }
+        .step-body strong { font-size: 14px; font-weight: 800; display: block; margin-bottom: 4px; }
+        .step-body p { font-size: 13px; color: #666; margin-bottom: 8px; }
+        .code-block {
+            background: #f5f4ee;
+            border: 1px solid #e0ddd5;
+            border-radius: 8px;
+            padding: 12px 14px;
+            font-family: monospace;
+            font-size: 12px;
+            color: #333;
+            white-space: pre;
+            overflow-x: auto;
+            line-height: 1.5;
+            max-height: 260px;
+        }
+        .copy-btn {
+            display: inline-block;
+            margin-top: 6px;
+            padding: 5px 12px;
+            background: #f0eee6;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            color: #555;
+        }
+        .copy-btn:hover { background: #e8e5dc; }
+        .setup-input-row {
+            display: flex; gap: 8px; margin-top: 8px;
+        }
+        .setup-input-row input {
+            flex: 1;
+            padding: 9px 12px;
+            border: 1.5px solid #ddd;
+            border-radius: 8px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            outline: none;
+        }
+        .setup-input-row input:focus { border-color: #E84B2B; }
+        .setup-input-row button {
+            padding: 9px 18px;
+            background: #E84B2B;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+        }
+        .setup-input-row button:hover { background: #d03f21; }
+
+        /* ---- APP LAYOUT ---- */
+        #app { display: none; height: 100vh; overflow: hidden; flex-direction: column; }
+
+        .app-header {
+            padding: 0 0 0 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1.5px solid rgba(0,0,0,0.08);
+            background: #fff;
+            height: 56px;
+            padding: 0 20px;
+            flex-shrink: 0;
+        }
+        .app-header-left { display: flex; align-items: center; gap: 12px; }
+        .app-title { font-size: 18px; font-weight: 800; color: #E84B2B; }
+        .sync-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: #ccc;
+            transition: background 0.3s;
+        }
+        .sync-dot.ok { background: #22c55e; }
+        .sync-dot.syncing { background: #f59e0b; }
+        .sync-dot.error { background: #ef4444; }
+        .header-actions { display: flex; align-items: center; gap: 8px; }
+        .btn-icon {
+            width: 34px; height: 34px;
+            border-radius: 8px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px;
+            color: #888;
+            transition: background 0.15s, color 0.15s;
+        }
+        .btn-icon:hover { background: #f0eee6; color: #333; }
+
+        .app-body {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        /* ---- SIDEBAR ---- */
+        .sidebar {
+            width: 220px;
+            flex-shrink: 0;
+            background: #fff;
+            border-right: 1.5px solid rgba(0,0,0,0.08);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+        .sidebar-section { padding: 16px 12px 8px; }
+        .sidebar-label {
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            color: #bbb;
+            text-transform: uppercase;
+            padding: 0 6px;
+            margin-bottom: 6px;
+        }
+        .filter-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 700;
+            color: #555;
+            transition: background 0.1s, color 0.1s;
+            user-select: none;
+        }
+        .filter-item:hover { background: #f5f4ee; color: #333; }
+        .filter-item.active { background: #fde8e4; color: #E84B2B; }
+        .filter-dot {
+            width: 10px; height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .filter-count {
+            margin-left: auto;
+            font-size: 11px;
+            font-weight: 800;
+            color: #bbb;
+            background: #f0eee6;
+            border-radius: 10px;
+            padding: 1px 7px;
+        }
+        .filter-item.active .filter-count { background: #fcd5cc; color: #E84B2B; }
+        .sidebar-footer {
+            margin-top: auto;
+            padding: 12px;
+            border-top: 1px solid rgba(0,0,0,0.06);
+        }
+        .btn-manage-cats {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1.5px dashed #ddd;
+            border-radius: 8px;
+            background: transparent;
+            font-family: 'Nunito', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            color: #aaa;
+            cursor: pointer;
+            text-align: left;
+            transition: border-color 0.15s, color 0.15s;
+        }
+        .btn-manage-cats:hover { border-color: #E84B2B; color: #E84B2B; }
+
+        /* ---- MAIN CONTENT ---- */
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .main-toolbar {
+            padding: 14px 20px 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            flex-shrink: 0;
+        }
+        .filter-title {
+            font-size: 15px;
+            font-weight: 800;
+            color: #1a1a1a;
+            flex: 1;
+        }
+        .toggle-completed {
+            font-size: 12px;
+            font-weight: 700;
+            color: #bbb;
+            cursor: pointer;
+            padding: 4px 10px;
+            border-radius: 6px;
+            border: 1.5px solid #e8e5dc;
+            background: transparent;
+            font-family: 'Nunito', sans-serif;
+            transition: all 0.15s;
+        }
+        .toggle-completed:hover { border-color: #ccc; color: #888; }
+        .toggle-completed.active { border-color: #E84B2B; color: #E84B2B; background: #fde8e4; }
+        .btn-add {
+            padding: 7px 16px;
+            background: #E84B2B;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+        .btn-add:hover { background: #d03f21; }
+
+        .todo-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px 14px 24px;
+        }
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 200px;
+            color: #ccc;
+        }
+        .empty-state .icon { font-size: 36px; margin-bottom: 10px; }
+        .empty-state p { font-size: 14px; font-weight: 700; }
+
+        /* ---- TODO ITEM ---- */
+        .todo-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 11px 12px;
+            border-radius: 10px;
+            margin-bottom: 4px;
+            background: #fff;
+            transition: box-shadow 0.15s;
+            position: relative;
+        }
+        .todo-item:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
+        .todo-item:hover .todo-actions { opacity: 1; }
+        .todo-item.done .todo-title { text-decoration: line-through; color: #bbb; }
+        .todo-item.done { background: #fafaf8; }
+
+        .todo-check {
+            width: 20px; height: 20px;
+            border-radius: 50%;
+            border: 2px solid #ddd;
+            flex-shrink: 0;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            margin-top: 1px;
+            transition: border-color 0.15s, background 0.15s;
+        }
+        .todo-check:hover { border-color: #E84B2B; }
+        .todo-item.done .todo-check {
+            background: #E84B2B;
+            border-color: #E84B2B;
+        }
+        .todo-check-inner {
+            display: none;
+            color: #fff;
+            font-size: 11px;
+            font-weight: 900;
+            line-height: 1;
+        }
+        .todo-item.done .todo-check-inner { display: block; }
+
+        .todo-body { flex: 1; min-width: 0; }
+        .todo-top { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .todo-title { font-size: 14px; font-weight: 700; color: #1a1a1a; }
+        .cat-badge {
+            font-size: 11px;
+            font-weight: 800;
+            padding: 2px 8px;
+            border-radius: 20px;
+            color: #fff;
+            white-space: nowrap;
+        }
+        .todo-notes {
+            font-size: 12px;
+            font-weight: 600;
+            color: #aaa;
+            margin-top: 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 500px;
+        }
+        .todo-actions {
+            display: flex;
+            gap: 4px;
+            opacity: 0;
+            transition: opacity 0.15s;
+            flex-shrink: 0;
+        }
+        .todo-btn {
+            width: 28px; height: 28px;
+            border: none;
+            background: transparent;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex; align-items: center; justify-content: center;
+            color: #bbb;
+        }
+        .todo-btn:hover { background: #f0eee6; color: #333; }
+        .todo-btn.del:hover { background: #fde8e4; color: #E84B2B; }
+
+        /* completed section label */
+        .completed-label {
+            font-size: 11px;
+            font-weight: 800;
+            color: #ccc;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            padding: 10px 12px 4px;
+        }
+
+        /* ---- MODALS ---- */
+        .modal-overlay {
+            display: none;
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.3);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-overlay.open { display: flex; }
+        .modal {
+            background: #fff;
+            border-radius: 14px;
+            padding: 28px 30px;
+            width: 440px;
+            max-width: calc(100vw - 32px);
+            box-shadow: 0 8px 40px rgba(0,0,0,0.15);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal h2 { font-size: 18px; font-weight: 800; color: #1a1a1a; margin-bottom: 20px; }
+        .form-field { margin-bottom: 16px; }
+        .form-field label {
+            display: block;
+            font-size: 12px;
+            font-weight: 800;
+            color: #aaa;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 6px;
+        }
+        .form-field input, .form-field textarea, .form-field select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1.5px solid #e0ddd5;
+            border-radius: 8px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            color: #1a1a1a;
+            background: #fff;
+            outline: none;
+            resize: vertical;
+        }
+        .form-field input:focus, .form-field textarea:focus, .form-field select:focus {
+            border-color: #E84B2B;
+        }
+        .form-field textarea { min-height: 80px; }
+        .modal-actions {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+        .btn-cancel {
+            padding: 9px 18px;
+            border: 1.5px solid #e0ddd5;
+            background: transparent;
+            border-radius: 8px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 13px;
+            font-weight: 800;
+            color: #888;
+            cursor: pointer;
+        }
+        .btn-cancel:hover { background: #f5f4ee; }
+        .btn-save {
+            padding: 9px 20px;
+            background: #E84B2B;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 13px;
+            font-weight: 800;
+            color: #fff;
+            cursor: pointer;
+        }
+        .btn-save:hover { background: #d03f21; }
+        .btn-save:disabled { background: #ccc; cursor: not-allowed; }
+
+        /* category management modal */
+        .cats-modal { width: 480px; }
+        .cat-list-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 10px;
+            border-radius: 8px;
+            margin-bottom: 4px;
+        }
+        .cat-list-item:hover { background: #f5f4ee; }
+        .cat-color-swatch {
+            width: 14px; height: 14px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .cat-list-name {
+            flex: 1;
+            font-size: 14px;
+            font-weight: 700;
+            color: #333;
+        }
+        .cat-list-btn {
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 14px;
+            color: #ccc;
+            padding: 4px 6px;
+            border-radius: 5px;
+        }
+        .cat-list-btn:hover { background: #f0eee6; color: #666; }
+        .cat-list-btn.del:hover { background: #fde8e4; color: #E84B2B; }
+
+        .add-cat-form {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #eee;
+        }
+        .add-cat-input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1.5px solid #e0ddd5;
+            border-radius: 8px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            outline: none;
+        }
+        .add-cat-input:focus { border-color: #E84B2B; }
+
+        .color-picker-row {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+        .color-swatch {
+            width: 22px; height: 22px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2.5px solid transparent;
+            transition: border-color 0.1s, transform 0.1s;
+        }
+        .color-swatch:hover { transform: scale(1.15); }
+        .color-swatch.selected { border-color: #1a1a1a; }
+
+        /* ---- TOAST ---- */
+        #toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: #1a1a1a;
+            color: #fff;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+            z-index: 200;
+        }
+        #toast.show { opacity: 1; }
+
+        /* ---- MOBILE ---- */
+        @media (max-width: 640px) {
+            .sidebar { display: none; }
+            .sidebar.mobile-open {
+                display: flex;
+                position: fixed;
+                inset: 0;
+                z-index: 50;
+                width: 260px;
+            }
+            .app-header { padding: 0 14px; }
+            .main-toolbar { padding: 10px 14px; }
+            .todo-list { padding: 8px 10px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ==================== SETUP BANNER ==================== -->
+<div id="setup-banner">
+    <div class="setup-card">
+        <h1>Ben's TO DO</h1>
+        <p>One-time setup: connect this app to your Google Sheet.</p>
+        <div class="setup-steps">
+
+            <div class="setup-step">
+                <div class="step-num">1</div>
+                <div class="step-body">
+                    <strong>Create a new Google Sheet</strong>
+                    <p>Give it any name — e.g. "Ben's TO DO". Leave it blank; the app will create the right tabs automatically.</p>
+                </div>
+            </div>
+
+            <div class="setup-step">
+                <div class="step-num">2</div>
+                <div class="step-body">
+                    <strong>Open Apps Script</strong>
+                    <p>In the sheet: Extensions → Apps Script. Replace all existing code with the snippet below, then click Save.</p>
+                    <div class="code-block" id="apps-script-code">function doGet(e) {
+  const action = e.parameter.action;
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  let todosSheet = ss.getSheetByName('Todos');
+  let catsSheet  = ss.getSheetByName('Categories');
+  if (!todosSheet) {
+    todosSheet = ss.insertSheet('Todos');
+    todosSheet.appendRow(['id','title','category_id','done','created','notes']);
+  }
+  if (!catsSheet) {
+    catsSheet = ss.insertSheet('Categories');
+    catsSheet.appendRow(['id','name','color']);
+  }
+  function uid() {
+    return Date.now().toString(36) + Math.random().toString(36).slice(2,6);
+  }
+  function json(obj) {
+    return ContentService.createTextOutput(JSON.stringify(obj))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+  if (action === 'get') {
+    const cd = catsSheet.getDataRange().getValues();
+    const cats = [];
+    for (let i = 1; i < cd.length; i++) {
+      if (cd[i][0]) cats.push({id:String(cd[i][0]),name:cd[i][1],color:cd[i][2]});
+    }
+    const td = todosSheet.getDataRange().getValues();
+    const todos = [];
+    for (let i = 1; i < td.length; i++) {
+      if (td[i][0]) todos.push({
+        id:String(td[i][0]), title:td[i][1],
+        category_id:String(td[i][2]||''),
+        done: td[i][3]===true||td[i][3]==='TRUE',
+        created:String(td[i][4]||''), notes:String(td[i][5]||'')
+      });
+    }
+    return json({todos, categories:cats});
+  }
+  if (action === 'add_todo') {
+    const id = uid();
+    todosSheet.appendRow([id, e.parameter.title||'', e.parameter.category_id||'',
+      false, new Date().toISOString(), e.parameter.notes||'']);
+    return json({success:true, id});
+  }
+  if (action === 'edit_todo') {
+    const td = todosSheet.getDataRange().getValues();
+    for (let i = 1; i < td.length; i++) {
+      if (String(td[i][0]) === String(e.parameter.id)) {
+        if (e.parameter.title       !== undefined) todosSheet.getRange(i+1,2).setValue(e.parameter.title);
+        if (e.parameter.category_id !== undefined) todosSheet.getRange(i+1,3).setValue(e.parameter.category_id);
+        if (e.parameter.notes       !== undefined) todosSheet.getRange(i+1,6).setValue(e.parameter.notes);
+        break;
+      }
+    }
+    return json({success:true});
+  }
+  if (action === 'toggle_todo') {
+    const td = todosSheet.getDataRange().getValues();
+    for (let i = 1; i < td.length; i++) {
+      if (String(td[i][0]) === String(e.parameter.id)) {
+        const cur = td[i][3]===true||td[i][3]==='TRUE';
+        todosSheet.getRange(i+1,4).setValue(!cur);
+        break;
+      }
+    }
+    return json({success:true});
+  }
+  if (action === 'delete_todo') {
+    const td = todosSheet.getDataRange().getValues();
+    for (let i = td.length-1; i >= 1; i--) {
+      if (String(td[i][0]) === String(e.parameter.id)) { todosSheet.deleteRow(i+1); break; }
+    }
+    return json({success:true});
+  }
+  if (action === 'add_category') {
+    const id = uid();
+    catsSheet.appendRow([id, e.parameter.name||'', e.parameter.color||'#888888']);
+    return json({success:true, id});
+  }
+  if (action === 'edit_category') {
+    const cd = catsSheet.getDataRange().getValues();
+    for (let i = 1; i < cd.length; i++) {
+      if (String(cd[i][0]) === String(e.parameter.id)) {
+        if (e.parameter.name)  catsSheet.getRange(i+1,2).setValue(e.parameter.name);
+        if (e.parameter.color) catsSheet.getRange(i+1,3).setValue(e.parameter.color);
+        break;
+      }
+    }
+    return json({success:true});
+  }
+  if (action === 'delete_category') {
+    const cd = catsSheet.getDataRange().getValues();
+    for (let i = cd.length-1; i >= 1; i--) {
+      if (String(cd[i][0]) === String(e.parameter.id)) { catsSheet.deleteRow(i+1); break; }
+    }
+    return json({success:true});
+  }
+  return json({error:'unknown action'});
+}</div>
+                    <button class="copy-btn" onclick="copyScript()">Copy code</button>
+                </div>
+            </div>
+
+            <div class="setup-step">
+                <div class="step-num">3</div>
+                <div class="step-body">
+                    <strong>Deploy as Web App</strong>
+                    <p>Click Deploy → New Deployment. Set <em>Execute as: Me</em> and <em>Who has access: Anyone</em>. Click Deploy and authorize. Copy the Web App URL.</p>
+                </div>
+            </div>
+
+            <div class="setup-step">
+                <div class="step-num">4</div>
+                <div class="step-body">
+                    <strong>Paste your Web App URL below</strong>
+                    <div class="setup-input-row">
+                        <input type="text" id="script-url-input" placeholder="https://script.google.com/macros/s/..." />
+                        <button onclick="saveScriptUrl()">Connect</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- ==================== APP ==================== -->
+<div id="app">
+
+    <div class="app-header">
+        <div class="app-header-left">
+            <div class="app-title">Ben's TO DO</div>
+            <div class="sync-dot" id="sync-dot" title="Sync status"></div>
+        </div>
+        <div class="header-actions">
+            <button class="btn-icon" onclick="openCatsModal()" title="Manage categories">⚙</button>
+            <button class="btn-icon" onclick="resetSetup()" title="Reconfigure">⟳</button>
+        </div>
+    </div>
+
+    <div class="app-body">
+
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-section">
+                <div class="sidebar-label">Filter</div>
+                <div class="filter-item active" data-filter="all" onclick="setFilter('all')">
+                    <div class="filter-dot" style="background:#1a1a1a"></div>
+                    All
+                    <span class="filter-count" id="count-all">0</span>
+                </div>
+                <!-- category filters injected here -->
+                <div id="cat-filters"></div>
+            </div>
+            <div class="sidebar-footer">
+                <button class="btn-manage-cats" onclick="openCatsModal()">+ Manage categories</button>
+            </div>
+        </div>
+
+        <div class="main">
+            <div class="main-toolbar">
+                <div class="filter-title" id="filter-title">All Tasks</div>
+                <button class="toggle-completed" id="toggle-completed-btn" onclick="toggleShowCompleted()">Show completed</button>
+                <button class="btn-add" onclick="openAddModal()">+ Add task</button>
+            </div>
+            <div class="todo-list" id="todo-list">
+                <div class="empty-state">
+                    <div class="icon">✓</div>
+                    <p>Loading...</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ==================== MODAL: ADD / EDIT TODO ==================== -->
+<div class="modal-overlay" id="todo-modal">
+    <div class="modal">
+        <h2 id="todo-modal-title">Add Task</h2>
+        <div class="form-field">
+            <label>Task</label>
+            <input type="text" id="todo-title-input" placeholder="What needs to be done?" />
+        </div>
+        <div class="form-field">
+            <label>Category</label>
+            <select id="todo-cat-select">
+                <option value="">— No category —</option>
+            </select>
+        </div>
+        <div class="form-field">
+            <label>Notes</label>
+            <textarea id="todo-notes-input" placeholder="Optional notes..."></textarea>
+        </div>
+        <div class="modal-actions">
+            <button class="btn-cancel" onclick="closeModal('todo-modal')">Cancel</button>
+            <button class="btn-save" id="todo-save-btn" onclick="saveTodo()">Add Task</button>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== MODAL: MANAGE CATEGORIES ==================== -->
+<div class="modal-overlay" id="cats-modal">
+    <div class="modal cats-modal">
+        <h2>Manage Categories</h2>
+        <div id="cat-list-items">
+            <!-- injected -->
+        </div>
+        <div class="add-cat-form">
+            <input class="add-cat-input" type="text" id="new-cat-name" placeholder="New category name..." />
+            <button class="btn-save" onclick="addCategory()" style="white-space:nowrap">Add</button>
+        </div>
+        <div style="margin-top:10px">
+            <div style="font-size:11px;font-weight:800;color:#aaa;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;">Color</div>
+            <div class="color-picker-row" id="new-cat-colors"></div>
+        </div>
+        <div class="modal-actions">
+            <button class="btn-cancel" onclick="closeModal('cats-modal')">Done</button>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== MODAL: EDIT CATEGORY ==================== -->
+<div class="modal-overlay" id="edit-cat-modal">
+    <div class="modal" style="width:380px">
+        <h2>Edit Category</h2>
+        <input type="hidden" id="edit-cat-id" />
+        <div class="form-field">
+            <label>Name</label>
+            <input type="text" id="edit-cat-name" />
+        </div>
+        <div class="form-field">
+            <label>Color</label>
+            <div class="color-picker-row" id="edit-cat-colors"></div>
+        </div>
+        <div class="modal-actions">
+            <button class="btn-cancel" onclick="closeModal('edit-cat-modal')">Cancel</button>
+            <button class="btn-save" onclick="saveEditCategory()">Save</button>
+        </div>
+    </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ==================== CONFIG ====================
+const STORAGE_KEY = 'bens_todo_script_url';
+const PRESET_COLORS = [
+    '#E84B2B','#F59E0B','#10B981','#3B82F6',
+    '#8B5CF6','#EC4899','#06B6D4','#64748B',
+    '#84CC16','#F97316'
+];
+
+let SCRIPT_URL = localStorage.getItem(STORAGE_KEY) || 'https://script.google.com/macros/s/AKfycbw1z66WRSaKHpmlJGagnZ0jcxJtJuEjVPiMaNqfP84LoihsdgGxUIkwupjRbY2R1EhF/exec';
+
+// ==================== STATE ====================
+let todos = [];
+let categories = [];
+let activeFilter = 'all';
+let showCompleted = true;
+let editingTodoId = null;
+let selectedNewCatColor = PRESET_COLORS[2];
+let selectedEditCatColor = '';
+
+// ==================== INIT ====================
+if (SCRIPT_URL && SCRIPT_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
+    showApp();
+} else {
+    document.getElementById('setup-banner').style.display = 'block';
+}
+
+function showApp() {
+    document.getElementById('setup-banner').style.display = 'none';
+    document.getElementById('app').style.display = 'flex';
+    setSyncDot('syncing');
+    loadData();
+}
+
+function saveScriptUrl() {
+    const val = document.getElementById('script-url-input').value.trim();
+    if (!val.startsWith('https://script.google.com')) {
+        toast('Please enter a valid Apps Script URL');
+        return;
+    }
+    SCRIPT_URL = val;
+    localStorage.setItem(STORAGE_KEY, SCRIPT_URL);
+    showApp();
+}
+
+function resetSetup() {
+    if (!confirm('Disconnect and reconfigure? Your data in Google Sheets will be preserved.')) return;
+    SCRIPT_URL = '';
+    localStorage.removeItem(STORAGE_KEY);
+    todos = []; categories = [];
+    document.getElementById('app').style.display = 'none';
+    document.getElementById('setup-banner').style.display = 'block';
+}
+
+// ==================== API ====================
+function api(params, callback) {
+    const url = SCRIPT_URL + '?' + new URLSearchParams(params).toString();
+    setSyncDot('syncing');
+    fetch(url)
+        .then(r => r.json())
+        .then(data => {
+            setSyncDot('ok');
+            if (callback) callback(null, data);
+        })
+        .catch(err => {
+            setSyncDot('error');
+            if (callback) callback(err, null);
+        });
+}
+
+function loadData() {
+    api({action: 'get', t: Date.now()}, (err, data) => {
+        if (err || !data) {
+            renderList();
+            return;
+        }
+        todos = data.todos || [];
+        categories = data.categories || [];
+        renderAll();
+    });
+}
+
+// ==================== RENDER ====================
+function renderAll() {
+    renderSidebar();
+    renderCatSelect();
+    renderList();
+}
+
+function renderSidebar() {
+    const countAll = todos.filter(t => !t.done).length;
+    document.getElementById('count-all').textContent = countAll;
+
+    const container = document.getElementById('cat-filters');
+    container.innerHTML = '';
+    categories.forEach(cat => {
+        const active = activeFilter === cat.id;
+        const count = todos.filter(t => t.category_id === cat.id && !t.done).length;
+        const el = document.createElement('div');
+        el.className = 'filter-item' + (active ? ' active' : '');
+        el.dataset.filter = cat.id;
+        el.onclick = () => setFilter(cat.id);
+        el.innerHTML = `
+            <div class="filter-dot" style="background:${cat.color}"></div>
+            ${escHtml(cat.name)}
+            <span class="filter-count">${count}</span>
+        `;
+        container.appendChild(el);
+    });
+
+    // update "All" active state
+    document.querySelectorAll('.filter-item').forEach(el => {
+        el.classList.toggle('active', el.dataset.filter === activeFilter);
+    });
+}
+
+function renderCatSelect() {
+    const sel = document.getElementById('todo-cat-select');
+    const cur = sel.value;
+    sel.innerHTML = '<option value="">— No category —</option>';
+    categories.forEach(cat => {
+        const opt = document.createElement('option');
+        opt.value = cat.id;
+        opt.textContent = cat.name;
+        sel.appendChild(opt);
+    });
+    if (cur) sel.value = cur;
+}
+
+function renderList() {
+    const container = document.getElementById('todo-list');
+
+    let filtered = todos;
+    if (activeFilter !== 'all') {
+        filtered = filtered.filter(t => t.category_id === activeFilter);
+    }
+
+    const active = filtered.filter(t => !t.done);
+    const done = filtered.filter(t => t.done);
+
+    if (active.length === 0 && (!showCompleted || done.length === 0)) {
+        container.innerHTML = `<div class="empty-state"><div class="icon">✓</div><p>No tasks here</p></div>`;
+        return;
+    }
+
+    container.innerHTML = '';
+    active.forEach(t => container.appendChild(makeTodoEl(t)));
+
+    if (showCompleted && done.length > 0) {
+        const lbl = document.createElement('div');
+        lbl.className = 'completed-label';
+        lbl.textContent = `Completed (${done.length})`;
+        container.appendChild(lbl);
+        done.forEach(t => container.appendChild(makeTodoEl(t)));
+    }
+
+    // update toolbar title
+    const title = activeFilter === 'all'
+        ? 'All Tasks'
+        : (categories.find(c => c.id === activeFilter)?.name || 'Tasks');
+    document.getElementById('filter-title').textContent = title;
+}
+
+function makeTodoEl(todo) {
+    const cat = categories.find(c => c.id === todo.category_id);
+    const el = document.createElement('div');
+    el.className = 'todo-item' + (todo.done ? ' done' : '');
+    el.dataset.id = todo.id;
+    el.innerHTML = `
+        <div class="todo-check" onclick="toggleTodo('${todo.id}')">
+            <span class="todo-check-inner">✓</span>
+        </div>
+        <div class="todo-body">
+            <div class="todo-top">
+                <span class="todo-title">${escHtml(todo.title)}</span>
+                ${cat ? `<span class="cat-badge" style="background:${cat.color}">${escHtml(cat.name)}</span>` : ''}
+            </div>
+            ${todo.notes ? `<div class="todo-notes">${escHtml(todo.notes)}</div>` : ''}
+        </div>
+        <div class="todo-actions">
+            <button class="todo-btn" onclick="openEditModal('${todo.id}')" title="Edit">✎</button>
+            <button class="todo-btn del" onclick="deleteTodo('${todo.id}')" title="Delete">✕</button>
+        </div>
+    `;
+    return el;
+}
+
+// ==================== ACTIONS ====================
+function setFilter(id) {
+    activeFilter = id;
+    renderAll();
+}
+
+function toggleShowCompleted() {
+    showCompleted = !showCompleted;
+    const btn = document.getElementById('toggle-completed-btn');
+    btn.classList.toggle('active', showCompleted);
+    renderList();
+}
+
+function toggleTodo(id) {
+    const todo = todos.find(t => t.id === id);
+    if (!todo) return;
+    todo.done = !todo.done;
+    renderAll();
+    api({action: 'toggle_todo', id}, (err) => {
+        if (err) { todo.done = !todo.done; renderAll(); toast('Failed to sync'); }
+    });
+}
+
+function deleteTodo(id) {
+    if (!confirm('Delete this task?')) return;
+    const idx = todos.findIndex(t => t.id === id);
+    if (idx === -1) return;
+    const removed = todos.splice(idx, 1)[0];
+    renderAll();
+    api({action: 'delete_todo', id}, (err) => {
+        if (err) { todos.splice(idx, 0, removed); renderAll(); toast('Failed to sync'); }
+    });
+}
+
+// ==================== TODO MODAL ====================
+function openAddModal() {
+    editingTodoId = null;
+    document.getElementById('todo-modal-title').textContent = 'Add Task';
+    document.getElementById('todo-save-btn').textContent = 'Add Task';
+    document.getElementById('todo-title-input').value = '';
+    document.getElementById('todo-cat-select').value = activeFilter !== 'all' ? activeFilter : '';
+    document.getElementById('todo-notes-input').value = '';
+    openModal('todo-modal');
+    setTimeout(() => document.getElementById('todo-title-input').focus(), 50);
+}
+
+function openEditModal(id) {
+    const todo = todos.find(t => t.id === id);
+    if (!todo) return;
+    editingTodoId = id;
+    document.getElementById('todo-modal-title').textContent = 'Edit Task';
+    document.getElementById('todo-save-btn').textContent = 'Save';
+    document.getElementById('todo-title-input').value = todo.title;
+    document.getElementById('todo-cat-select').value = todo.category_id || '';
+    document.getElementById('todo-notes-input').value = todo.notes || '';
+    openModal('todo-modal');
+    setTimeout(() => document.getElementById('todo-title-input').focus(), 50);
+}
+
+function saveTodo() {
+    const title = document.getElementById('todo-title-input').value.trim();
+    if (!title) { toast('Please enter a task title'); return; }
+    const category_id = document.getElementById('todo-cat-select').value;
+    const notes = document.getElementById('todo-notes-input').value.trim();
+    const btn = document.getElementById('todo-save-btn');
+    btn.disabled = true;
+
+    if (editingTodoId) {
+        const todo = todos.find(t => t.id === editingTodoId);
+        if (todo) { todo.title = title; todo.category_id = category_id; todo.notes = notes; }
+        renderAll();
+        closeModal('todo-modal');
+        api({action:'edit_todo', id:editingTodoId, title, category_id, notes}, (err) => {
+            btn.disabled = false;
+            if (err) toast('Failed to sync');
+        });
+    } else {
+        const tempId = 'temp_' + Date.now();
+        const newTodo = {id: tempId, title, category_id, notes, done: false, created: new Date().toISOString()};
+        todos.unshift(newTodo);
+        renderAll();
+        closeModal('todo-modal');
+        api({action:'add_todo', title, category_id, notes}, (err, data) => {
+            btn.disabled = false;
+            if (err || !data) { todos = todos.filter(t => t.id !== tempId); renderAll(); toast('Failed to sync'); return; }
+            newTodo.id = data.id;
+            renderAll();
+        });
+    }
+}
+
+// ==================== CATEGORY MODAL ====================
+function openCatsModal() {
+    renderCatListModal();
+    renderColorPicker('new-cat-colors', selectedNewCatColor, (c) => { selectedNewCatColor = c; });
+    openModal('cats-modal');
+}
+
+function renderCatListModal() {
+    const container = document.getElementById('cat-list-items');
+    if (categories.length === 0) {
+        container.innerHTML = '<p style="font-size:13px;color:#bbb;font-weight:600;padding:8px 0">No categories yet. Add one below.</p>';
+        return;
+    }
+    container.innerHTML = '';
+    categories.forEach(cat => {
+        const el = document.createElement('div');
+        el.className = 'cat-list-item';
+        el.innerHTML = `
+            <div class="cat-color-swatch" style="background:${cat.color}"></div>
+            <span class="cat-list-name">${escHtml(cat.name)}</span>
+            <button class="cat-list-btn" onclick="openEditCat('${cat.id}')">✎</button>
+            <button class="cat-list-btn del" onclick="deleteCategory('${cat.id}')">✕</button>
+        `;
+        container.appendChild(el);
+    });
+}
+
+function addCategory() {
+    const name = document.getElementById('new-cat-name').value.trim();
+    if (!name) { toast('Enter a category name'); return; }
+    const color = selectedNewCatColor;
+    const tempId = 'cattemp_' + Date.now();
+    categories.push({id: tempId, name, color});
+    renderAll();
+    renderCatListModal();
+    document.getElementById('new-cat-name').value = '';
+    api({action:'add_category', name, color}, (err, data) => {
+        if (err || !data) { categories = categories.filter(c => c.id !== tempId); renderAll(); toast('Failed to sync'); return; }
+        const cat = categories.find(c => c.id === tempId);
+        if (cat) cat.id = data.id;
+        renderAll();
+        renderCatListModal();
+    });
+}
+
+function deleteCategory(id) {
+    if (!confirm('Delete this category? Tasks in it will become uncategorized.')) return;
+    const idx = categories.findIndex(c => c.id === id);
+    if (idx === -1) return;
+    const removed = categories.splice(idx, 1)[0];
+    todos.forEach(t => { if (t.category_id === id) t.category_id = ''; });
+    if (activeFilter === id) activeFilter = 'all';
+    renderAll();
+    renderCatListModal();
+    api({action:'delete_category', id}, (err) => {
+        if (err) { categories.splice(idx, 0, removed); renderAll(); toast('Failed to sync'); }
+    });
+}
+
+function openEditCat(id) {
+    const cat = categories.find(c => c.id === id);
+    if (!cat) return;
+    selectedEditCatColor = cat.color;
+    document.getElementById('edit-cat-id').value = id;
+    document.getElementById('edit-cat-name').value = cat.name;
+    renderColorPicker('edit-cat-colors', cat.color, (c) => { selectedEditCatColor = c; });
+    openModal('edit-cat-modal');
+}
+
+function saveEditCategory() {
+    const id = document.getElementById('edit-cat-id').value;
+    const name = document.getElementById('edit-cat-name').value.trim();
+    if (!name) { toast('Enter a name'); return; }
+    const color = selectedEditCatColor;
+    const cat = categories.find(c => c.id === id);
+    if (!cat) return;
+    const prev = {name: cat.name, color: cat.color};
+    cat.name = name; cat.color = color;
+    renderAll();
+    renderCatListModal();
+    closeModal('edit-cat-modal');
+    api({action:'edit_category', id, name, color}, (err) => {
+        if (err) { cat.name = prev.name; cat.color = prev.color; renderAll(); toast('Failed to sync'); }
+    });
+}
+
+// ==================== COLOR PICKER ====================
+function renderColorPicker(containerId, selected, onChange) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = '';
+    PRESET_COLORS.forEach(color => {
+        const el = document.createElement('div');
+        el.className = 'color-swatch' + (color === selected ? ' selected' : '');
+        el.style.background = color;
+        el.title = color;
+        el.onclick = () => {
+            container.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('selected'));
+            el.classList.add('selected');
+            onChange(color);
+        };
+        container.appendChild(el);
+    });
+}
+
+// ==================== MODAL HELPERS ====================
+function openModal(id) {
+    document.getElementById(id).classList.add('open');
+}
+function closeModal(id) {
+    document.getElementById(id).classList.remove('open');
+}
+
+// Close modals on overlay click
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+    overlay.addEventListener('click', e => {
+        if (e.target === overlay) overlay.classList.remove('open');
+    });
+});
+
+// Enter key submits todo form
+document.getElementById('todo-title-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') saveTodo();
+});
+document.getElementById('new-cat-name').addEventListener('keydown', e => {
+    if (e.key === 'Enter') addCategory();
+});
+
+// ==================== SYNC DOT ====================
+function setSyncDot(state) {
+    const dot = document.getElementById('sync-dot');
+    dot.className = 'sync-dot ' + state;
+}
+
+// ==================== TOAST ====================
+let toastTimer;
+function toast(msg) {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.classList.remove('show'), 2500);
+}
+
+// ==================== UTILS ====================
+function escHtml(str) {
+    return String(str)
+        .replace(/&/g,'&amp;')
+        .replace(/</g,'&lt;')
+        .replace(/>/g,'&gt;')
+        .replace(/"/g,'&quot;');
+}
+
+function copyScript() {
+    const code = document.getElementById('apps-script-code').textContent;
+    navigator.clipboard.writeText(code).then(() => toast('Code copied!'));
+}
+
+// Init completed button state
+document.getElementById('toggle-completed-btn').classList.toggle('active', showCompleted);
+</script>
+
+</body>
+</html>

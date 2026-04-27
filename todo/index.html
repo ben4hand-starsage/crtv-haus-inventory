@@ -425,6 +425,76 @@
             border-color: #E84B2B;
         }
         .form-field textarea { min-height: 80px; }
+        .cat-select-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .cat-select-row select { flex: 1; }
+        .btn-add-cat-inline {
+            width: 38px; height: 38px;
+            border: 1.5px dashed #ddd;
+            border-radius: 8px;
+            background: transparent;
+            font-size: 18px;
+            color: #bbb;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+            transition: border-color 0.15s, color 0.15s;
+        }
+        .btn-add-cat-inline:hover { border-color: #E84B2B; color: #E84B2B; }
+        .inline-cat-form {
+            display: none;
+            margin-top: 8px;
+            padding: 12px;
+            background: #f5f4ee;
+            border-radius: 8px;
+            border: 1.5px solid #e0ddd5;
+        }
+        .inline-cat-form.open { display: block; }
+        .inline-cat-form input {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1.5px solid #e0ddd5;
+            border-radius: 7px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            outline: none;
+            background: #fff;
+            margin-bottom: 8px;
+        }
+        .inline-cat-form input:focus { border-color: #E84B2B; }
+        .inline-cat-form-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+        .btn-inline-save {
+            padding: 6px 14px;
+            background: #E84B2B;
+            color: #fff;
+            border: none;
+            border-radius: 7px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+        }
+        .btn-inline-save:hover { background: #d03f21; }
+        .btn-inline-cancel {
+            padding: 6px 10px;
+            background: transparent;
+            border: none;
+            font-family: 'Nunito', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            color: #aaa;
+            cursor: pointer;
+        }
+        .btn-inline-cancel:hover { color: #555; }
         .modal-actions {
             display: flex;
             gap: 8px;
@@ -768,9 +838,20 @@
         </div>
         <div class="form-field">
             <label>Category</label>
-            <select id="todo-cat-select">
-                <option value="">— No category —</option>
-            </select>
+            <div class="cat-select-row">
+                <select id="todo-cat-select">
+                    <option value="">— No category —</option>
+                </select>
+                <button class="btn-add-cat-inline" type="button" onclick="toggleInlineCatForm()" title="Add new category">+</button>
+            </div>
+            <div class="inline-cat-form" id="inline-cat-form">
+                <input type="text" id="inline-cat-name" placeholder="Category name..." />
+                <div class="color-picker-row" id="inline-cat-colors"></div>
+                <div class="inline-cat-form-footer" style="margin-top:8px">
+                    <button class="btn-inline-cancel" type="button" onclick="toggleInlineCatForm()">Cancel</button>
+                    <button class="btn-inline-save" type="button" onclick="saveInlineCategory()">Save Category</button>
+                </div>
+            </div>
         </div>
         <div class="form-field">
             <label>Notes</label>
@@ -1048,6 +1129,8 @@ function deleteTodo(id) {
 }
 
 // ==================== TODO MODAL ====================
+let selectedInlineCatColor = PRESET_COLORS[2];
+
 function openAddModal() {
     editingTodoId = null;
     document.getElementById('todo-modal-title').textContent = 'Add Task';
@@ -1055,8 +1138,42 @@ function openAddModal() {
     document.getElementById('todo-title-input').value = '';
     document.getElementById('todo-cat-select').value = activeFilter !== 'all' ? activeFilter : '';
     document.getElementById('todo-notes-input').value = '';
+    document.getElementById('inline-cat-form').classList.remove('open');
+    document.getElementById('inline-cat-name').value = '';
+    selectedInlineCatColor = PRESET_COLORS[2];
+    renderColorPicker('inline-cat-colors', selectedInlineCatColor, (c) => { selectedInlineCatColor = c; });
     openModal('todo-modal');
     setTimeout(() => document.getElementById('todo-title-input').focus(), 50);
+}
+
+function toggleInlineCatForm() {
+    const form = document.getElementById('inline-cat-form');
+    const isOpen = form.classList.toggle('open');
+    if (isOpen) {
+        renderColorPicker('inline-cat-colors', selectedInlineCatColor, (c) => { selectedInlineCatColor = c; });
+        setTimeout(() => document.getElementById('inline-cat-name').focus(), 50);
+    } else {
+        document.getElementById('inline-cat-name').value = '';
+    }
+}
+
+function saveInlineCategory() {
+    const name = document.getElementById('inline-cat-name').value.trim();
+    if (!name) { toast('Enter a category name'); return; }
+    const color = selectedInlineCatColor;
+    const tempId = 'cattemp_' + Date.now();
+    categories.push({id: tempId, name, color});
+    renderCatSelect();
+    renderSidebar();
+    document.getElementById('inline-cat-name').value = '';
+    document.getElementById('inline-cat-form').classList.remove('open');
+    api({action: 'add_category', name, color}, (err, data) => {
+        if (err || !data) { categories = categories.filter(c => c.id !== tempId); renderCatSelect(); toast('Failed to save category'); return; }
+        const cat = categories.find(c => c.id === tempId);
+        if (cat) { cat.id = data.id; }
+        document.getElementById('todo-cat-select').value = data.id;
+        renderSidebar();
+    });
 }
 
 function openEditModal(id) {
@@ -1229,6 +1346,9 @@ document.getElementById('todo-title-input').addEventListener('keydown', e => {
 });
 document.getElementById('new-cat-name').addEventListener('keydown', e => {
     if (e.key === 'Enter') addCategory();
+});
+document.getElementById('inline-cat-name').addEventListener('keydown', e => {
+    if (e.key === 'Enter') saveInlineCategory();
 });
 
 // ==================== SYNC DOT ====================

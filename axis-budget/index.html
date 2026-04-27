@@ -183,6 +183,27 @@
     .field input[type="number"] { appearance: textfield; }
     .field-hint { font-size: 11px; color: var(--muted); margin-top: 2px; }
 
+    /* DROP ZONE */
+    .drop-zone {
+      border: 2px dashed var(--border); border-radius: 10px; padding: 28px 20px;
+      text-align: center; cursor: pointer; transition: border-color 0.2s, background 0.2s;
+      position: relative;
+    }
+    .drop-zone.dragover { border-color: var(--accent); background: rgba(212,255,0,0.04); }
+    .drop-zone input[type="file"] {
+      position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+    }
+    .drop-zone-icon { font-size: 28px; margin-bottom: 8px; opacity: 0.5; }
+    .drop-zone-text { font-size: 13px; color: var(--muted); line-height: 1.6; }
+    .drop-zone-text strong { color: var(--accent); }
+    .image-preview-wrap { position: relative; border-radius: 8px; overflow: hidden; }
+    .image-preview { width: 100%; max-height: 200px; object-fit: cover; display: block; border-radius: 8px; }
+    .btn-remove-image {
+      position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,0.7);
+      border: none; border-radius: 50%; width: 28px; height: 28px; color: #fff;
+      cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center;
+    }
+
     .modal-footer { display: flex; gap: 12px; padding: 0 28px 28px; }
 
     .btn-primary {
@@ -354,9 +375,16 @@ function out(obj) {
         <textarea id="fieldNotes" placeholder="Any details, links, vendor info…"></textarea>
       </div>
       <div class="field">
-        <label>Image URL <span style="font-size:10px;color:var(--muted);text-transform:none;letter-spacing:0">(optional)</span></label>
-        <input type="url" id="fieldImage" placeholder="https://…" />
-        <div class="field-hint">Paste a link to any image (Pinterest, Google, etc.)</div>
+        <label>Photo / Inspo Image <span style="font-size:10px;color:var(--muted);text-transform:none;letter-spacing:0">(optional)</span></label>
+        <div class="drop-zone" id="dropZone">
+          <input type="file" id="fileInput" accept="image/*" />
+          <div class="drop-zone-icon">🖼️</div>
+          <div class="drop-zone-text"><strong>Drag & drop</strong> an image here<br/>or click to browse</div>
+        </div>
+        <div class="image-preview-wrap" id="imagePreviewWrap" style="display:none;">
+          <img class="image-preview" id="imagePreview" src="" alt="" />
+          <button class="btn-remove-image" onclick="removeImage()">×</button>
+        </div>
       </div>
     </div>
     <div class="modal-footer">
@@ -390,6 +418,7 @@ function out(obj) {
   let items = [];
   let editingId = null;
   let pendingDeleteId = null;
+  let currentImageBase64 = null;
 
   // ── SYNC UI ──────────────────────────────────────────────────
   function setSyncState(state, msg) {
@@ -464,10 +493,13 @@ function out(obj) {
   // ── MODAL ─────────────────────────────────────────────────────
   function openModal(id) {
     editingId = id || null;
+    currentImageBase64 = null;
     document.getElementById('fieldDescription').value = '';
     document.getElementById('fieldCost').value = '';
     document.getElementById('fieldNotes').value = '';
-    document.getElementById('fieldImage').value = '';
+    document.getElementById('fileInput').value = '';
+    document.getElementById('dropZone').style.display = 'block';
+    document.getElementById('imagePreviewWrap').style.display = 'none';
     document.getElementById('modalTitle').textContent = id ? 'Edit Item' : 'Add Item';
     document.getElementById('saveBtn').disabled = false;
     document.getElementById('saveBtn').textContent = 'Save Item';
@@ -478,13 +510,59 @@ function out(obj) {
         document.getElementById('fieldDescription').value = item.description || '';
         document.getElementById('fieldCost').value = item.cost || '';
         document.getElementById('fieldNotes').value = item.notes || '';
-        document.getElementById('fieldImage').value = item.image || '';
+        if (item.image) { currentImageBase64 = item.image; showPreview(item.image); }
       }
     }
 
     document.getElementById('modalOverlay').classList.add('open');
     document.getElementById('fieldDescription').focus();
   }
+
+  function showPreview(src) {
+    document.getElementById('imagePreview').src = src;
+    document.getElementById('imagePreviewWrap').style.display = 'block';
+    document.getElementById('dropZone').style.display = 'none';
+  }
+
+  function removeImage() {
+    currentImageBase64 = null;
+    document.getElementById('imagePreview').src = '';
+    document.getElementById('imagePreviewWrap').style.display = 'none';
+    document.getElementById('dropZone').style.display = 'block';
+    document.getElementById('fileInput').value = '';
+  }
+
+  function compressAndStore(file) {
+    if (!file || !file.type.startsWith('image/')) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+      const img = new Image();
+      img.onload = () => {
+        const MAX = 600;
+        let w = img.width, h = img.height;
+        if (w > MAX || h > MAX) {
+          if (w > h) { h = Math.round(h * MAX / w); w = MAX; }
+          else { w = Math.round(w * MAX / h); h = MAX; }
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        currentImageBase64 = canvas.toDataURL('image/jpeg', 0.6);
+        showPreview(currentImageBase64);
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // File input
+  document.getElementById('fileInput').addEventListener('change', e => compressAndStore(e.target.files[0]));
+
+  // Drag & drop
+  const dz = document.getElementById('dropZone');
+  dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('dragover'); });
+  dz.addEventListener('dragleave', () => dz.classList.remove('dragover'));
+  dz.addEventListener('drop', e => { e.preventDefault(); dz.classList.remove('dragover'); compressAndStore(e.dataTransfer.files[0]); });
 
   function closeModal() {
     document.getElementById('modalOverlay').classList.remove('open');
@@ -495,7 +573,7 @@ function out(obj) {
     const description = document.getElementById('fieldDescription').value.trim();
     const cost = document.getElementById('fieldCost').value;
     const notes = document.getElementById('fieldNotes').value.trim();
-    const image = document.getElementById('fieldImage').value.trim();
+    const image = currentImageBase64 || '';
 
     if (!description && !cost) { document.getElementById('fieldDescription').focus(); return; }
 

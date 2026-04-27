@@ -185,10 +185,42 @@
             line-height: 1.7;
         }
 
+        /* RECOMMENDED SECTION */
+        .recommended-header {
+            padding: 28px 48px 16px;
+            max-width: 960px;
+            margin: 0 auto;
+            border-top: 2px solid rgba(0,0,0,0.08);
+        }
+
+        .recommended-header h2 {
+            font-size: 24px;
+            font-weight: 800;
+            color: #1a1a1a;
+        }
+
+        .recommended-header p {
+            font-size: 13px;
+            font-weight: 600;
+            color: #aaa;
+            margin-top: 3px;
+        }
+
+        .rec-badge {
+            background: #1a1a1a;
+            color: #fff;
+            border-radius: 20px;
+            padding: 4px 12px;
+            display: flex;
+            align-items: baseline;
+            gap: 5px;
+        }
+
         @media (max-width: 600px) {
             nav, .page-header { padding: 16px; }
             .content { grid-template-columns: 1fr; padding: 0 12px 24px; }
             .section { grid-column: span 1; }
+            .recommended-header { padding: 20px 16px 12px; }
             footer { flex-direction: column; gap: 10px; padding: 16px; text-align: center; }
             .footer-contact { text-align: center; }
         }
@@ -318,6 +350,77 @@
                 <div class="size-chip"><div class="chip-label">Camo</div><div class="chip-qty">42</div></div>
                 <div class="size-chip"><div class="chip-label">Grey</div><div class="chip-qty">32</div></div>
                 <div class="size-chip"><div class="chip-label">Brown/Tan</div><div class="chip-qty">80</div></div>
+            </div>
+        </section>
+
+    </div>
+
+    <div class="recommended-header">
+        <h2>Recommended Order — 2026</h2>
+        <p>Based on last year's sales data</p>
+    </div>
+
+    <div class="content">
+
+        <section class="section">
+            <div class="section-header">
+                <div>
+                    <div class="section-title">Black Acid TYM Tee</div>
+                    <div class="section-subtitle">Suggested Order</div>
+                </div>
+                <div class="total-badge rec-badge">
+                    <span class="total-num">302</span>
+                    <span class="total-lbl">pcs</span>
+                </div>
+            </div>
+            <div class="size-grid">
+                <div class="size-chip"><div class="chip-label">Small</div><div class="chip-qty">10</div></div>
+                <div class="size-chip"><div class="chip-label">Medium</div><div class="chip-qty">60</div></div>
+                <div class="size-chip"><div class="chip-label">Large</div><div class="chip-qty">95</div></div>
+                <div class="size-chip"><div class="chip-label">XL</div><div class="chip-qty">80</div></div>
+                <div class="size-chip"><div class="chip-label">2XL</div><div class="chip-qty">32</div></div>
+                <div class="size-chip"><div class="chip-label">3XL</div><div class="chip-qty">13</div></div>
+                <div class="size-chip"><div class="chip-label">4XL</div><div class="chip-qty">8</div></div>
+                <div class="size-chip"><div class="chip-label">5XL</div><div class="chip-qty">4</div></div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-header">
+                <div>
+                    <div class="section-title">Magnify Camo Tee</div>
+                    <div class="section-subtitle">Suggested Order</div>
+                </div>
+                <div class="total-badge rec-badge">
+                    <span class="total-num">450</span>
+                    <span class="total-lbl">pcs</span>
+                </div>
+            </div>
+            <div class="size-grid">
+                <div class="size-chip"><div class="chip-label">Small</div><div class="chip-qty">100</div></div>
+                <div class="size-chip"><div class="chip-label">Medium</div><div class="chip-qty">125</div></div>
+                <div class="size-chip"><div class="chip-label">Large</div><div class="chip-qty">115</div></div>
+                <div class="size-chip"><div class="chip-label">XL</div><div class="chip-qty">60</div></div>
+                <div class="size-chip"><div class="chip-label">2XL</div><div class="chip-qty">28</div></div>
+                <div class="size-chip"><div class="chip-label">3XL</div><div class="chip-qty">12</div></div>
+                <div class="size-chip"><div class="chip-label">4XL</div><div class="chip-qty">8</div></div>
+                <div class="size-chip"><div class="chip-label">5XL</div><div class="chip-qty">2</div></div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-header">
+                <div>
+                    <div class="section-title">Magnify Hat</div>
+                    <div class="section-subtitle">Suggested Order</div>
+                </div>
+                <div class="total-badge rec-badge">
+                    <span class="total-num">150</span>
+                    <span class="total-lbl">pcs</span>
+                </div>
+            </div>
+            <div class="size-grid" style="grid-template-columns: repeat(1, 1fr);">
+                <div class="size-chip"><div class="chip-label">One Size</div><div class="chip-qty">150</div></div>
             </div>
         </section>
 

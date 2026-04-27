@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Axis Conf — Budget Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black:   #090909;
+      --surface: #131313;
+      --card:    #1a1a1a;
+      --border:  #2a2a2a;
+      --accent:  #D4FF00;       /* electric lime — high-energy */
+      --accent2: #FF3C3C;
+      --text:    #f0f0f0;
+      --muted:   #888;
+      --radius:  12px;
+    }
+
+    html, body {
+      background: var(--black);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      letter-spacing: 3px;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    .logo span { color: var(--text); }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .total-display {
+      text-align: right;
+    }
+
+    .total-label {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .total-amount {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 32px;
+      letter-spacing: 1px;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    .btn-add {
+      background: var(--accent);
+      color: var(--black);
+      border: none;
+      border-radius: var(--radius);
+      padding: 12px 24px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: transform 0.1s, opacity 0.2s;
+    }
+
+    .btn-add:hover { opacity: 0.88; transform: translateY(-1px); }
+    .btn-add:active { transform: translateY(0); }
+
+    .btn-transfer {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 10px 16px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 12px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      color: var(--muted);
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .btn-transfer:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ── IMPORT DROP OVERLAY ── */
+    .import-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.92);
+      z-index: 400;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .import-overlay.active { display: flex; }
+
+    .import-overlay.ready { background: rgba(212,255,0,0.08); }
+
+    .import-drop-box {
+      border: 3px dashed var(--border);
+      border-radius: 20px;
+      padding: 60px 80px;
+      text-align: center;
+      transition: border-color 0.2s;
+      pointer-events: none;
+    }
+
+    .import-overlay.ready .import-drop-box { border-color: var(--accent); }
+
+    .import-drop-icon { font-size: 56px; margin-bottom: 16px; }
+
+    .import-drop-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 36px;
+      letter-spacing: 3px;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .import-overlay.ready .import-drop-title { color: var(--accent); }
+
+    .import-drop-sub { font-size: 14px; color: var(--muted); }
+
+    .btn-import-cancel {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 24px;
+      color: var(--muted);
+      font-size: 13px;
+      cursor: pointer;
+      pointer-events: all;
+    }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 24px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+      z-index: 500;
+      transition: transform 0.3s ease;
+      white-space: nowrap;
+    }
+
+    .toast.show { transform: translateX(-50%) translateY(0); }
+    .toast.success { border-color: var(--accent); color: var(--accent); }
+
+    /* ── MAIN ── */
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 32px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 36px;
+      letter-spacing: 3px;
+      color: var(--text);
+    }
+
+    .item-count {
+      font-size: 12px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ── EMPTY STATE ── */
+    .empty-state {
+      text-align: center;
+      padding: 80px 20px;
+      border: 1px dashed var(--border);
+      border-radius: var(--radius);
+    }
+
+    .empty-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+      opacity: 0.4;
+    }
+
+    .empty-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      letter-spacing: 2px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .empty-sub {
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    /* ── GRID ── */
+    .budget-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    /* ── CARD ── */
+    .budget-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .budget-card:hover {
+      border-color: #444;
+      transform: translateY(-2px);
+    }
+
+    .card-thumb {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      display: block;
+      background: #111;
+    }
+
+    .card-thumb-placeholder {
+      width: 100%;
+      height: 200px;
+      background: #111;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-bottom: 1px solid var(--border);
+      transition: background 0.2s;
+    }
+
+    .card-thumb-placeholder:hover { background: #1a1a1a; }
+
+    .card-thumb-placeholder svg { opacity: 0.3; }
+
+    .card-body {
+      padding: 20px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .card-description {
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 1.4;
+      color: var(--text);
+    }
+
+    .card-cost {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      letter-spacing: 1px;
+      color: var(--accent);
+    }
+
+    .card-notes {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 8px;
+      padding: 16px 20px;
+      border-top: 1px solid var(--border);
+    }
+
+    .btn-sm {
+      flex: 1;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: opacity 0.15s;
+      border: none;
+    }
+
+    .btn-sm:hover { opacity: 0.75; }
+
+    .btn-edit {
+      background: var(--border);
+      color: var(--text);
+    }
+
+    .btn-delete {
+      background: rgba(255, 60, 60, 0.15);
+      color: var(--accent2);
+      border: 1px solid rgba(255, 60, 60, 0.2) !important;
+    }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .modal-overlay.open { display: flex; }
+
+    .modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      width: 100%;
+      max-width: 560px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-header {
+      padding: 24px 28px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .modal-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      letter-spacing: 2px;
+    }
+
+    .btn-close {
+      background: none;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 24px;
+      line-height: 1;
+      padding: 4px;
+      transition: color 0.15s;
+    }
+
+    .btn-close:hover { color: var(--text); }
+
+    .modal-body {
+      padding: 24px 28px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .field label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .field input,
+    .field textarea {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      padding: 12px 16px;
+      outline: none;
+      transition: border-color 0.2s;
+      width: 100%;
+    }
+
+    .field input:focus,
+    .field textarea:focus {
+      border-color: var(--accent);
+    }
+
+    .field textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .field input[type="number"] { appearance: textfield; }
+
+    /* drop zone */
+    .drop-zone {
+      border: 2px dashed var(--border);
+      border-radius: 10px;
+      padding: 32px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      position: relative;
+    }
+
+    .drop-zone.dragover {
+      border-color: var(--accent);
+      background: rgba(212, 255, 0, 0.04);
+    }
+
+    .drop-zone input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+
+    .drop-zone-icon {
+      font-size: 32px;
+      margin-bottom: 10px;
+      opacity: 0.5;
+    }
+
+    .drop-zone-text {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .drop-zone-text strong { color: var(--accent); }
+
+    .image-preview-wrap {
+      position: relative;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .image-preview {
+      width: 100%;
+      max-height: 220px;
+      object-fit: cover;
+      display: block;
+      border-radius: 8px;
+    }
+
+    .btn-remove-image {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: rgba(0,0,0,0.7);
+      border: none;
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      color: #fff;
+      cursor: pointer;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-footer {
+      display: flex;
+      gap: 12px;
+      padding: 0 28px 28px;
+    }
+
+    .btn-primary {
+      flex: 1;
+      background: var(--accent);
+      color: var(--black);
+      border: none;
+      border-radius: 10px;
+      padding: 14px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+
+    .btn-primary:hover { opacity: 0.88; }
+
+    .btn-cancel {
+      background: var(--card);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 20px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+
+    .btn-cancel:hover { opacity: 0.7; }
+
+    /* ── DELETE CONFIRM ── */
+    .confirm-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      z-index: 300;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .confirm-overlay.open { display: flex; }
+
+    .confirm-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      max-width: 380px;
+      width: 90%;
+      text-align: center;
+    }
+
+    .confirm-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 24px;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+      color: var(--accent2);
+    }
+
+    .confirm-sub {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+
+    .confirm-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn-confirm-delete {
+      flex: 1;
+      background: var(--accent2);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 12px;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      header { padding: 16px 20px; flex-wrap: wrap; gap: 12px; }
+      main { padding: 28px 20px; }
+      .total-amount { font-size: 26px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">AXIS<span> // Budget</span></div>
+  <div class="header-right">
+    <div class="total-display">
+      <div class="total-label">Total Budget</div>
+      <div class="total-amount" id="totalAmount">$0.00</div>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center;">
+      <button class="btn-transfer" onclick="exportData()" title="Save a backup file you can move to another computer">↓ Export</button>
+      <button class="btn-transfer" onclick="startImport()" title="Load a backup file from another computer">↑ Import</button>
+      <button class="btn-add" onclick="openModal()">+ Add Item</button>
+    </div>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main>
+  <div class="section-header">
+    <div class="section-title">Budget Items</div>
+    <div class="item-count" id="itemCount">0 items</div>
+  </div>
+
+  <div id="emptyState" class="empty-state">
+    <div class="empty-icon">📋</div>
+    <div class="empty-title">No Items Yet</div>
+    <div class="empty-sub">Hit "Add Item" to start tracking your budget.</div>
+  </div>
+
+  <div class="budget-grid" id="budgetGrid"></div>
+</main>
+
+<!-- ADD / EDIT MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle">Add Item</div>
+      <button class="btn-close" onclick="closeModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="field">
+        <label>Description</label>
+        <input type="text" id="fieldDescription" placeholder="e.g. Floral arch, Stage backdrop…" />
+      </div>
+      <div class="field">
+        <label>Cost ($)</label>
+        <input type="number" id="fieldCost" placeholder="0.00" min="0" step="0.01" />
+      </div>
+      <div class="field">
+        <label>Notes / Inspo</label>
+        <textarea id="fieldNotes" placeholder="Any details, links, vendor info…"></textarea>
+      </div>
+      <div class="field">
+        <label>Photo / Inspo Image</label>
+        <div id="dropZone" class="drop-zone" id="dropZone">
+          <input type="file" id="fileInput" accept="image/*" />
+          <div class="drop-zone-icon">🖼️</div>
+          <div class="drop-zone-text">
+            <strong>Drag & drop</strong> an image here<br/>or click to browse
+          </div>
+        </div>
+        <div id="imagePreviewWrap" class="image-preview-wrap" style="display:none;">
+          <img id="imagePreview" class="image-preview" src="" alt="Preview" />
+          <button class="btn-remove-image" onclick="removeImage()">×</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+      <button class="btn-primary" onclick="saveItem()">Save Item</button>
+    </div>
+  </div>
+</div>
+
+<!-- IMPORT OVERLAY -->
+<div class="import-overlay" id="importOverlay">
+  <div class="import-drop-box">
+    <div class="import-drop-icon">📂</div>
+    <div class="import-drop-title">Drop Your Backup File</div>
+    <div class="import-drop-sub">Drop the <strong style="color:var(--accent)">axis-budget-backup.json</strong> file anywhere on this screen</div>
+  </div>
+  <button class="btn-import-cancel" onclick="cancelImport()">Cancel</button>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- DELETE CONFIRM -->
+<div class="confirm-overlay" id="confirmOverlay">
+  <div class="confirm-box">
+    <div class="confirm-title">Delete Item?</div>
+    <div class="confirm-sub">This can't be undone.</div>
+    <div class="confirm-actions">
+      <button class="btn-cancel" onclick="closeConfirm()">Cancel</button>
+      <button class="btn-confirm-delete" onclick="confirmDelete()">Delete</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ── STATE ──────────────────────────────────────────────────────
+  const STORAGE_KEY = 'axis_budget_items';
+  let items = [];
+  let editingId = null;
+  let pendingDeleteId = null;
+  let currentImageBase64 = null;
+
+  function load() {
+    try {
+      items = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+    } catch { items = []; }
+  }
+
+  function save() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+  }
+
+  function genId() {
+    return Date.now().toString(36) + Math.random().toString(36).slice(2);
+  }
+
+  // ── RENDER ─────────────────────────────────────────────────────
+  function render() {
+    const grid = document.getElementById('budgetGrid');
+    const empty = document.getElementById('emptyState');
+    const countEl = document.getElementById('itemCount');
+    const totalEl = document.getElementById('totalAmount');
+
+    grid.innerHTML = '';
+    countEl.textContent = `${items.length} item${items.length !== 1 ? 's' : ''}`;
+
+    const total = items.reduce((s, i) => s + (parseFloat(i.cost) || 0), 0);
+    totalEl.textContent = '$' + total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+    if (items.length === 0) {
+      empty.style.display = 'block';
+      return;
+    }
+    empty.style.display = 'none';
+
+    items.forEach(item => {
+      const card = document.createElement('div');
+      card.className = 'budget-card';
+      card.innerHTML = `
+        ${item.image
+          ? `<img class="card-thumb" src="${item.image}" alt="${escHtml(item.description)}" />`
+          : `<div class="card-thumb-placeholder" onclick="openEditWithImage('${item.id}')">
+               <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                 <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
+                 <path d="M21 15l-5-5L5 21"/>
+               </svg>
+               Add photo
+             </div>`
+        }
+        <div class="card-body">
+          <div class="card-description">${escHtml(item.description) || '<em style="opacity:.4">No description</em>'}</div>
+          <div class="card-cost">${formatCost(item.cost)}</div>
+          ${item.notes ? `<div class="card-notes">${escHtml(item.notes)}</div>` : ''}
+        </div>
+        <div class="card-actions">
+          <button class="btn-sm btn-edit" onclick="openModal('${item.id}')">Edit</button>
+          <button class="btn-sm btn-delete" onclick="askDelete('${item.id}')">Delete</button>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+  }
+
+  function escHtml(str) {
+    if (!str) return '';
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function formatCost(val) {
+    const n = parseFloat(val);
+    if (isNaN(n)) return '$—';
+    return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  // ── MODAL ──────────────────────────────────────────────────────
+  function openModal(id) {
+    editingId = id || null;
+    currentImageBase64 = null;
+
+    document.getElementById('fieldDescription').value = '';
+    document.getElementById('fieldCost').value = '';
+    document.getElementById('fieldNotes').value = '';
+    document.getElementById('imagePreviewWrap').style.display = 'none';
+    document.getElementById('dropZone').style.display = 'block';
+    document.getElementById('fileInput').value = '';
+    document.getElementById('modalTitle').textContent = id ? 'Edit Item' : 'Add Item';
+
+    if (id) {
+      const item = items.find(i => i.id === id);
+      if (item) {
+        document.getElementById('fieldDescription').value = item.description || '';
+        document.getElementById('fieldCost').value = item.cost || '';
+        document.getElementById('fieldNotes').value = item.notes || '';
+        if (item.image) {
+          currentImageBase64 = item.image;
+          showImagePreview(item.image);
+        }
+      }
+    }
+
+    document.getElementById('modalOverlay').classList.add('open');
+    document.getElementById('fieldDescription').focus();
+  }
+
+  function openEditWithImage(id) {
+    openModal(id);
+  }
+
+  function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('open');
+    editingId = null;
+    currentImageBase64 = null;
+  }
+
+  function saveItem() {
+    const description = document.getElementById('fieldDescription').value.trim();
+    const cost = document.getElementById('fieldCost').value;
+    const notes = document.getElementById('fieldNotes').value.trim();
+
+    if (!description && !cost) {
+      document.getElementById('fieldDescription').focus();
+      return;
+    }
+
+    if (editingId) {
+      const idx = items.findIndex(i => i.id === editingId);
+      if (idx !== -1) {
+        items[idx] = { ...items[idx], description, cost, notes, image: currentImageBase64 || items[idx].image };
+      }
+    } else {
+      items.push({ id: genId(), description, cost, notes, image: currentImageBase64 || null });
+    }
+
+    save();
+    render();
+    closeModal();
+  }
+
+  // ── IMAGE ──────────────────────────────────────────────────────
+  function showImagePreview(src) {
+    document.getElementById('imagePreview').src = src;
+    document.getElementById('imagePreviewWrap').style.display = 'block';
+    document.getElementById('dropZone').style.display = 'none';
+  }
+
+  function removeImage() {
+    currentImageBase64 = null;
+    document.getElementById('imagePreviewWrap').style.display = 'none';
+    document.getElementById('dropZone').style.display = 'block';
+    document.getElementById('fileInput').value = '';
+  }
+
+  function handleFile(file) {
+    if (!file || !file.type.startsWith('image/')) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+      currentImageBase64 = e.target.result;
+      showImagePreview(currentImageBase64);
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // file input change
+  document.getElementById('fileInput').addEventListener('change', e => {
+    handleFile(e.target.files[0]);
+  });
+
+  // drag & drop
+  const dz = document.getElementById('dropZone');
+
+  dz.addEventListener('dragover', e => {
+    e.preventDefault();
+    dz.classList.add('dragover');
+  });
+
+  dz.addEventListener('dragleave', () => dz.classList.remove('dragover'));
+
+  dz.addEventListener('drop', e => {
+    e.preventDefault();
+    dz.classList.remove('dragover');
+    handleFile(e.dataTransfer.files[0]);
+  });
+
+  // ── DELETE ─────────────────────────────────────────────────────
+  function askDelete(id) {
+    pendingDeleteId = id;
+    document.getElementById('confirmOverlay').classList.add('open');
+  }
+
+  function closeConfirm() {
+    pendingDeleteId = null;
+    document.getElementById('confirmOverlay').classList.remove('open');
+  }
+
+  function confirmDelete() {
+    if (pendingDeleteId) {
+      items = items.filter(i => i.id !== pendingDeleteId);
+      save();
+      render();
+    }
+    closeConfirm();
+  }
+
+  // close modal on overlay click
+  document.getElementById('modalOverlay').addEventListener('click', e => {
+    if (e.target === document.getElementById('modalOverlay')) closeModal();
+  });
+
+  document.getElementById('confirmOverlay').addEventListener('click', e => {
+    if (e.target === document.getElementById('confirmOverlay')) closeConfirm();
+  });
+
+  // keyboard escape
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      closeModal();
+      closeConfirm();
+    }
+  });
+
+  // ── EXPORT / IMPORT ────────────────────────────────────────────
+  function exportData() {
+    const blob = new Blob([JSON.stringify({ version: 1, items }, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'axis-budget-backup.json';
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast('Backup saved — move that file to the other computer!', 'success');
+  }
+
+  function startImport() {
+    document.getElementById('importOverlay').classList.add('active');
+  }
+
+  function cancelImport() {
+    document.getElementById('importOverlay').classList.remove('active', 'ready');
+  }
+
+  function importFromJson(text) {
+    try {
+      const data = JSON.parse(text);
+      const incoming = Array.isArray(data) ? data : (data.items || []);
+      if (!Array.isArray(incoming)) throw new Error('bad format');
+      items = incoming;
+      save();
+      render();
+      cancelImport();
+      showToast(`Imported ${items.length} item${items.length !== 1 ? 's' : ''} — you're all caught up!`, 'success');
+    } catch {
+      cancelImport();
+      showToast('That file didn\'t work. Make sure it\'s an axis-budget-backup.json file.', '');
+    }
+  }
+
+  // Drag JSON file onto the import overlay
+  const importOverlay = document.getElementById('importOverlay');
+
+  importOverlay.addEventListener('dragover', e => {
+    e.preventDefault();
+    importOverlay.classList.add('ready');
+  });
+
+  importOverlay.addEventListener('dragleave', e => {
+    if (!importOverlay.contains(e.relatedTarget)) {
+      importOverlay.classList.remove('ready');
+    }
+  });
+
+  importOverlay.addEventListener('drop', e => {
+    e.preventDefault();
+    importOverlay.classList.remove('ready');
+    const file = e.dataTransfer.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => importFromJson(ev.target.result);
+    reader.readAsText(file);
+  });
+
+  // Also allow dragging a JSON file anywhere on the page when overlay is not open
+  document.addEventListener('dragover', e => {
+    const f = e.dataTransfer.items[0];
+    if (f && (f.type === 'application/json' || f.type === '')) {
+      e.preventDefault();
+      if (!importOverlay.classList.contains('active')) {
+        importOverlay.classList.add('active');
+      }
+    }
+  });
+
+  // ── TOAST ──────────────────────────────────────────────────────
+  let toastTimer;
+  function showToast(msg, type) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'toast' + (type ? ' ' + type : '');
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 3500);
+  }
+
+  // ── INIT ───────────────────────────────────────────────────────
+  load();
+  render();
+</script>
+</body>
+</html>

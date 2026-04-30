@@ -538,7 +538,7 @@ function out(obj) {
     reader.onload = e => {
       const img = new Image();
       img.onload = () => {
-        const MAX = 600;
+        const MAX = 300;
         let w = img.width, h = img.height;
         if (w > MAX || h > MAX) {
           if (w > h) { h = Math.round(h * MAX / w); w = MAX; }
@@ -547,7 +547,9 @@ function out(obj) {
         const canvas = document.createElement('canvas');
         canvas.width = w; canvas.height = h;
         canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-        currentImageBase64 = canvas.toDataURL('image/jpeg', 0.6);
+        const b64 = canvas.toDataURL('image/jpeg', 0.4);
+        if (b64.length > 40000) { showToast('Image too large — try a smaller file', 'error'); return; }
+        currentImageBase64 = b64;
         showPreview(currentImageBase64);
       };
       img.src = e.target.result;
@@ -589,8 +591,9 @@ function out(obj) {
     try {
       await fetch(SCRIPT_URL + '?' + params.toString(), { method: 'GET', mode: 'no-cors' });
       closeModal();
-      setTimeout(loadItems, 1000);
       showToast(editingId ? 'Item updated' : 'Item added', 'success');
+      setTimeout(loadItems, 2500);
+      setTimeout(loadItems, 5000);
     } catch(e) {
       setSyncState('error', 'Save failed');
       showToast('Could not save — try again', 'error');
@@ -617,7 +620,8 @@ function out(obj) {
     setSyncState('syncing', 'Deleting…');
     try {
       await fetch(SCRIPT_URL + '?action=delete&id=' + id, { method: 'GET', mode: 'no-cors' });
-      setTimeout(loadItems, 1000);
+      setTimeout(loadItems, 2500);
+      setTimeout(loadItems, 5000);
       showToast('Item deleted', 'success');
     } catch(e) {
       setSyncState('error', 'Delete failed');

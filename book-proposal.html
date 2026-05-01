@@ -1,0 +1,1429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Book Proposal — Saying "I Do" Everyday | Aaron Delay</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green:      #364E33;
+      --green-dark: #253622;
+      --green-mid:  #2C3F2A;
+      --gold:       #8B6B18;
+      --gold-light: #C8A84A;
+      --cream:      #EDEADF;
+      --warm-white: #F4F1EA;
+      --gray-100:   #E6E2D8;
+      --gray-200:   #D2CEC2;
+      --gray-400:   #8C887C;
+      --text:       #1C1C18;
+      --text-muted: #565248;
+
+      /* Single consistent content width used everywhere */
+      --content-max: 860px;
+      --content-pad: 48px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      font-size: 16px;
+      line-height: 1.7;
+    }
+
+    /* ── UNIVERSAL CONTENT WRAPPER ──────────────────────────── */
+    /* Every section's content passes through this — guarantees
+       identical left edge on cover, body, everything.          */
+    .wrap {
+      max-width: var(--content-max);
+      margin: 0 auto;
+      padding: 0 var(--content-pad);
+    }
+
+    /* ── SECTIONS ───────────────────────────────────────────── */
+    section { padding: 80px 0; }
+    section.alt   { background: var(--warm-white); }
+    section.dark  { background: var(--green); color: white; }
+    section.darker { background: var(--green-dark); color: white; }
+
+    hr.divider { border: none; border-top: 1px solid var(--gray-200); margin: 0; }
+
+    /* ── EYEBROW / SECTION LABELS ───────────────────────────── */
+    .eyebrow {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.20em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 10px;
+    }
+    section.dark  .eyebrow,
+    section.darker .eyebrow { color: var(--gold-light); }
+
+    .section-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(26px, 3.2vw, 40px);
+      font-weight: 700;
+      line-height: 1.15;
+      color: var(--green);
+      margin-bottom: 14px;
+    }
+    section.dark  .section-title,
+    section.darker .section-title { color: white; }
+
+    .section-lead {
+      font-size: 16px;
+      color: var(--text-muted);
+      max-width: 600px;
+      line-height: 1.8;
+    }
+    section.dark  .section-lead,
+    section.darker .section-lead { color: rgba(255,255,255,0.60); }
+
+    .section-header { margin-bottom: 48px; }
+
+
+    /* ══════════════════════════════════════════════════════════
+       COVER
+       Full-bleed green background; content constrained by .wrap
+    ══════════════════════════════════════════════════════════ */
+    .cover {
+      background: var(--green);
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 80px 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .cover::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse at 85% 15%, rgba(200,168,74,0.10) 0%, transparent 55%),
+        radial-gradient(ellipse at 5% 85%,  rgba(200,168,74,0.06) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    /* Imprint badge — positioned relative to .wrap edge */
+    .cover-topbar {
+      position: absolute;
+      top: 40px;
+      left: 0;
+      right: 0;
+    }
+    .cover-topbar .wrap {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .cover-date {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+    }
+    .imprint-badge {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.50);
+      border: 1px solid rgba(255,255,255,0.18);
+      padding: 6px 14px;
+    }
+
+    .cover-rule {
+      width: 44px;
+      height: 2px;
+      background: var(--gold);
+      margin-bottom: 32px;
+    }
+    .cover-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(44px, 6.5vw, 80px);
+      font-weight: 700;
+      line-height: 1.06;
+      margin-bottom: 18px;
+    }
+    .cover-title em { font-style: italic; color: var(--gold-light); }
+
+    .cover-subtitle {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(17px, 2.2vw, 24px);
+      font-style: italic;
+      color: rgba(255,255,255,0.68);
+      margin-bottom: 52px;
+      max-width: 520px;
+    }
+    .cover-author {
+      font-size: 17px;
+      font-weight: 600;
+      color: white;
+      margin-bottom: 4px;
+    }
+    .cover-cred {
+      font-size: 12px;
+      color: rgba(255,255,255,0.48);
+      letter-spacing: 0.04em;
+      margin-bottom: 52px;
+    }
+
+    /* Stats row */
+    .cover-stats {
+      border-top: 1px solid rgba(255,255,255,0.12);
+      padding-top: 36px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+    }
+    .stat {
+      padding-right: 24px;
+      border-right: 1px solid rgba(255,255,255,0.10);
+    }
+    .stat:last-child { border-right: none; padding-right: 0; padding-left: 24px; }
+    .stat:not(:first-child):not(:last-child) { padding-left: 24px; }
+    .stat-value {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--gold-light);
+      line-height: 1.2;
+      margin-bottom: 4px;
+    }
+    .stat-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.40);
+    }
+
+    .cover-scroll {
+      position: absolute;
+      bottom: 36px;
+      right: var(--content-pad);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.22);
+    }
+
+
+    /* ══════════════════════════════════════════════════════════
+       OVERVIEW
+    ══════════════════════════════════════════════════════════ */
+    .meta-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--gray-200);
+      border: 1px solid var(--gray-200);
+      margin-bottom: 36px;
+    }
+    .meta-item {
+      background: var(--warm-white);
+      padding: 22px 26px;
+    }
+    .meta-item label {
+      display: block;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gray-400);
+      margin-bottom: 5px;
+    }
+    .meta-item span {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .logline {
+      background: var(--green);
+      padding: 36px 40px;
+      border-left: 4px solid var(--gold);
+      margin-bottom: 36px;
+    }
+    .logline-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gold-light);
+      margin-bottom: 12px;
+    }
+    .logline p {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(17px, 2vw, 22px);
+      font-style: italic;
+      color: white;
+      line-height: 1.55;
+    }
+
+    .body-text { font-size: 15.5px; color: var(--text-muted); line-height: 1.85; }
+    .body-text p + p { margin-top: 16px; }
+    .body-text strong { color: var(--text); font-weight: 600; }
+
+
+    /* ══════════════════════════════════════════════════════════
+       CHAPTER LIST
+       Number is a small badge — never overflows
+    ══════════════════════════════════════════════════════════ */
+    .chapter-list { border-top: 1px solid var(--gray-200); }
+
+    .chapter-item {
+      display: grid;
+      grid-template-columns: 56px 1fr;
+      align-items: start;
+      gap: 24px;
+      padding: 28px 0;
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .chapter-badge {
+      /* Small pill — no overflow possible */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border: 1px solid var(--gray-200);
+      background: var(--warm-white);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .chapter-badge-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--green);
+      line-height: 1;
+    }
+    .chapter-badge-tag {
+      font-size: 7.5px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gray-400);
+      line-height: 1;
+      margin-top: 2px;
+    }
+
+    .chapter-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--green);
+      margin-bottom: 7px;
+      line-height: 1.3;
+    }
+    .chapter-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.72;
+    }
+
+
+    /* ══════════════════════════════════════════════════════════
+       AUDIENCE
+    ══════════════════════════════════════════════════════════ */
+    .audience-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 32px;
+    }
+    .audience-card {
+      padding: 28px 30px;
+      background: var(--cream);
+      border: 1px solid var(--gray-200);
+      border-top: 3px solid var(--green);
+    }
+    .audience-card .eyebrow { margin-bottom: 10px; }
+    .audience-card p { font-size: 15px; color: var(--text); line-height: 1.65; }
+
+    .need-box {
+      background: var(--green-mid);
+      padding: 32px 36px;
+      border-left: 4px solid var(--gold);
+    }
+    .need-box h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 19px;
+      font-weight: 600;
+      color: white;
+      margin-bottom: 12px;
+    }
+    .need-box p { font-size: 15px; color: rgba(255,255,255,0.68); line-height: 1.75; }
+    .need-box p + p { margin-top: 10px; }
+
+
+    /* ══════════════════════════════════════════════════════════
+       AUTHOR
+    ══════════════════════════════════════════════════════════ */
+    .author-layout {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 52px;
+      align-items: start;
+    }
+    .author-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 30px;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 4px;
+    }
+    .author-cred {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      color: var(--gold-light);
+      margin-bottom: 24px;
+      text-transform: uppercase;
+    }
+    .author-bio p { font-size: 15px; color: rgba(255,255,255,0.70); line-height: 1.82; margin-bottom: 14px; }
+    .author-bio p:last-child { margin-bottom: 0; }
+    .author-bio strong { color: white; }
+
+    /* ── FOREWORD BANNER ─────────────────────────────────────── */
+    .foreword-section {
+      background: var(--cream);
+      padding: 80px 0;
+      text-align: center;
+      border-top: 1px solid var(--gray-200);
+      border-bottom: 1px solid var(--gray-200);
+    }
+    .foreword-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--gold);
+      color: #1a2a18;
+      font-size: 9.5px;
+      font-weight: 800;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      padding: 7px 18px;
+      margin-bottom: 40px;
+    }
+    .foreword-badge::before,
+    .foreword-badge::after {
+      content: '';
+      display: block;
+      width: 20px;
+      height: 1px;
+      background: rgba(26,42,24,0.40);
+    }
+    .foreword-mark {
+      font-family: 'Playfair Display', serif;
+      font-size: 96px;
+      line-height: 0.6;
+      color: var(--gold);
+      display: block;
+      margin-bottom: 28px;
+      user-select: none;
+    }
+    .foreword-statement {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(20px, 2.8vw, 30px);
+      font-style: italic;
+      font-weight: 400;
+      color: var(--green);
+      line-height: 1.5;
+      max-width: 640px;
+      margin: 0 auto 36px;
+    }
+    .foreword-rule {
+      width: 48px;
+      height: 1.5px;
+      background: var(--gold);
+      margin: 0 auto 28px;
+    }
+    .foreword-name {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(26px, 3vw, 40px);
+      font-weight: 700;
+      color: var(--green);
+      line-height: 1.1;
+      margin-bottom: 8px;
+    }
+    .foreword-title {
+      font-size: 13px;
+      color: var(--gray-400);
+      letter-spacing: 0.04em;
+      line-height: 1.6;
+    }
+
+    .platform-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.10);
+      padding: 24px;
+    }
+    .platform-card h4 {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gold-light);
+      margin-bottom: 16px;
+    }
+    .platform-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .platform-item:last-child { border-bottom: none; }
+    .platform-icon {
+      width: 28px;
+      height: 28px;
+      background: rgba(200,168,74,0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .platform-text strong {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: white;
+      line-height: 1.3;
+      margin-bottom: 1px;
+    }
+    .platform-text span { font-size: 11.5px; color: rgba(255,255,255,0.40); }
+
+
+    /* ══════════════════════════════════════════════════════════
+       MARKET / COMPARABLES
+    ══════════════════════════════════════════════════════════ */
+    .comp-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .comp-card {
+      padding: 22px 20px;
+      background: var(--cream);
+      border: 1px solid var(--gray-200);
+      border-top: 2px solid var(--green);
+    }
+    .comp-card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--green);
+      margin-bottom: 4px;
+      line-height: 1.3;
+    }
+    .comp-card-author { font-size: 12px; color: var(--gray-400); }
+
+    .diff-box {
+      border: 1px solid var(--gray-200);
+      border-left: 4px solid var(--gold);
+      padding: 28px 32px;
+      background: var(--warm-white);
+    }
+    .diff-box h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--green);
+      margin-bottom: 18px;
+    }
+    .diff-list {
+      list-style: none;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px 32px;
+    }
+    .diff-list li {
+      font-size: 14px;
+      color: var(--text-muted);
+      padding-left: 16px;
+      position: relative;
+      line-height: 1.55;
+    }
+    .diff-list li::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 9px;
+      width: 7px; height: 1.5px;
+      background: var(--gold);
+    }
+
+    .why-box {
+      margin-top: 20px;
+      padding: 24px 28px;
+      background: var(--cream);
+      border: 1px solid var(--gray-200);
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.75;
+    }
+    .why-box strong { color: var(--green); font-weight: 600; }
+
+
+    /* ══════════════════════════════════════════════════════════
+       PROMOTION
+    ══════════════════════════════════════════════════════════ */
+    .promo-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .promo-card {
+      padding: 22px 20px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.04);
+    }
+    .promo-card h4 {
+      font-size: 13px;
+      font-weight: 600;
+      color: white;
+      margin-bottom: 6px;
+    }
+    .promo-card p { font-size: 13px; color: rgba(255,255,255,0.52); line-height: 1.65; }
+
+
+    /* ══════════════════════════════════════════════════════════
+       OUTCOMES
+    ══════════════════════════════════════════════════════════ */
+    .outcomes-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .outcome-item {
+      padding: 24px 28px;
+      border: 1px solid var(--gray-200);
+      background: var(--warm-white);
+    }
+    .outcome-item h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--green);
+      margin-bottom: 8px;
+    }
+    .outcome-item p { font-size: 14px; color: var(--text-muted); line-height: 1.65; }
+
+
+    /* ══════════════════════════════════════════════════════════
+       SAMPLE MATERIAL
+    ══════════════════════════════════════════════════════════ */
+    .sample-chapter { max-width: 700px; }
+    .sample-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+    .sample-chapter h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--green);
+      margin-bottom: 28px;
+      line-height: 1.2;
+    }
+    .sample-chapter h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--green);
+      margin: 32px 0 10px;
+    }
+    .sample-chapter p {
+      font-size: 15.5px;
+      color: var(--text-muted);
+      line-height: 1.85;
+      margin-bottom: 16px;
+    }
+    .pull-quote {
+      border-left: 3px solid var(--gold);
+      padding: 16px 24px;
+      margin: 28px 0;
+      background: var(--gray-100);
+    }
+    .pull-quote p {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px !important;
+      font-style: italic;
+      color: var(--green) !important;
+      line-height: 1.5 !important;
+      margin: 0 !important;
+    }
+    .action-box {
+      background: var(--green);
+      padding: 24px 28px;
+      margin: 32px 0;
+    }
+    .action-box h4 {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold-light);
+      margin-bottom: 14px;
+    }
+    .action-box ol {
+      padding-left: 16px;
+      color: rgba(255,255,255,0.68);
+      font-size: 14px;
+      line-height: 1.75;
+    }
+    .action-box li + li { margin-top: 6px; }
+    .action-box strong { color: rgba(255,255,255,0.90); }
+
+    .sample-divider {
+      border: none;
+      border-top: 1px solid var(--gray-200);
+      margin: 56px 0;
+    }
+
+
+    /* ══════════════════════════════════════════════════════════
+       CTA FOOTER
+    ══════════════════════════════════════════════════════════ */
+    .cta {
+      background: var(--green-dark);
+      padding: 72px 0;
+      color: white;
+      text-align: center;
+    }
+    .cta h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(24px, 3vw, 36px);
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    .cta p {
+      font-size: 16px;
+      color: rgba(255,255,255,0.55);
+      max-width: 440px;
+      margin: 0 auto 36px;
+      line-height: 1.7;
+    }
+    .cta-strip {
+      display: inline-grid;
+      grid-template-columns: repeat(4, auto);
+      gap: 0;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.04);
+    }
+    .cta-detail {
+      padding: 20px 32px;
+      border-right: 1px solid rgba(255,255,255,0.08);
+      text-align: left;
+    }
+    .cta-detail:last-child { border-right: none; }
+    .cta-detail strong {
+      display: block;
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gold-light);
+      margin-bottom: 4px;
+    }
+    .cta-detail span { font-size: 14px; color: rgba(255,255,255,0.70); }
+
+
+    /* ══════════════════════════════════════════════════════════
+       SIDE NAV DOTS
+    ══════════════════════════════════════════════════════════ */
+    .toc-nav {
+      position: fixed;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .toc-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--gray-200);
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+    }
+    .toc-dot.active { background: var(--gold); transform: scale(1.6); }
+    .toc-dot:hover::after {
+      content: attr(data-label);
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: var(--green);
+      color: white;
+      font-size: 10px;
+      font-weight: 600;
+      padding: 3px 8px;
+      white-space: nowrap;
+      letter-spacing: 0.06em;
+      pointer-events: none;
+    }
+
+
+    /* ══════════════════════════════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════════════════════════════ */
+    @media (max-width: 720px) {
+      :root { --content-pad: 24px; }
+      section { padding: 56px 0; }
+      .cover { padding: 64px 0; }
+      .cover-stats { grid-template-columns: 1fr 1fr; }
+      .stat { padding: 12px 16px 12px 0; }
+      .stat:last-child { padding-left: 0; }
+      .meta-grid,
+      .audience-grid,
+      .comp-grid,
+      .promo-grid,
+      .outcomes-grid,
+      .author-layout { grid-template-columns: 1fr; }
+      .diff-list { grid-template-columns: 1fr; }
+      .cta-strip { grid-template-columns: 1fr 1fr; }
+      .toc-nav { display: none; }
+    }
+
+    @media print {
+      .toc-nav { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="toc-nav" aria-hidden="true">
+  <div class="toc-dot active"  data-label="Cover"    onclick="document.getElementById('cover').scrollIntoView({behavior:'smooth'})"></div>
+  <div class="toc-dot"         data-label="Overview" onclick="document.getElementById('overview').scrollIntoView({behavior:'smooth'})"></div>
+  <div class="toc-dot"         data-label="Contents" onclick="document.getElementById('contents').scrollIntoView({behavior:'smooth'})"></div>
+  <div class="toc-dot"         data-label="Audience" onclick="document.getElementById('audience').scrollIntoView({behavior:'smooth'})"></div>
+  <div class="toc-dot"         data-label="Author"   onclick="document.getElementById('author').scrollIntoView({behavior:'smooth'})"></div>
+  <div class="toc-dot"         data-label="Market"   onclick="document.getElementById('market').scrollIntoView({behavior:'smooth'})"></div>
+  <div class="toc-dot"         data-label="Promotion" onclick="document.getElementById('promotion').scrollIntoView({behavior:'smooth'})"></div>
+  <div class="toc-dot"         data-label="Sample"   onclick="document.getElementById('sample').scrollIntoView({behavior:'smooth'})"></div>
+</nav>
+
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- COVER                                                       -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="cover" id="cover">
+
+  <div class="cover-topbar">
+    <div class="wrap">
+      <span class="cover-date">Book Proposal · May 2026</span>
+      <span class="imprint-badge">Moody / Northfield</span>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="cover-rule"></div>
+    <h1 class="cover-title">Saying <em>"I Do"</em><br>Everyday</h1>
+    <p class="cover-subtitle">How Intentional Choices Build a Lasting Marriage</p>
+
+    <p class="cover-author">Aaron Delay, LPC-MHSP</p>
+    <p class="cover-cred">Licensed Professional Counselor · Credentialed Minister · Founder, Life Wellness Counseling</p>
+
+    <div class="cover-stats">
+      <div class="stat">
+        <div class="stat-value">~10K</div>
+        <div class="stat-label">Client Sessions / Year</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">40K</div>
+        <div class="stat-label">Ministry Reach</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">40–45K</div>
+        <div class="stat-label">Words · Ready Now</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">Gary Chapman</div>
+        <div class="stat-label">Foreword Confirmed</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cover-scroll">Scroll to explore ↓</div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- OVERVIEW                                                    -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="alt" id="overview">
+  <div class="wrap">
+    <div class="section-header">
+      <p class="eyebrow">Book Overview</p>
+      <h2 class="section-title">The Core Premise</h2>
+    </div>
+
+    <div class="meta-grid">
+      <div class="meta-item">
+        <label>Proposed Word Count</label>
+        <span>40,000–45,000 words</span>
+      </div>
+      <div class="meta-item">
+        <label>Manuscript Status</label>
+        <span>Complete · Final revisions within 30–60 days</span>
+      </div>
+      <div class="meta-item">
+        <label>Primary Imprint</label>
+        <span>Moody (Christian) · Northfield (Crossover)</span>
+      </div>
+      <div class="meta-item">
+        <label>Foreword</label>
+        <span>Dr. Gary Chapman — confirmed</span>
+      </div>
+    </div>
+
+    <div class="logline">
+      <div class="logline-label">One-Sentence Summary</div>
+      <p>Lasting marriages are not built on feelings but on intentional daily choices that create connection, trust, and peace over time.</p>
+    </div>
+
+    <div class="body-text">
+      <p><em>Saying "I Do" Everyday</em> reframes marriage not as a one-time commitment but as a series of daily decisions that shape the health and direction of a relationship. Drawing from years of clinical experience as a licensed professional counselor and personal experience in marriage, Aaron Delay offers a proven, practical, and deeply grounded approach to building lasting connection.</p>
+      <p>Rather than focusing on surface-level communication tips or conflict resolution techniques alone, this book helps couples understand the deeper patterns driving their relationship — how their motivations, expectations, and emotional habits influence the outcomes they experience. Through clear insight and relatable examples, readers are guided to shift from reactive patterns to intentional living within their marriage.</p>
+      <p>Blending clinical wisdom with biblical truth, the book provides both clarity and direction for couples who feel stuck, disconnected, or uncertain about how to move forward. It speaks to both struggling and stable marriages, offering a path toward greater unity, peace, and resilience.</p>
+      <p>At its core, this book equips couples with a new framework: <strong>healthy marriages are built, not found — one intentional choice at a time.</strong></p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- TABLE OF CONTENTS                                           -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section id="contents">
+  <div class="wrap">
+    <div class="section-header">
+      <p class="eyebrow">Annotated Table of Contents</p>
+      <h2 class="section-title">Chapter by Chapter</h2>
+      <p class="section-lead">Each chapter is structured around one phrase of the traditional marriage vow — reactivating its meaning as a daily practice rather than a ceremonial memory.</p>
+    </div>
+
+    <div class="chapter-list">
+
+      <div class="chapter-item">
+        <div class="chapter-badge">
+          <span class="chapter-badge-num">—</span>
+          <span class="chapter-badge-tag">Intro</span>
+        </div>
+        <div>
+          <h3 class="chapter-title">The Choice You Keep Making</h3>
+          <p class="chapter-desc">Marriage is often viewed as a single decision made at the altar, but in reality, it is a choice that must be made daily. This introduction reframes the reader's understanding of marriage — shifting the focus from feelings and circumstances to personal responsibility and intentional action. It establishes the core premise: lasting connection is not found, it is built through consistent, everyday decisions.</p>
+        </div>
+      </div>
+
+      <div class="chapter-item">
+        <div class="chapter-badge">
+          <span class="chapter-badge-num">01</span>
+          <span class="chapter-badge-tag">Ch</span>
+        </div>
+        <div>
+          <h3 class="chapter-title">Understanding the Vows</h3>
+          <p class="chapter-desc">This chapter redefines traditional marriage vows as active, daily commitments rather than ceremonial words. It introduces the idea that vows are not promises to feel a certain way but decisions to act with intention regardless of circumstances. Readers begin to see how their expectations about marriage may be misaligned with what actually sustains it.</p>
+        </div>
+      </div>
+
+      <div class="chapter-item">
+        <div class="chapter-badge">
+          <span class="chapter-badge-num">02</span>
+          <span class="chapter-badge-tag">Ch</span>
+        </div>
+        <div>
+          <h3 class="chapter-title">To Have and To Hold</h3>
+          <p class="chapter-desc">Focusing on emotional and physical connection, this chapter explores how intimacy is built through safety, consistency, and intentional presence. It addresses common misconceptions about closeness and highlights how unmet expectations and poor communication often create distance. Readers receive practical ways to rebuild connection through small, consistent actions.</p>
+        </div>
+      </div>
+
+      <div class="chapter-item">
+        <div class="chapter-badge">
+          <span class="chapter-badge-num">03</span>
+          <span class="chapter-badge-tag">Ch</span>
+        </div>
+        <div>
+          <h3 class="chapter-title">For Better or For Worse</h3>
+          <p class="chapter-desc">Conflict is inevitable, but how couples interpret and respond to it determines the health of the relationship. This chapter examines communication breakdowns, emotional reactivity, and the tendency to assume negative intent — and introduces practical frameworks for navigating conflict with clarity, helping couples move from defensiveness to understanding.</p>
+        </div>
+      </div>
+
+      <div class="chapter-item">
+        <div class="chapter-badge">
+          <span class="chapter-badge-num">04</span>
+          <span class="chapter-badge-tag">Ch</span>
+        </div>
+        <div>
+          <h3 class="chapter-title">For Richer or For Poorer</h3>
+          <p class="chapter-desc">Money is rarely just about money — it reflects deeper emotional patterns such as fear, control, and security. This chapter helps couples uncover the underlying beliefs and experiences that shape their financial behaviors, emphasizing alignment in values and shared vision rather than surface-level budgeting.</p>
+        </div>
+      </div>
+
+      <div class="chapter-item">
+        <div class="chapter-badge">
+          <span class="chapter-badge-num">05</span>
+          <span class="chapter-badge-tag">Ch</span>
+        </div>
+        <div>
+          <h3 class="chapter-title">In Sickness and In Health</h3>
+          <p class="chapter-desc">Marriage requires navigating seasons of emotional, physical, and mental strain. This chapter addresses burnout, stress, and the reality that both partners will, at times, struggle — encouraging a shift from expectation to support so couples learn how to show up for one another in both strength and weakness.</p>
+        </div>
+      </div>
+
+      <div class="chapter-item">
+        <div class="chapter-badge">
+          <span class="chapter-badge-num">06</span>
+          <span class="chapter-badge-tag">Ch</span>
+        </div>
+        <div>
+          <h3 class="chapter-title">To Love and To Cherish</h3>
+          <p class="chapter-desc">Love often fades not because of time, but because of neglect. This chapter focuses on admiration, curiosity, and intentional appreciation — challenging couples to move beyond routine and rediscover one another through consistent, meaningful engagement, reinforcing that love is sustained through attention and effort.</p>
+        </div>
+      </div>
+
+      <div class="chapter-item">
+        <div class="chapter-badge">
+          <span class="chapter-badge-num">07</span>
+          <span class="chapter-badge-tag">Ch</span>
+        </div>
+        <div>
+          <h3 class="chapter-title">Till Death Do Us Part</h3>
+          <p class="chapter-desc">Commitment is tested not in ideal moments but in seasons of disappointment, hurt, and disconnection. This chapter explores trust, grace, and long-term resilience — helping couples understand how to repair after damage and remain anchored even when the relationship feels fragile.</p>
+        </div>
+      </div>
+
+      <div class="chapter-item">
+        <div class="chapter-badge">
+          <span class="chapter-badge-num">08</span>
+          <span class="chapter-badge-tag">Ch</span>
+        </div>
+        <div>
+          <h3 class="chapter-title">Seasons and Shifts: Navigating Change Without Losing Connection</h3>
+          <p class="chapter-desc">Marriage does not remain static — it evolves through career changes, parenting, loss, and personal growth. This chapter helps readers recognize how shifting roles, expectations, and identities create tension if left unaddressed, guiding couples to intentionally adapt and reconnect so that change becomes a catalyst for deeper unity rather than division.</p>
+        </div>
+      </div>
+
+      <div class="chapter-item">
+        <div class="chapter-badge">
+          <span class="chapter-badge-num">09</span>
+          <span class="chapter-badge-tag">Ch</span>
+        </div>
+        <div>
+          <h3 class="chapter-title">Guarding the Union: Boundaries That Protect Your Marriage</h3>
+          <p class="chapter-desc">External pressures — family expectations, work demands, cultural influences, and digital distractions — can quietly undermine a marriage if not properly managed. This chapter provides practical guidance on establishing and maintaining healthy limits with others while prioritizing the marriage as the primary relationship.</p>
+        </div>
+      </div>
+
+      <div class="chapter-item">
+        <div class="chapter-badge">
+          <span class="chapter-badge-num">10</span>
+          <span class="chapter-badge-tag">Ch</span>
+        </div>
+        <div>
+          <h3 class="chapter-title">Building a Marriage That Lasts</h3>
+          <p class="chapter-desc">A lasting marriage is not the result of avoiding problems but of consistently choosing behaviors that reinforce connection, trust, and resilience. This chapter brings together the core principles of the book, offering a clear and sustainable framework for long-term relational health.</p>
+        </div>
+      </div>
+
+      <div class="chapter-item">
+        <div class="chapter-badge">
+          <span class="chapter-badge-num">—</span>
+          <span class="chapter-badge-tag">Epi</span>
+        </div>
+        <div>
+          <h3 class="chapter-title">The Marriage You Build</h3>
+          <p class="chapter-desc">The epilogue reinforces the central message that marriage is not something that happens to you, but something you actively create. Readers are challenged to move forward with intention, ownership, and hope — committing to the ongoing process of showing up, choosing wisely, and investing daily in the relationship they want to build.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- AUDIENCE                                                    -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="alt" id="audience">
+  <div class="wrap">
+    <div class="section-header">
+      <p class="eyebrow">Target Readership</p>
+      <h2 class="section-title">Who This Book Is For</h2>
+    </div>
+
+    <div class="audience-grid">
+      <div class="audience-card">
+        <p class="eyebrow">Primary Audience</p>
+        <p>Married couples (mid-20s to mid-50s) who feel stuck, disconnected, or are seeking to strengthen their relationship in a practical and meaningful way.</p>
+      </div>
+      <div class="audience-card">
+        <p class="eyebrow">Secondary Audience</p>
+        <p>Engaged or pre-marital couples who want to build a strong foundation before entering marriage — and avoid the costly learning curve many couples face in their early years.</p>
+      </div>
+    </div>
+
+    <div class="need-box">
+      <h3>The Problem This Book Solves</h3>
+      <p>Many couples enter marriage with expectations shaped by culture, emotion, or assumption — but lack a clear framework for how to sustain connection over time. When conflict, stress, or life transitions arise, they default to reactive patterns: focusing on what they don't want rather than what they're intentionally building.</p>
+      <p>This leads to frustration, miscommunication, emotional distance, and in many cases, a slow erosion of connection rather than a single breaking point. Couples often feel stuck without a clear path forward. This book addresses that gap with a practical, actionable framework for building a healthy marriage through intentional daily choices.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- AUTHOR                                                      -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="dark" id="author">
+  <div class="wrap">
+    <div class="section-header">
+      <p class="eyebrow">About the Author</p>
+      <h2 class="section-title">Aaron Delay</h2>
+    </div>
+
+    <div class="author-layout">
+      <div class="author-bio">
+        <p>Aaron Delay is a Licensed Professional Counselor (LPC-MHSP), credentialed minister, and founder of Life Wellness Counseling in Memphis, Tennessee. Through his practice, which facilitates nearly <strong>10,000 client sessions annually</strong>, he works with individuals and couples navigating some of the most significant challenges in their lives.</p>
+        <p>He has extensive face-to-face experience helping couples rebuild trust, improve communication, and strengthen connection in relationships that feel strained or disconnected. In addition to his clinical work, Aaron provides direct counseling and support to pastors and staff members leading churches with a combined reach of approximately <strong>40,000 people</strong> — giving him unique insight into both relational and spiritual dynamics within marriage.</p>
+        <p>His work integrates clinical expertise with biblical principles, offering practical, grounded guidance for building healthy relationships. This book is a direct extension of that work — the framework he has refined through thousands of hours in the counseling room, now made accessible to every couple who needs it.</p>
+      </div>
+
+      <div>
+        <div class="platform-card">
+          <h4>Platform &amp; Reach</h4>
+          <div class="platform-item">
+            <div class="platform-icon">🏥</div>
+            <div class="platform-text">
+              <strong>~10,000 client sessions/year</strong>
+              <span>Life Wellness Counseling, Memphis TN</span>
+            </div>
+          </div>
+          <div class="platform-item">
+            <div class="platform-icon">⛪</div>
+            <div class="platform-text">
+              <strong>~40,000 ministry reach</strong>
+              <span>Direct access to church staff &amp; pastors</span>
+            </div>
+          </div>
+          <div class="platform-item">
+            <div class="platform-icon">✉️</div>
+            <div class="platform-text">
+              <strong>3,500+ email contacts</strong>
+              <span>Active and former clients, growing daily</span>
+            </div>
+          </div>
+          <div class="platform-item">
+            <div class="platform-icon">📱</div>
+            <div class="platform-text">
+              <strong>Growing digital presence</strong>
+              <span>YouTube, Instagram · Consultant hired Apr 2026</span>
+            </div>
+          </div>
+          <div class="platform-item">
+            <div class="platform-icon">🎤</div>
+            <div class="platform-text">
+              <strong>Speaking pipeline</strong>
+              <span>Churches, couples events, podcast interviews</span>
+            </div>
+          </div>
+          <div class="platform-item">
+            <div class="platform-icon">🎓</div>
+            <div class="platform-text">
+              <strong>CEU professional network</strong>
+              <span>Ongoing referral access to licensed counselors</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- FOREWORD                                                     -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<div class="foreword-section">
+  <div class="wrap">
+    <div class="foreword-badge">Foreword Confirmed</div>
+    <span class="foreword-mark">&ldquo;</span>
+    <p class="foreword-statement">Dr. Gary Chapman has confirmed his commitment to write the foreword for this manuscript.</p>
+    <div class="foreword-rule"></div>
+    <p class="foreword-name">Dr. Gary Chapman</p>
+    <p class="foreword-title">Author of <em>The Five Love Languages</em><br>Over 20 million copies sold worldwide</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- MARKET                                                      -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section id="market">
+  <div class="wrap">
+    <div class="section-header">
+      <p class="eyebrow">Market Positioning</p>
+      <h2 class="section-title">Comparable Titles &amp; Differentiation</h2>
+      <p class="section-lead">This book fits within the established Christian marriage category while occupying a distinct angle that no comparable title currently claims.</p>
+    </div>
+
+    <div class="comp-grid">
+      <div class="comp-card">
+        <p class="comp-card-title">The Five Love Languages</p>
+        <p class="comp-card-author">Gary Chapman</p>
+      </div>
+      <div class="comp-card">
+        <p class="comp-card-title">Love &amp; Respect</p>
+        <p class="comp-card-author">Emerson Eggerichs</p>
+      </div>
+      <div class="comp-card">
+        <p class="comp-card-title">Sacred Marriage</p>
+        <p class="comp-card-author">Gary Thomas</p>
+      </div>
+    </div>
+
+    <div class="diff-box">
+      <h3>What Makes This Book Different</h3>
+      <ul class="diff-list">
+        <li>Daily decision-making framework — not personality types or love languages</li>
+        <li>Clinical counseling insight integrated with biblical truth</li>
+        <li>Addresses root patterns, not surface-level behaviors</li>
+        <li>Practical and repeatable — couples can act immediately</li>
+        <li>Speaks to both struggling and stable marriages at every stage</li>
+        <li>Counseling-informed, pastor-tested, accessible to any couple</li>
+      </ul>
+    </div>
+
+    <div class="why-box">
+      <strong>Why readers will choose this book:</strong> It provides a clear, relatable, and structured path forward — not just ideas. It translates complex relational dynamics into practical, repeatable choices couples can implement immediately. Where comparable titles offer insight into personality and theology, this book delivers a behavioral framework that is both clinically grounded and biblically anchored.
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- PROMOTION                                                   -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="darker" id="promotion">
+  <div class="wrap">
+    <div class="section-header">
+      <p class="eyebrow">Marketing &amp; Promotion</p>
+      <h2 class="section-title">How This Book Reaches Its Readers</h2>
+    </div>
+
+    <div class="promo-grid">
+      <div class="promo-card">
+        <h4>Counseling Network</h4>
+        <p>Existing client base and collegial network of licensed counselors with direct referral access to couples and families.</p>
+      </div>
+      <div class="promo-card">
+        <h4>Church Partnerships</h4>
+        <p>Direct relationships with pastoral staff serving ~40,000 congregants. Built-in speaking pipeline for marriage ministry tie-ins.</p>
+      </div>
+      <div class="promo-card">
+        <h4>Social Media</h4>
+        <p>Active content creation on YouTube and Instagram. Social media consultant onboarded April 2026 to align with launch strategy.</p>
+      </div>
+      <div class="promo-card">
+        <h4>Email List</h4>
+        <p>3,500+ direct email contacts comprising active and former clients — a warm audience primed for relational content.</p>
+      </div>
+      <div class="promo-card">
+        <h4>Podcast &amp; Media</h4>
+        <p>Speaking and interview opportunities across faith-based and clinical platforms. Natural fit for marriage and Christian living podcasts.</p>
+      </div>
+      <div class="promo-card">
+        <h4>CEU Network</h4>
+        <p>Continuing education requirements create consistent professional networking with licensed counselors — generating referral-based word-of-mouth.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- OUTCOMES                                                    -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="alt">
+  <div class="wrap">
+    <div class="section-header">
+      <p class="eyebrow">Mission &amp; Purpose</p>
+      <h2 class="section-title">What Readers Take Away</h2>
+      <p class="section-lead">The goal is tangible transformation — not just insight, but lasting change in how couples show up for one another every day.</p>
+    </div>
+
+    <div class="outcomes-grid">
+      <div class="outcome-item">
+        <h4>A Clear Decision-Making Framework</h4>
+        <p>Readers leave with a replicable structure for making daily choices that build connection rather than erode it.</p>
+      </div>
+      <div class="outcome-item">
+        <h4>Greater Self-Awareness</h4>
+        <p>Couples gain visibility into the patterns — emotional, behavioral, relational — that have been quietly shaping their marriage.</p>
+      </div>
+      <div class="outcome-item">
+        <h4>Practical Tools to Rebuild Connection</h4>
+        <p>Each chapter closes with an "Everyday I Do" action — concrete, immediate steps couples can take that week.</p>
+      </div>
+      <div class="outcome-item">
+        <h4>Renewed Direction and Hope</h4>
+        <p>Readers move from feeling stuck and reactive to feeling capable, intentional, and hopeful about the marriage they're building.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- SAMPLE MATERIAL                                             -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section id="sample">
+  <div class="wrap">
+    <div class="section-header">
+      <p class="eyebrow">Sample Material</p>
+      <h2 class="section-title">Excerpts from the Manuscript</h2>
+      <p class="section-lead">The following excerpts demonstrate the author's voice — clinical depth made accessible, honest, and applicable to every couple.</p>
+    </div>
+
+    <!-- INTRO -->
+    <div class="sample-chapter">
+      <p class="sample-label">Introduction</p>
+      <h2>The Choice You Keep Making</h2>
+
+      <p>This book is about marriage — and the good, the bad, and the ugly that come with it. All of it is real. You'll have good days that turn into epic days, and epic days that slam straight into disaster. That constant change and uncertainty that runs through the rest of life runs through marriage too — without exception.</p>
+
+      <p>So why do some couples look like they have it all together while others feel like a constant battle with very little happiness? The answer isn't hard to understand; it's just hard to apply.</p>
+
+      <div class="pull-quote">
+        <p>"At the foundation of almost every marital conflict, you'll find two people staring at each other like mirrors — each waiting for the reflection to move first."</p>
+      </div>
+
+      <h3>Foundations Before Details</h3>
+      <p>If you want to understand what's really going on, you have to think foundationally. That means resisting the urge to obsess over the details that soak up attention and fuel arguments — the little habits that drive you crazy, the easy jabs you know you'll regret later, the mental spreadsheets of everything your spouse "always" or "never" does.</p>
+
+      <p>Change is difficult. Admitting that a part of you — one that's lived for years without much accountability — needs to grow? That's tough for all of us. But contrary to popular belief, that is not an admission of guilt or wrongdoing. I call that emotional intelligence.</p>
+
+      <h3>Autoplastic vs. Alloplastic</h3>
+      <p><em>Autoplastic</em> means I'm willing to change and adapt to my environment when there's resistance. <em>Alloplastic</em> means I try to change my environment — or everyone in it — rather than change myself. Apply those mindsets to marriage and you'll see the pattern. Couples who flourish are usually two autoplastic people: <em>What can I do for us? How can I love you better today?</em></p>
+
+      <div class="pull-quote">
+        <p>"The only question that really matters day after day — the one that keeps you saying 'I do' long after the wedding — is: Am I willing to change today?"</p>
+      </div>
+    </div>
+
+    <hr class="sample-divider" />
+
+    <!-- CHAPTER 3 -->
+    <div class="sample-chapter">
+      <p class="sample-label">Chapter 3</p>
+      <h2>For Better or For Worse</h2>
+
+      <p>This chapter is hard to write because the word commitment has become a moving target. For some, it means loyalty until things get uncomfortable. For others, it's a lifetime promise, even when comfort disappears. By definition, commitment means "the state or quality of being dedicated to a cause, activity, or person." It's a word that should feel weighty — but somewhere along the way, it's lost its gravity.</p>
+
+      <div class="pull-quote">
+        <p>"Anyone will sit down with you to eat steak. But when all you've got left is beans, you'll see who's really with you."</p>
+      </div>
+
+      <h3>The Elbow and the Punch</h3>
+      <p>Intent is one of the most misunderstood dynamics in any marriage. In marriage, elbows happen all the time. You say something careless after a long day, and your spouse hears rejection instead of exhaustion. You try to solve a problem they only wanted empathy for. You didn't mean to hurt them — it was an elbow — but they felt a punch.</p>
+
+      <p>When one spouse treats every elbow like a punch, both start swinging. What started as a misunderstanding turns into a full-blown argument where no one remembers how it began.</p>
+
+      <div class="pull-quote">
+        <p>"Trust doesn't mean pretending the elbow didn't hurt — it means believing your partner didn't mean to throw it."</p>
+      </div>
+
+      <h3>Wants vs. Don't Wants</h3>
+      <p>I often ask couples: <em>"What's driving your effort right now — what you want, or what you're trying to avoid?"</em> A <em>want</em> is fueled by desire. A <em>don't want</em> is fueled by avoidance. Both can drive change — but only one of them builds something lasting.</p>
+
+      <div class="action-box">
+        <h4>Everyday "I Do" Action — Chapter 3</h4>
+        <ol>
+          <li><strong>Pause before reacting.</strong> When something hurts, ask yourself: "Was that an elbow or a punch?"</li>
+          <li><strong>Use clarity cues.</strong> Before a conversation, communicate what you need — listening, feedback, or action.</li>
+          <li><strong>Flip your language.</strong> Replace one "don't want" statement with a "want" statement this week.</li>
+          <li><strong>Give grace first.</strong> The relationship matters more than winning the moment.</li>
+        </ol>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- CTA                                                         -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<div class="cta">
+  <div class="wrap">
+    <h2>A Manuscript Ready to Meet Its Readers</h2>
+    <p>The complete manuscript is available for review. Final revisions can be delivered within 30–60 days of agreement.</p>
+
+    <div class="cta-strip">
+      <div class="cta-detail">
+        <strong>Author</strong>
+        <span>Aaron Delay, LPC-MHSP</span>
+      </div>
+      <div class="cta-detail">
+        <strong>Website</strong>
+        <span>lifewellnessmemphis.com</span>
+      </div>
+      <div class="cta-detail">
+        <strong>Manuscript</strong>
+        <span>Complete · 40–45K words</span>
+      </div>
+      <div class="cta-detail">
+        <strong>Foreword</strong>
+        <span>Dr. Gary Chapman</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  const ids  = ['cover','overview','contents','audience','author','market','promotion','sample'];
+  const dots = document.querySelectorAll('.toc-dot');
+  const obs  = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const i = ids.indexOf(e.target.id);
+        if (i !== -1) {
+          dots.forEach(d => d.classList.remove('active'));
+          dots[i].classList.add('active');
+        }
+      }
+    });
+  }, { threshold: 0.35 });
+  ids.forEach(id => { const el = document.getElementById(id); if (el) obs.observe(el); });
+</script>
+</body>
+</html>

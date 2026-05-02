@@ -872,27 +872,46 @@
       color: #231E17;
     }
     .er-page-content p {
-      margin: 0 0 0.85em;
+      margin: 0 0 0.70em;
       text-align: justify;
       hyphens: auto;
       -webkit-hyphens: auto;
     }
     .er-page-content p:last-child { margin-bottom: 0; }
-    .er-page-content h3 {
-      font-family: 'Playfair Display', serif;
-      font-size: 13.5px;
-      font-weight: 600;
-      color: #1a2e1a;
-      margin: 18px 0 7px;
-      line-height: 1.3;
+    /* Arrow/vow list items — tight spacing, left-aligned */
+    .er-page-content p.er-vow {
+      margin-bottom: 0.18em;
+      text-align: left;
+      hyphens: none;
     }
+    .er-page-content p.er-vow:last-child { margin-bottom: 0; }
+    /* Section headings — Inter small-caps with gold rule */
+    .er-page-content h3 {
+      font-family: 'Inter', sans-serif;
+      font-size: 7px;
+      font-weight: 700;
+      letter-spacing: 0.20em;
+      text-transform: uppercase;
+      color: #8B6B18;
+      margin: 18px 0 7px;
+      padding-bottom: 4px;
+      border-bottom: 0.5px solid rgba(139,107,24,0.30);
+      line-height: 1.5;
+    }
+    /* Pull quotes — gold left bar, sepia italic */
     .er-page-content blockquote {
-      border-left: 2px solid #8B6B18;
-      margin: 12px 0;
-      padding: 4px 12px;
+      border-left: 2.5px solid #C8A84A;
+      margin: 11px 0;
+      padding: 4px 0 4px 11px;
       font-style: italic;
-      color: #4A4030;
+      color: #3D3220;
       font-size: 12.5px;
+      line-height: 1.72;
+    }
+    .er-page-content blockquote p {
+      margin: 0;
+      text-align: left;
+      hyphens: none;
     }
 
     /* Chapter title block — first page only */
@@ -2055,11 +2074,13 @@
     if (msrStyle) return;
     msrStyle = document.createElement('style');
     msrStyle.textContent =
-      '.er-msr p{margin:0 0 0.85em;text-align:justify}' +
+      '.er-msr p{margin:0 0 0.70em;text-align:justify}' +
       '.er-msr p:last-child{margin-bottom:0}' +
-      '.er-msr h3{font-family:"Playfair Display",serif;font-size:13.5px;font-weight:600;color:#1a2e1a;margin:18px 0 7px;line-height:1.3}' +
-      '.er-msr blockquote{border-left:2px solid #8B6B18;margin:12px 0;padding:4px 12px;font-style:italic;color:#4A4030;font-size:12.5px}' +
-      '.er-msr blockquote p{margin:0}';
+      '.er-msr p.er-vow{margin-bottom:0.18em;text-align:left}' +
+      '.er-msr p.er-vow:last-child{margin-bottom:0}' +
+      '.er-msr h3{font-family:"Inter",sans-serif;font-size:7px;font-weight:700;letter-spacing:0.20em;text-transform:uppercase;color:#8B6B18;margin:18px 0 7px;padding-bottom:4px;border-bottom:0.5px solid rgba(139,107,24,0.30);line-height:1.5}' +
+      '.er-msr blockquote{border-left:2.5px solid #C8A84A;margin:11px 0;padding:4px 0 4px 11px;font-style:italic;color:#3D3220;font-size:12.5px;line-height:1.72}' +
+      '.er-msr blockquote p{margin:0;text-align:left}';
     document.head.appendChild(msrStyle);
   }
 
@@ -2072,6 +2093,7 @@
       const p = document.createElement('p'); p.innerHTML = b.x; el.appendChild(p);
     } else {
       el = document.createElement('p'); el.innerHTML = b.x;
+      if (b.x.includes('→')) el.className = 'er-vow';  // → arrow items
     }
     return el;
   }
@@ -2079,7 +2101,8 @@
   function blockHTML(b) {
     if (b.t === 'h') return '<h3>' + b.x + '</h3>';
     if (b.t === 'q') return '<blockquote><p>' + b.x + '</p></blockquote>';
-    return '<p>' + b.x + '</p>';
+    const cls = b.x.includes('→') ? ' class="er-vow"' : '';
+    return '<p' + cls + '>' + b.x + '</p>';
   }
 
   function paginate(chapter) {

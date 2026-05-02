@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Book Proposal — Saying "I Do" Everyday | Aaron Delay</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&family=Lora:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -793,6 +793,276 @@
     /* ══════════════════════════════════════════════════════════
        RESPONSIVE
     ══════════════════════════════════════════════════════════ */
+    /* ══════════════════════════════════════════════════════════
+       E-READER
+    ══════════════════════════════════════════════════════════ */
+    .er-section {
+      background: #111009;
+      padding: 72px 0 64px;
+    }
+    .er-section .section-header { text-align: center; }
+    .er-section .section-lead   { margin: 0 auto; text-align: center; }
+
+    /* Chapter tabs */
+    .er-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      margin-bottom: 40px;
+    }
+    .er-tab {
+      background: none;
+      border: none;
+      border-bottom: 2px solid rgba(255,255,255,0.08);
+      padding: 11px 26px;
+      font-family: 'Inter', sans-serif;
+      font-size: 10.5px;
+      font-weight: 600;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      cursor: pointer;
+      transition: all 0.18s;
+    }
+    .er-tab:hover  { color: rgba(255,255,255,0.65); }
+    .er-tab.active { color: var(--gold-light); border-bottom-color: var(--gold); }
+
+    /* Stage: arrows + book */
+    .er-stage {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+    }
+    .er-arrow {
+      width: 40px; height: 40px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.10);
+      color: rgba(255,255,255,0.45);
+      font-size: 22px;
+      cursor: pointer;
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.18s;
+      font-family: Georgia, serif;
+      line-height: 1;
+      user-select: none;
+    }
+    .er-arrow:hover:not([disabled]) { background: rgba(255,255,255,0.08); color: white; }
+    .er-arrow[disabled] { opacity: 0.18; cursor: default; pointer-events: none; }
+
+    /* Book wrap — provides perspective for 3D flip */
+    .er-book-wrap {
+      position: relative;
+      display: flex;
+      perspective: 2800px;
+      perspective-origin: 50% 45%;
+      /* Layered paper shadow */
+      filter:
+        drop-shadow(0 2px  0   rgba(0,0,0,0.35))
+        drop-shadow(0 4px  0   rgba(0,0,0,0.20))
+        drop-shadow(0 20px 40px rgba(0,0,0,0.70))
+        drop-shadow(0 40px 80px rgba(0,0,0,0.40));
+    }
+
+    /* Individual page */
+    .er-page {
+      width: 350px;
+      height: 510px;
+      background: #FAF7F1;
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .er-page-left  { border-radius: 3px 0 0 3px; box-shadow: inset -6px 0 18px rgba(0,0,0,0.07); }
+    .er-page-right { border-radius: 0 3px 3px 0; box-shadow: inset  6px 0 18px rgba(0,0,0,0.05); }
+
+    /* Right-edge shadow on right page */
+    .er-page-right::after {
+      content: ''; position: absolute; top: 0; right: 0; bottom: 0; width: 6px;
+      background: linear-gradient(to right, transparent, rgba(0,0,0,0.06));
+      pointer-events: none;
+    }
+
+    /* Spine */
+    .er-spine {
+      width: 30px; flex-shrink: 0;
+      background: linear-gradient(to right,
+        #0c180b 0%, #1a2e18 25%, #243e21 50%, #1a2e18 75%, #0c180b 100%);
+      position: relative; z-index: 4;
+      box-shadow: inset 0 0 12px rgba(0,0,0,0.25);
+    }
+
+    /* Page inner layout */
+    .er-page-inner {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      padding: 22px 28px 18px;
+      box-sizing: border-box;
+    }
+
+    /* Running header */
+    .er-running-head {
+      font-family: 'Lora', Georgia, serif;
+      font-size: 8.5px;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+      color: #9A9080;
+      flex-shrink: 0;
+      padding-bottom: 9px;
+      border-bottom: 1px solid #DDD8CE;
+      margin-bottom: 14px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .er-running-head.rh-right { text-align: right; }
+
+    /* Scrollable content area */
+    .er-page-content {
+      flex: 1;
+      overflow: hidden;
+      font-family: 'Lora', Georgia, serif;
+      font-size: 13px;
+      line-height: 1.82;
+      color: #231E17;
+    }
+    .er-page-content p {
+      margin: 0 0 0.85em;
+      text-align: justify;
+      hyphens: auto;
+      -webkit-hyphens: auto;
+    }
+    .er-page-content p:last-child { margin-bottom: 0; }
+    .er-page-content h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #1a2e1a;
+      margin: 18px 0 7px;
+      line-height: 1.3;
+    }
+    .er-page-content blockquote {
+      border-left: 2px solid #8B6B18;
+      margin: 12px 0;
+      padding: 4px 12px;
+      font-style: italic;
+      color: #4A4030;
+      font-size: 12.5px;
+    }
+
+    /* Chapter title block — first page only */
+    .er-chapter-head {
+      text-align: center;
+      padding-bottom: 18px;
+      margin-bottom: 16px;
+      border-bottom: 1px solid #DDD8CE;
+      flex-shrink: 0;
+    }
+    .er-chapter-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 8.5px;
+      font-weight: 700;
+      letter-spacing: 0.20em;
+      text-transform: uppercase;
+      color: #8B6B18;
+      margin-bottom: 10px;
+    }
+    .er-chapter-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 17px;
+      font-weight: 700;
+      color: #1a2e1a;
+      line-height: 1.25;
+    }
+
+    /* Page number footer */
+    .er-page-num {
+      flex-shrink: 0;
+      text-align: center;
+      font-family: 'Lora', Georgia, serif;
+      font-size: 9.5px;
+      font-style: italic;
+      color: #ADA89C;
+      padding-top: 10px;
+      border-top: 1px solid #DDD8CE;
+      margin-top: 10px;
+    }
+
+    /* ── FLIPPER ─────────────────────────────────────────────── */
+    .er-flipper {
+      position: absolute;
+      top: 0;
+      width: 350px; height: 510px;
+      transform-style: preserve-3d;
+      -webkit-transform-style: preserve-3d;
+      z-index: 20;
+      pointer-events: none;
+      display: none;
+    }
+    .er-flipper-face {
+      position: absolute; inset: 0;
+      background: #FAF7F1;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      overflow: hidden;
+    }
+    .er-flipper-back {
+      transform: rotateY(180deg);
+      -webkit-transform: rotateY(180deg);
+    }
+    /* Sweep shadow as page turns */
+    .er-flipper-face.er-flipper-front::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to left, rgba(0,0,0,0.18), transparent 60%);
+      pointer-events: none;
+    }
+
+    @keyframes erFlipForward {
+      from { transform: rotateY(0deg); }
+      to   { transform: rotateY(-180deg); }
+    }
+    @keyframes erFlipBackward {
+      from { transform: rotateY(0deg); }
+      to   { transform: rotateY(180deg); }
+    }
+    .er-flipper.go-forward  {
+      animation: erFlipForward  0.72s cubic-bezier(0.645, 0.045, 0.355, 1.000) forwards;
+    }
+    .er-flipper.go-backward {
+      animation: erFlipBackward 0.72s cubic-bezier(0.645, 0.045, 0.355, 1.000) forwards;
+    }
+
+    /* Progress + counter */
+    .er-footer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      margin-top: 28px;
+    }
+    .er-progress-bar {
+      width: 730px;
+      height: 2px;
+      background: rgba(255,255,255,0.07);
+      border-radius: 1px;
+    }
+    .er-progress-fill {
+      height: 100%;
+      background: var(--gold);
+      border-radius: 1px;
+      transition: width 0.35s ease;
+      min-width: 4px;
+    }
+    .er-counter {
+      font-family: 'Lora', serif;
+      font-size: 10.5px;
+      font-style: italic;
+      color: rgba(255,255,255,0.25);
+      letter-spacing: 0.04em;
+    }
+
+    @media print { .er-section { display: none; } }
+
     @media (max-width: 720px) {
       :root { --content-pad: 24px; }
       section { padding: 56px 0; }
@@ -1412,6 +1682,84 @@
 
 
 <!-- ══════════════════════════════════════════════════════════ -->
+<!-- E-READER                                                     -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="er-section" id="ereader">
+  <div class="wrap">
+    <div class="section-header">
+      <p class="eyebrow" style="color:var(--gold-light)">Read the Manuscript</p>
+      <h2 class="section-title" style="color:white">Experience the Book</h2>
+      <p class="section-lead" style="color:rgba(255,255,255,0.50);margin:0 auto">The full Introduction, Chapter 1, and Chapter 3 — paginated and presented as a two-page book spread.</p>
+    </div>
+  </div>
+
+  <!-- Chapter tabs -->
+  <div class="er-tabs">
+    <button class="er-tab active" data-ch="0">Introduction</button>
+    <button class="er-tab" data-ch="1">Chapter One</button>
+    <button class="er-tab" data-ch="2">Chapter Three</button>
+  </div>
+
+  <!-- Stage: arrow · book · arrow -->
+  <div class="er-stage">
+    <button class="er-arrow" id="er-prev" disabled aria-label="Previous spread">&#8249;</button>
+
+    <div class="er-book-wrap" id="er-book-wrap">
+      <!-- Left page -->
+      <div class="er-page er-page-left" id="er-page-left">
+        <div class="er-page-inner">
+          <div class="er-running-head" id="er-rh-left"></div>
+          <div class="er-page-content" id="er-content-left"></div>
+          <div class="er-page-num"     id="er-num-left"></div>
+        </div>
+      </div>
+
+      <!-- Spine -->
+      <div class="er-spine"></div>
+
+      <!-- Right page -->
+      <div class="er-page er-page-right" id="er-page-right">
+        <div class="er-page-inner">
+          <div class="er-running-head rh-right" id="er-rh-right"></div>
+          <div class="er-page-content" id="er-content-right"></div>
+          <div class="er-page-num"     id="er-num-right"></div>
+        </div>
+      </div>
+
+      <!-- Flipper overlay (absolutely positioned over book-wrap) -->
+      <div class="er-flipper" id="er-flipper">
+        <div class="er-flipper-face er-flipper-front" id="er-flip-front">
+          <div class="er-page-inner">
+            <div class="er-running-head" id="er-flip-rh-front"></div>
+            <div class="er-page-content" id="er-flip-content-front"></div>
+            <div class="er-page-num"     id="er-flip-num-front"></div>
+          </div>
+        </div>
+        <div class="er-flipper-face er-flipper-back" id="er-flip-back">
+          <div class="er-page-inner">
+            <div class="er-running-head" id="er-flip-rh-back"></div>
+            <div class="er-page-content" id="er-flip-content-back"></div>
+            <div class="er-page-num"     id="er-flip-num-back"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button class="er-arrow" id="er-next" aria-label="Next spread">&#8250;</button>
+  </div>
+
+  <!-- Progress bar + spread counter -->
+  <div class="er-footer">
+    <div class="er-progress-bar">
+      <div class="er-progress-fill" id="er-progress" style="width:4%"></div>
+    </div>
+    <div class="er-counter" id="er-counter">Spread 1 of 1</div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- ══════════════════════════════════════════════════════════ -->
 <!-- CTA                                                         -->
 <!-- ══════════════════════════════════════════════════════════ -->
 <div class="cta">
@@ -1442,6 +1790,367 @@
 
 
 <script>
+/* ═══════════════════════════════════════════════════════════════
+   E-READER ENGINE
+═══════════════════════════════════════════════════════════════ */
+(function () {
+
+  /* ── CHAPTER DATA ──────────────────────────────────────────── */
+  const CHAPTERS = [
+    {
+      label:    'Introduction',
+      chapter:  'Introduction',
+      title:    'The Choice You Keep Making',
+      runHead:  'Saying “I Do” Everyday',
+      blocks: [
+        { t:'p', x:'This book is about marriage—and the good, the bad, and the ugly that come with it. All of it is real. You’ll have good days that turn into epic days, and epic days that slam straight into disaster. That constant change and uncertainty that runs through the rest of life runs through marriage too—without exception.' },
+        { t:'p', x:'So why do some couples look like they have it all together while others feel like a constant battle with very little happiness? The answer isn’t hard to understand; it’s just hard to apply.' },
+        { t:'p', x:'The couples who make it—really make it—aren’t the ones who never argued, never doubted, never sat in separate rooms wondering if this was still worth it. They’re the ones who made a decision every single day to stay in it, to grow, to try again.' },
+        { t:'q', x:'“At the foundation of almost every marital conflict, you’ll find two people staring at each other like mirrors—each waiting for the reflection to move first.”' },
+        { t:'h', x:'Foundations Before Details' },
+        { t:'p', x:'If you want to understand what’s really going on, you have to think foundationally. That means resisting the urge to obsess over the details that soak up attention and fuel arguments—the little habits that drive you crazy, the easy jabs you know you’ll regret later, the mental spreadsheets of everything your spouse “always” or “never” does.' },
+        { t:'p', x:'When you fix a foundation, the details often sort themselves out. But when you attack the details without addressing the foundation, you’re just rearranging furniture in a house that’s already sinking.' },
+        { t:'p', x:'Change is difficult. Admitting that a part of you—one that’s lived for years without much accountability—needs to grow? That’s tough for all of us. But contrary to popular belief, that is not an admission of guilt or wrongdoing. I call that emotional intelligence.' },
+        { t:'h', x:'Autoplastic vs. Alloplastic' },
+        { t:'p', x:'Those two words may sound clinical, but stay with me. They describe two fundamentally different orientations to the world—and to marriage.' },
+        { t:'p', x:'<em>Autoplastic</em> means I’m willing to change and adapt to my environment when there’s resistance. <em>Alloplastic</em> means I try to change my environment—or everyone in it—rather than change myself. Apply those mindsets to marriage and you’ll see the pattern immediately.' },
+        { t:'p', x:'Couples who flourish are usually two autoplastic people: <em>What can I do for us? How can I love you better today?</em> Couples who struggle are often caught in an alloplastic standoff: <em>Why won’t you just change? If you would only do this one thing differently.</em>' },
+        { t:'p', x:'When two alloplastic people meet, both are waiting for the other to move first. Both are convinced the problem is outside themselves. Both are building a case instead of building a life.' },
+        { t:'q', x:'“The only question that really matters day after day—the one that keeps you saying “I do” long after the wedding—is: Am I willing to change today?”' },
+        { t:'h', x:'What This Book Is Not' },
+        { t:'p', x:'This is not a book about fixing your spouse. If you’re reading hoping to find a chapter titled “How to Finally Get Your Partner to Listen” or “The Seven Things You Need to Tell Your Spouse,” you’re going to be disappointed.' },
+        { t:'p', x:'This is not a book of techniques. Techniques are useful, but they’re not the foundation. You can learn every communication framework ever devised and still find yourself in the same arguments, because the real issue isn’t your strategy—it’s your posture.' },
+        { t:'p', x:'What this is, is a call to look inward before you look outward. It’s a challenge to stop waiting for your marriage to feel different before you start acting different.' },
+        { t:'h', x:'What You’ll Find Here' },
+        { t:'p', x:'Each chapter follows the structure of traditional marriage vows—not because I think ceremonies are magic, but because those vows contain a blueprint for what lasting love actually requires. They were written to cover every possible season of a marriage, and they hold up.' },
+        { t:'p', x:'The vows weren’t designed as poetry. They were designed as a contract with reality. And the couples who take them seriously—not as words spoken once, but as commitments renewed daily—are the ones who look back fifty years later and mean it when they say it was worth it.' },
+        { t:'p', x:'By the time you reach the end of this book, my hope is that you’ll have a clearer picture of what you’re actually responsible for in your marriage—and a more honest view of where you’ve been outsourcing that responsibility.' },
+        { t:'q', x:'“The couples who make it aren’t the ones who never wanted to quit. They’re the ones who kept choosing anyway.”' },
+        { t:'h', x:'A Word About Me' },
+        { t:'p', x:'I’ve spent years as a licensed professional counselor working with couples at every stage of marriage—newlyweds navigating their first real conflict, couples in crisis wondering if they’ve already waited too long, and long-married partners trying to reconnect after decades of drift.' },
+        { t:'p', x:'I’ve sat across from people who were convinced their marriage was unsalvageable—and watched them rebuild something stronger than what they’d lost. I’ve also sat across from people who had every tool but weren’t willing to use them.' },
+        { t:'p', x:'I’m not writing this book as a perfect husband. I write it as a therapist, a minister, and a man who has had to look honestly at his own tendencies—alloplastic ones included—and choose differently.' },
+        { t:'h', x:'Let’s Begin' },
+        { t:'p', x:'Marriage is a choice. Not the choice you made once in front of everyone you love—though that matters. The choice you make every morning when you wake up, every evening when you come home, every time the tension rises and the easy path would be to pull back instead of lean in.' },
+        { t:'p', x:'This book is about that choice—and how to keep making it, even on the days when it’s the hardest thing you do.' }
+      ]
+    },
+    {
+      label:    'Chapter One',
+      chapter:  'Chapter One',
+      title:    'Understanding the Vows',
+      runHead:  'Chapter One',
+      blocks: [
+        { t:'p', x:'When most people think about marriage vows, they picture a ceremony. Two people standing face to face, candlelight or sunlight or whatever the setting allowed, repeating words that have echoed through centuries of weddings before theirs. It’s a beautiful moment. But the problem is that most couples spend far more time planning for that moment than they spend understanding what it actually means.' },
+        { t:'p', x:'Here’s what nobody tells you about vows: they’re not a description of how you feel. They’re a declaration of what you’re choosing—regardless of how you feel.' },
+        { t:'q', x:'“A vow is not a feeling. It’s a decision made in advance, for every version of tomorrow you haven’t seen yet.”' },
+        { t:'h', x:'What You Actually Promised' },
+        { t:'p', x:'“I do” sounds like a single moment because it is. But the thing you said yes to is not a single moment—it’s a series of ten thousand mornings and evenings and meals and arguments and reconciliations and ordinary days that don’t feel like anything special at all.' },
+        { t:'p', x:'The problem is that we often hold our spouses to the feeling version of those vows. We want them to love us the way they did on the wedding day—with that particular intensity, that attention, that tenderness. And when the intensity fades, we interpret the fading as a failure rather than a transition.' },
+        { t:'p', x:'Consider how many times you’ve heard someone say, “We just fell out of love.” That phrase tells you everything about how they understand love—as something that happens to you, not something you do. You don’t fall out of love. You drift out of practice.' },
+        { t:'p', x:'When we understand vows as daily decisions rather than permanent feelings, we stop waiting for the feeling to return and start creating the conditions that help it grow. That’s a completely different posture—and it’s one that actually works.' },
+        { t:'q', x:'“Most couples don’t fall out of love. They fall out of commitment to the daily choices that love requires.”' },
+        { t:'h', x:'The Expectation Gap' },
+        { t:'p', x:'One of the most common sources of marital pain isn’t conflict—it’s disappointment. And disappointment is almost always the result of an unmet expectation. The question worth asking is: where did that expectation come from?' },
+        { t:'p', x:'We enter marriage with a mental image of what it will look and feel like. That image is assembled from our family of origin, every relationship we’ve observed, every movie and book and conversation about love we’ve absorbed. It’s not a conscious construction—it’s more like a blueprint we didn’t know we were drawing.' },
+        { t:'p', x:'I call this the Expectation Gap: the distance between the marriage you imagined and the marriage you’re actually in. Every couple has one. The size of that gap and what you do with it determine a great deal about how your marriage unfolds.' },
+        { t:'p', x:'The gap isn’t always dramatic. Sometimes it’s the small things: you expected a partner who would want to talk through problems the same way you do. You expected finances to be handled a certain way. You expected to be chosen above certain things, or to have certain needs understood without having to articulate them.' },
+        { t:'q', x:'“Expectations are resentments waiting to happen—unless you communicate them. Most couples are disappointed by things they never said out loud.”' },
+        { t:'h', x:'When Reality Doesn’t Match the Script' },
+        { t:'p', x:'She expected him to know when she needed space because that’s how her family had always operated—space was given intuitively, without a request. He expected her to understand that silence meant he was processing, not withdrawing. Neither of them had ever said these things out loud. Both of them had built a quiet case against each other for years.' },
+        { t:'p', x:'He expected that love meant never having to ask. She expected that love meant always asking. Neither expectation was wrong on its own—they just hadn’t been shared, compared, or negotiated. And unexplained expectations are almost always experienced as unmet demands.' },
+        { t:'p', x:'Understanding the vows means releasing your spouse from the obligation to fulfill an image you never showed them. It means doing the harder work of putting your expectations into words—and being genuinely open to the conversation that follows.' },
+        { t:'h', x:'The Daily Renewal' },
+        { t:'p', x:'I want to challenge you to think of your “I do” as a daily practice rather than a historical event. Not in a way that makes your commitment feel fragile—but in a way that makes it feel intentional.' },
+        { t:'p', x:'Every morning you wake up next to your spouse is another opportunity to say yes to the relationship. That doesn’t mean you perform some grand gesture every day. It means you stay present. You stay engaged. You keep asking the questions that keep connection alive: <em>How are you, really? What do you need today? What can I do for us?</em>' },
+        { t:'p', x:'Some days that renewal feels natural—even joyful. Other days it feels like a discipline. Both versions count. In fact, the discipline days might count more, because those are the days when you learn whether you mean what you said.' },
+        { t:'q', x:'“The couples who thrive aren’t the ones who never struggle with their vows. They’re the ones who keep renewing them anyway.”' },
+        { t:'h', x:'A Practical Starting Point' },
+        { t:'p', x:'This week, I want you to do something simple but potentially uncomfortable. Write down three expectations you have of your spouse that you have never fully communicated. Not complaints—expectations. Things you assumed were understood. Things you hoped they would just know.' },
+        { t:'p', x:'Then share the list. Not as an accusation, not as a catalog of grievances—but as an honest opening: “I realized I’ve been expecting this of you without ever saying it. I want to talk about it.”' },
+        { t:'p', x:'You may be surprised by what you find. You may discover that your spouse had no idea. You may also discover that they had their own list—one they’d been carrying just as quietly.' },
+        { t:'p', x:'That conversation—uncomfortable as it may be—is the beginning of understanding the vows. Not as words you said once, but as commitments you’re choosing to understand together, every day.' }
+      ]
+    },
+    {
+      label:    'Chapter Three',
+      chapter:  'Chapter Three',
+      title:    'For Better or For Worse',
+      runHead:  'Chapter Three',
+      blocks: [
+        { t:'p', x:'This chapter is hard to write because the word <em>commitment</em> has become a moving target. For some, it means loyalty until things get uncomfortable. For others, it’s a lifetime promise, even when comfort disappears entirely. By definition, commitment means “the state or quality of being dedicated to a cause, activity, or person.” It’s a word that should feel weighty—but somewhere along the way, it’s lost its gravity.' },
+        { t:'p', x:'We live in an era of unprecedented optionality. If something isn’t working—a job, a city, a subscription service—there’s an exit. And that mentality has quietly seeped into how we think about marriage. We’ve started treating a covenant like a contract—with escape clauses.' },
+        { t:'q', x:'“Anyone will sit down with you to eat steak. But when all you’ve got left is beans, you’ll see who’s really with you.”' },
+        { t:'h', x:'What Commitment Actually Looks Like' },
+        { t:'p', x:'Commitment doesn’t show up on the good days. It shows up when the money runs out, when the diagnosis comes, when attraction has quieted down to something slower and steadier, when you’ve had the same argument so many times you could script both sides.' },
+        { t:'p', x:'The couples who model commitment best aren’t the ones who never struggled. They’re the ones who stayed in the conversation when everything in them wanted to leave the room. That distinction matters enormously—because it means commitment isn’t a feeling or a personality trait. It’s a practice.' },
+        { t:'p', x:'True commitment doesn’t mean pretending things are fine when they aren’t. It doesn’t mean suppressing legitimate pain or staying silent in the name of keeping the peace. It means staying engaged—staying in the room, in the relationship, in the work—even when it’s hard.' },
+        { t:'h', x:'The Elbow and the Punch' },
+        { t:'p', x:'Intent is one of the most misunderstood dynamics in any marriage. Think about this: you bump someone in a crowded hallway. It was an accident. You say sorry. They say no problem. The exchange is over in ten seconds because both parties understood the intent. Nobody interpreted your elbow as an assault.' },
+        { t:'p', x:'In marriage, elbows happen all the time. You say something careless after a long day, and your spouse hears rejection instead of exhaustion. You try to solve a problem they only wanted empathy for. You’re distracted during a conversation that turned out to matter more than you realized. These are elbows—unintentional, common, and survivable.' },
+        { t:'p', x:'The problem comes when we stop believing they’re elbows. When hurt accumulates and trust erodes, every accidental bump starts to feel deliberate. At that point, both people are on alert—scanning for evidence of the story they’ve already decided is true.' },
+        { t:'q', x:'“Trust doesn’t mean pretending the elbow didn’t hurt. It means believing your partner didn’t mean to throw it.”' },
+        { t:'h', x:'When Elbows Become Patterns' },
+        { t:'p', x:'The danger comes when we start interpreting every elbow as intentional—when we build a narrative of malice around what was actually carelessness or fatigue. I see this constantly in couples who’ve been hurting for a long time: they’ve stopped giving each other the benefit of the doubt.' },
+        { t:'p', x:'When one spouse treats every elbow like a punch, both start swinging. What started as a misunderstanding turns into a full-blown conflict where no one remembers how it began. And each round adds another layer of armor, another reason to stay guarded.' },
+        { t:'p', x:'Over time, both partners become so defended that there’s no longer any room for actual connection. They’re coexisting—managing the relationship rather than living in it. And both are lonely in a way that’s particularly painful because they’re lonely <em>together</em>.' },
+        { t:'p', x:'The antidote isn’t naive optimism. It’s a practiced decision to lead with grace—to assume the best interpretation of your spouse’s behavior until you have clear evidence otherwise. That’s not weakness. That’s the daily choice that commitment actually looks like.' },
+        { t:'h', x:'Wants vs. Don’t Wants' },
+        { t:'p', x:'I often ask couples: “What’s driving your effort right now—what you want, or what you’re trying to avoid?” The distinction matters more than people realize.' },
+        { t:'p', x:'A <em>want</em> is fueled by desire. You’re moving toward something: closeness, growth, genuine partnership, the kind of love you know is possible. A <em>don’t want</em> is fueled by avoidance: you don’t want another fight, don’t want to feel lonely, don’t want to be the one who let the marriage fail.' },
+        { t:'p', x:'Both can drive change in the short term. But only want-motivation builds something lasting, because it has a destination. Don’t-want motivation burns out the moment the immediate threat recedes. As soon as the argument cools, the effort drops. As soon as things feel stable enough, growth stops.' },
+        { t:'q', x:'“When you’re only running from something, you’ll stop the moment you feel safe. But if you’re running toward something, you’ll keep going.”' },
+        { t:'h', x:'Commitment Under Pressure' },
+        { t:'p', x:'Your commitment will be tested. Not because your marriage is defective—but because that’s what marriage does. It puts two people with different histories, different wounds, and different instincts into close proximity and asks them to build something together. That process is inherently uncomfortable.' },
+        { t:'p', x:'There will be seasons where you genuinely don’t like your spouse very much. Where the attraction has quieted and the irritations have gotten loud. Where you wonder, honestly, whether you made the right choice. Those seasons don’t disqualify your marriage. They test it.' },
+        { t:'p', x:'Commitment doesn’t mean you won’t feel that way. It means you choose to stay in the room anyway—to keep working, keep talking, keep choosing. Because the couples who come out the other side of those seasons often describe it as the turning point: the place where their marriage became something deeper than they’d thought possible.' },
+        { t:'h', x:'Everyday “I Do” — Chapter Three' },
+        { t:'p', x:'<strong>Pause before reacting.</strong> When something your spouse does or says hurts, take a breath before you respond. Ask yourself: “Is this an elbow or a punch? Do I know their intent, or am I assuming it?” That pause is where grace lives.' },
+        { t:'p', x:'<strong>Use clarity cues.</strong> Before a hard conversation, tell your spouse what you need from them: listening, feedback, or help problem-solving. Most elbows happen because we didn’t communicate the context. Removing that ambiguity changes the whole dynamic.' },
+        { t:'p', x:'<strong>Flip your language.</strong> This week, catch yourself using don’t-want framing (“I don’t want to keep fighting about this”) and replace it with want framing (“I want us to find a way through this together”). The words you use shape the direction you move.' },
+        { t:'p', x:'<strong>Give grace first.</strong> Choose one moment this week to extend the benefit of the doubt—to interpret your spouse’s action charitably before building a case against it. Do it even when you’re not sure they deserve it. That’s what commitment looks like when it’s working.' }
+      ]
+    }
+  ];
+
+  /* ── STATE ───────────────────────────────────────────────── */
+  let chIdx     = 0;
+  let pages     = [];   // all pages for current chapter
+  let spreadIdx = 0;
+  let flipping  = false;
+
+  /* ── DOM REFS ────────────────────────────────────────────── */
+  const $ = id => document.getElementById(id);
+  const D = {
+    lContent : $('er-content-left'),   rContent : $('er-content-right'),
+    lNum     : $('er-num-left'),       rNum     : $('er-num-right'),
+    lRH      : $('er-rh-left'),        rRH      : $('er-rh-right'),
+    flipper  : $('er-flipper'),
+    fFrontC  : $('er-flip-content-front'), fFrontN : $('er-flip-num-front'), fFrontRH : $('er-flip-rh-front'),
+    fBackC   : $('er-flip-content-back'),  fBackN  : $('er-flip-num-back'),  fBackRH  : $('er-flip-rh-back'),
+    progress : $('er-progress'),
+    counter  : $('er-counter'),
+    prev     : $('er-prev'),
+    next     : $('er-next'),
+    bookWrap : $('er-book-wrap'),
+    tabs     : document.querySelectorAll('.er-tab')
+  };
+
+  /* ── MEASUREMENT ─────────────────────────────────────────── */
+  const CW       = 294;   // page width 350 - padding 28*2
+  const MAX_NORM = 388;   // normal page content height
+  const MAX_FRST = 310;   // first page (chapter head occupies ~78px)
+
+  let msrStyle = null;
+
+  function ensureMsrStyle() {
+    if (msrStyle) return;
+    msrStyle = document.createElement('style');
+    msrStyle.textContent =
+      '.er-msr p{margin:0 0 0.85em;text-align:justify}' +
+      '.er-msr p:last-child{margin-bottom:0}' +
+      '.er-msr h3{font-family:"Playfair Display",serif;font-size:13.5px;font-weight:600;color:#1a2e1a;margin:18px 0 7px;line-height:1.3}' +
+      '.er-msr blockquote{border-left:2px solid #8B6B18;margin:12px 0;padding:4px 12px;font-style:italic;color:#4A4030;font-size:12.5px}' +
+      '.er-msr blockquote p{margin:0}';
+    document.head.appendChild(msrStyle);
+  }
+
+  function makeBlockEl(b) {
+    let el;
+    if (b.t === 'h') {
+      el = document.createElement('h3'); el.textContent = b.x;
+    } else if (b.t === 'q') {
+      el = document.createElement('blockquote');
+      const p = document.createElement('p'); p.innerHTML = b.x; el.appendChild(p);
+    } else {
+      el = document.createElement('p'); el.innerHTML = b.x;
+    }
+    return el;
+  }
+
+  function blockHTML(b) {
+    if (b.t === 'h') return '<h3>' + b.x + '</h3>';
+    if (b.t === 'q') return '<blockquote><p>' + b.x + '</p></blockquote>';
+    return '<p>' + b.x + '</p>';
+  }
+
+  function paginate(chapter) {
+    ensureMsrStyle();
+    const msr = document.createElement('div');
+    msr.className = 'er-msr';
+    msr.style.cssText =
+      'position:fixed;top:0;left:-9999px;visibility:hidden;pointer-events:none;' +
+      'width:' + CW + 'px;font-family:"Lora",Georgia,serif;font-size:13px;line-height:1.82;color:#231E17;';
+    document.body.appendChild(msr);
+
+    const result = [];
+    const blocks = chapter.blocks.slice();
+    let first = true;
+
+    while (blocks.length) {
+      const maxH   = first ? MAX_FRST : MAX_NORM;
+      const pgBlks = [];
+      msr.innerHTML = '';
+
+      while (blocks.length) {
+        const el = makeBlockEl(blocks[0]);
+        msr.appendChild(el);
+        if (msr.scrollHeight > maxH && pgBlks.length > 0) {
+          msr.removeChild(el); break;
+        }
+        pgBlks.push(blocks.shift());
+      }
+      result.push({ blocks: pgBlks, first });
+      first = false;
+    }
+
+    document.body.removeChild(msr);
+    return result;
+  }
+
+  /* ── PAGE RENDERING ──────────────────────────────────────── */
+  function pageInnerHTML(page, ch) {
+    let h = '';
+    if (page && page.first) {
+      h  = '<div class="er-chapter-head">';
+      h += '<div class="er-chapter-label">' + ch.chapter + '</div>';
+      h += '<div class="er-chapter-name">'  + ch.title   + '</div>';
+      h += '</div>';
+    }
+    if (page) page.blocks.forEach(b => { h += blockHTML(b); });
+    return h;
+  }
+
+  function fillSlot(contentEl, numEl, rhEl, page, absNum, ch, isLeft) {
+    const isEmpty = !page;
+    contentEl.innerHTML = isEmpty ? '' : pageInnerHTML(page, ch);
+    numEl.textContent   = isEmpty ? '' : absNum;
+    rhEl.textContent    = isEmpty ? '' : (isLeft ? ch.title : ch.runHead);
+    if (!isLeft) rhEl.className = 'er-running-head rh-right';
+    else         rhEl.className = 'er-running-head';
+  }
+
+  function spreadPages(si) {
+    return [pages[si * 2] || null, pages[si * 2 + 1] || null];
+  }
+
+  function totalSpreads() { return Math.ceil(pages.length / 2); }
+
+  function applySpread(si, ch) {
+    const [lp, rp] = spreadPages(si);
+    fillSlot(D.lContent, D.lNum, D.lRH, lp, si * 2 + 1, ch, true);
+    fillSlot(D.rContent, D.rNum, D.rRH, rp, si * 2 + 2, ch, false);
+  }
+
+  function updateUI() {
+    const ts  = totalSpreads();
+    D.prev.disabled = spreadIdx === 0;
+    D.next.disabled = spreadIdx >= ts - 1;
+    const pct = ts > 1 ? (spreadIdx / (ts - 1)) * 100 : 100;
+    D.progress.style.width = Math.max(4, pct) + '%';
+    D.counter.textContent  = 'Spread ' + (spreadIdx + 1) + ' of ' + ts;
+  }
+
+  /* ── FLIP ANIMATION ──────────────────────────────────────── */
+  function flip(newSI, direction) {
+    if (flipping) return;
+    flipping = true;
+
+    const ch      = CHAPTERS[chIdx];
+    const oldSI   = spreadIdx;
+    spreadIdx     = newSI;
+
+    // Content we're flipping AWAY from
+    const [oldLP, oldRP] = spreadPages(oldSI);
+    const oldLNum = oldSI * 2 + 1, oldRNum = oldSI * 2 + 2;
+
+    // Update underlying pages immediately (they sit behind the flipper)
+    applySpread(newSI, ch);
+
+    const flipper = D.flipper;
+
+    if (direction === 'forward') {
+      // Right page flips left — flipper sits over right page
+      // Front: old right  |  Back: new left
+      const [newLP] = spreadPages(newSI);
+      fillSlot(D.fFrontC, D.fFrontN, D.fFrontRH, oldRP,  oldRNum,       ch, false);
+      fillSlot(D.fBackC,  D.fBackN,  D.fBackRH,  newLP,  newSI * 2 + 1, ch, true);
+      flipper.style.cssText = 'left:380px;transform-origin:left center;display:block;transform:rotateY(0deg)';
+    } else {
+      // Left page flips right — flipper sits over left page
+      // Front: old left  |  Back: new right
+      const [, newRP] = spreadPages(newSI);
+      fillSlot(D.fFrontC, D.fFrontN, D.fFrontRH, oldLP,  oldLNum,       ch, true);
+      fillSlot(D.fBackC,  D.fBackN,  D.fBackRH,  newRP,  newSI * 2 + 2, ch, false);
+      flipper.style.cssText = 'left:0;transform-origin:right center;display:block;transform:rotateY(0deg)';
+    }
+
+    // Force reflow, then start animation
+    void flipper.offsetHeight;
+    flipper.classList.remove('go-forward', 'go-backward');
+    void flipper.offsetHeight;
+    flipper.classList.add(direction === 'forward' ? 'go-forward' : 'go-backward');
+
+    flipper.addEventListener('animationend', function done() {
+      flipper.removeEventListener('animationend', done);
+      flipper.classList.remove('go-forward', 'go-backward');
+      flipper.style.display = 'none';
+      flipping = false;
+      updateUI();
+    }, { once: true });
+
+    updateUI();
+  }
+
+  /* ── NAVIGATION ──────────────────────────────────────────── */
+  function goNext() {
+    if (flipping || spreadIdx >= totalSpreads() - 1) return;
+    flip(spreadIdx + 1, 'forward');
+  }
+
+  function goPrev() {
+    if (flipping || spreadIdx <= 0) return;
+    flip(spreadIdx - 1, 'backward');
+  }
+
+  function loadChapter(idx) {
+    chIdx     = idx;
+    spreadIdx = 0;
+    flipping  = false;
+    D.flipper.style.display = 'none';
+    D.flipper.classList.remove('go-forward', 'go-backward');
+    D.tabs.forEach((t, i) => t.classList.toggle('active', i === idx));
+    pages = paginate(CHAPTERS[idx]);
+    applySpread(0, CHAPTERS[idx]);
+    updateUI();
+  }
+
+  /* ── EVENTS ──────────────────────────────────────────────── */
+  D.next.addEventListener('click', goNext);
+  D.prev.addEventListener('click', goPrev);
+  D.tabs.forEach((tab, i) => tab.addEventListener('click', () => loadChapter(i)));
+
+  document.addEventListener('keydown', e => {
+    const rect = document.getElementById('ereader').getBoundingClientRect();
+    if (rect.top < window.innerHeight && rect.bottom > 0) {
+      if (e.key === 'ArrowRight') { e.preventDefault(); goNext(); }
+      if (e.key === 'ArrowLeft')  { e.preventDefault(); goPrev(); }
+    }
+  });
+
+  /* ── INIT ────────────────────────────────────────────────── */
+  const init = () => loadChapter(0);
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(init);
+  } else {
+    setTimeout(init, 600);
+  }
+
+})();
+
+/* ═══════════════════════════════════════════════════════════════
+   NAV DOTS
+═══════════════════════════════════════════════════════════════ */
   const ids  = ['cover','overview','contents','audience','author','market','promotion','sample'];
   const dots = document.querySelectorAll('.toc-dot');
   const obs  = new IntersectionObserver(entries => {

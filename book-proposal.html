@@ -1964,7 +1964,9 @@
     // Measure the real rendered content-area height so pagination matches exactly
     const contentEl = document.getElementById('er-content-left');
     if (contentEl && contentEl.clientHeight > 50) {
-      MAX_NORM = contentEl.clientHeight;
+      // Subtract 14px: accounts for sub-pixel rendering differences and
+      // any margin that the overflow:hidden BFC adds vs. the measurer.
+      MAX_NORM = contentEl.clientHeight - 14;
     }
     // Measure real chapter-head height by briefly rendering one
     const probe = document.createElement('div');
@@ -2019,7 +2021,7 @@
     const msr = document.createElement('div');
     msr.className = 'er-msr';
     msr.style.cssText =
-      'position:fixed;top:0;left:-9999px;visibility:hidden;pointer-events:none;' +
+      'position:fixed;top:0;left:-9999px;visibility:hidden;pointer-events:none;overflow:hidden;' +
       'width:' + CW + 'px;font-family:"Lora",Georgia,serif;font-size:13px;line-height:1.82;color:#231E17;';
     document.body.appendChild(msr);
 

@@ -2119,6 +2119,40 @@
       first = false;
     }
 
+    /* ── SPREAD-BALANCE PASS ───────────────────────────────────
+       After filling pages greedily, right pages can end up nearly
+       empty. Walk every left/right pair: if right is under 38% full
+       AND left has more than one block, pull the last block of left
+       onto the front of right — repeat until balanced or left is
+       too thin. Never move a heading as the sole moved item (would
+       orphan it). Always re-run anti-orphan on left after moving.
+    ────────────────────────────────────────────────────────── */
+    function msrH(blks) {
+      msr.innerHTML = '';
+      blks.forEach(b => msr.appendChild(makeBlockEl(b)));
+      return msr.scrollHeight;
+    }
+    const MIN_FILL = MAX_NORM * 0.38;
+
+    for (let i = 0; i + 1 < result.length; i += 2) {
+      const lp = result[i];
+      const rp = result[i + 1];
+      // Keep pulling blocks from left → right until right hits MIN_FILL
+      // or left would drop to 1 block, or right would overflow MAX_NORM
+      let safety = 12;
+      while (safety-- > 0 && lp.blocks.length > 1 && msrH(rp.blocks) < MIN_FILL) {
+        const moved = lp.blocks[lp.blocks.length - 1];
+        // Probe: would right overflow if we add this block?
+        const probe = [moved].concat(rp.blocks);
+        if (msrH(probe) > MAX_NORM) break;
+        rp.blocks.unshift(lp.blocks.pop());
+      }
+      // Re-apply anti-orphan on left after rebalancing
+      while (lp.blocks.length > 1 && lp.blocks[lp.blocks.length - 1].t === 'h') {
+        rp.blocks.unshift(lp.blocks.pop());
+      }
+    }
+
     document.body.removeChild(msr);
     return result;
   }

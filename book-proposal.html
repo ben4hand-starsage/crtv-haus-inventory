@@ -2042,6 +2042,13 @@
         }
         pgBlks.push(blocks.shift());
       }
+
+      // Anti-orphan: never let a heading be the last item on a page —
+      // push it back so it opens the next page with its content below it.
+      while (pgBlks.length > 1 && blocks.length > 0 && pgBlks[pgBlks.length - 1].t === 'h') {
+        blocks.unshift(pgBlks.pop());
+      }
+
       result.push({ blocks: pgBlks, first });
       first = false;
     }

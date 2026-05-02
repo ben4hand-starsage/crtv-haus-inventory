@@ -1074,6 +1074,46 @@
       letter-spacing: 0.04em;
     }
 
+    /* PDF download bar */
+    .er-download {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      margin-top: 40px;
+      padding-top: 36px;
+      border-top: 1px solid rgba(255,255,255,0.07);
+    }
+    .er-download-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: transparent;
+      border: 1.5px solid var(--gold);
+      color: var(--gold-light);
+      padding: 13px 30px;
+      font-family: 'Inter', sans-serif;
+      font-size: 11.5px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: all 0.18s;
+    }
+    .er-download-btn:hover {
+      background: var(--gold);
+      color: white;
+    }
+    .er-download-btn svg { flex-shrink: 0; }
+    .er-download-note {
+      font-family: 'Lora', serif;
+      font-size: 10.5px;
+      font-style: italic;
+      color: rgba(255,255,255,0.22);
+      letter-spacing: 0.03em;
+    }
+
     @media print { .er-section { display: none; } }
 
     @media (max-width: 720px) {
@@ -1774,6 +1814,17 @@
     </div>
     <div class="er-counter" id="er-counter">Spread 1 of 1</div>
   </div>
+
+  <!-- PDF Download -->
+  <div class="er-download">
+    <button class="er-download-btn" onclick="downloadSamples()">
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M7.5 1v9m0 0L4.5 7M7.5 10l3-3M2 13h11" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Download Sample Chapters as PDF
+    </button>
+    <p class="er-download-note">Introduction · Chapter One · Chapter Three · formatted for print</p>
+  </div>
 </section>
 
 <hr class="divider" />
@@ -2201,6 +2252,9 @@
     }
   });
 
+  /* ── EXPOSE DATA FOR PDF EXPORT ─────────────────────────── */
+  window._erChapters = CHAPTERS;
+
   /* ── INIT ────────────────────────────────────────────────── */
   const init = () => { calibrate(); loadChapter(0); };
   if (document.fonts && document.fonts.ready) {
@@ -2210,6 +2264,123 @@
   }
 
 })();
+
+/* ═══════════════════════════════════════════════════════════════
+   PDF DOWNLOAD
+═══════════════════════════════════════════════════════════════ */
+function downloadSamples() {
+  const chapters = window._erChapters;
+  if (!chapters) return;
+
+  function blockToHTML(b) {
+    if (b.t === 'h') return '<h3>' + b.x + '</h3>';
+    if (b.t === 'q') return '<blockquote><p>' + b.x + '</p></blockquote>';
+    return '<p>' + b.x + '</p>';
+  }
+
+  let chaptersHTML = '';
+  chapters.forEach(function(ch, i) {
+    chaptersHTML +=
+      '<div class="chapter' + (i === 0 ? ' first' : '') + '">' +
+        '<div class="chapter-head">' +
+          '<div class="chapter-label">' + ch.chapter + '</div>' +
+          '<div class="chapter-title">' + ch.title + '</div>' +
+        '</div>' +
+        '<div class="chapter-body">' +
+          ch.blocks.map(blockToHTML).join('') +
+        '</div>' +
+      '</div>';
+  });
+
+  const html = '<!DOCTYPE html>' +
+'<html lang="en"><head>' +
+'<meta charset="UTF-8">' +
+'<title>Sample Chapters — Saying “I Do” Everyday · Aaron Delay</title>' +
+'<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lora:ital,wght@0,400;0,500;1,400;1,500&family=Inter:wght@400;600&display=swap" rel="stylesheet">' +
+'<style>' +
+'*{box-sizing:border-box;margin:0;padding:0}' +
+
+'@page{size:letter;margin:0.85in 1.05in 0.9in 1.05in}' +
+
+/* running header/footer via fixed positioning */
+'.rh{position:fixed;top:-0.6in;left:0;right:0;' +
+  'display:flex;justify-content:space-between;align-items:flex-end;' +
+  'padding-bottom:7pt;border-bottom:0.5pt solid #DDD8CE;' +
+  'font-family:"Lora",Georgia,serif;font-size:7pt;letter-spacing:0.10em;' +
+  'text-transform:uppercase;color:#9A9080}' +
+'.rf{position:fixed;bottom:-0.65in;left:0;right:0;' +
+  'padding-top:7pt;border-top:0.5pt solid #DDD8CE;' +
+  'text-align:center;' +
+  'font-family:"Lora",Georgia,serif;font-size:8pt;font-style:italic;color:#ADA89C}' +
+'@media screen{.rh,.rf{display:none}}' +
+
+'body{font-family:"Lora",Georgia,serif;font-size:10.8pt;line-height:1.84;' +
+  'color:#231E17;background:#FAF7F1;-webkit-print-color-adjust:exact;print-color-adjust:exact}' +
+
+/* cover page */
+'.cover-page{min-height:100vh;display:flex;flex-direction:column;' +
+  'justify-content:center;align-items:center;text-align:center;' +
+  'page-break-after:always;padding:1in}' +
+'.cover-eyebrow{font-family:"Inter",sans-serif;font-size:7.5pt;font-weight:600;' +
+  'letter-spacing:0.22em;text-transform:uppercase;color:#8B6B18;margin-bottom:20pt}' +
+'.cover-rule{width:40pt;height:1.5pt;background:#8B6B18;margin:0 auto 28pt}' +
+'.cover-h{font-family:"Playfair Display",Georgia,serif;font-size:28pt;font-weight:700;' +
+  'color:#1a2e1a;line-height:1.15;margin-bottom:16pt}' +
+'.cover-h em{font-style:italic;color:#8B6B18}' +
+'.cover-sub{font-family:"Lora",Georgia,serif;font-size:11pt;color:#565248;' +
+  'font-style:italic;margin-bottom:32pt}' +
+'.cover-rule2{width:40pt;height:1pt;background:#DDD8CE;margin:0 auto 32pt}' +
+'.cover-author{font-family:"Inter",sans-serif;font-size:9pt;font-weight:600;' +
+  'letter-spacing:0.10em;text-transform:uppercase;color:#364E33;margin-bottom:6pt}' +
+'.cover-cred{font-family:"Lora",Georgia,serif;font-size:8.5pt;color:#8C887C;font-style:italic}' +
+'.cover-note{margin-top:40pt;font-family:"Lora",Georgia,serif;font-size:8pt;' +
+  'color:#ADA89C;letter-spacing:0.06em}' +
+
+/* chapters */
+'.chapter{page-break-before:always;padding-top:0.2in}' +
+'.chapter.first{page-break-before:avoid}' +
+'.chapter-head{text-align:center;padding-bottom:24pt;margin-bottom:28pt;' +
+  'border-bottom:1pt solid #DDD8CE}' +
+'.chapter-label{font-family:"Inter",sans-serif;font-size:7.5pt;font-weight:600;' +
+  'letter-spacing:0.22em;text-transform:uppercase;color:#8B6B18;margin-bottom:12pt}' +
+'.chapter-title{font-family:"Playfair Display",Georgia,serif;font-size:20pt;' +
+  'font-weight:700;color:#1a2e1a;line-height:1.2}' +
+
+'.chapter-body p{margin:0 0 0.85em;text-align:justify;hyphens:auto;-webkit-hyphens:auto}' +
+'.chapter-body p:last-child{margin-bottom:0}' +
+'.chapter-body h3{font-family:"Playfair Display",Georgia,serif;font-size:11.5pt;' +
+  'font-weight:600;color:#1a2e1a;margin:22pt 0 7pt;line-height:1.3}' +
+'.chapter-body blockquote{border-left:2pt solid #8B6B18;margin:14pt 0;' +
+  'padding:3pt 14pt;font-style:italic;color:#4A4030;font-size:10.3pt}' +
+'.chapter-body blockquote p{margin:0;text-align:left}' +
+'</style></head><body>' +
+
+'<div class="rh"><span>Saying “I Do” Everyday</span><span>Aaron Delay, LPC-MHSP</span></div>' +
+'<div class="rf">Sample Material · Advance Review Copy</div>' +
+
+/* Cover page */
+'<div class="cover-page">' +
+  '<div class="cover-eyebrow">Sample Chapters · Advance Review Copy</div>' +
+  '<div class="cover-rule"></div>' +
+  '<div class="cover-h">Saying <em>“I Do”</em><br>Everyday</div>' +
+  '<div class="cover-sub">How Intentional Choices Build a Lasting Marriage</div>' +
+  '<div class="cover-rule2"></div>' +
+  '<div class="cover-author">Aaron Delay, LPC-MHSP</div>' +
+  '<div class="cover-cred">Licensed Professional Counselor · Credentialed Minister<br>Founder, Life Wellness Counseling</div>' +
+  '<div class="cover-note">Foreword by Dr. Gary Chapman · Author of <em>The Five Love Languages</em></div>' +
+'</div>' +
+
+chaptersHTML +
+'</body></html>';
+
+  const win = window.open('', '_blank');
+  if (!win) { alert('Please allow pop-ups for this page to download the PDF.'); return; }
+  win.document.write(html);
+  win.document.close();
+  win.focus();
+  /* Wait for Google Fonts, then trigger print dialog */
+  setTimeout(function() { win.print(); }, 1200);
+}
 
 /* ═══════════════════════════════════════════════════════════════
    NAV DOTS

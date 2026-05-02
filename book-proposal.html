@@ -893,8 +893,8 @@
       overflow: hidden;
       flex-shrink: 0;
     }
-    .er-page-left  { border-radius: 3px 0 0 3px; box-shadow: inset -6px 0 18px rgba(0,0,0,0.07); }
-    .er-page-right { border-radius: 0 3px 3px 0; box-shadow: inset  6px 0 18px rgba(0,0,0,0.05); }
+    .er-page-left  { border-radius: 3px 0 0 3px; box-shadow: inset -8px 0 20px rgba(0,0,0,0.10), inset -1px 0 0 rgba(0,0,0,0.12); }
+    .er-page-right { border-radius: 0 3px 3px 0; box-shadow: inset  8px 0 20px rgba(0,0,0,0.08), inset  1px 0 0 rgba(0,0,0,0.10); }
 
     /* Right-edge shadow on right page */
     .er-page-right::after {
@@ -903,12 +903,8 @@
       pointer-events: none;
     }
 
-    /* Spine — thin shadow-only seam, no visible color block */
-    .er-spine {
-      width: 4px; flex-shrink: 0;
-      background: linear-gradient(to right, rgba(0,0,0,0.22) 0%, rgba(0,0,0,0.06) 100%);
-      position: relative; z-index: 4;
-    }
+    /* Spine — zero-width, gutter shadow lives on the page edges instead */
+    .er-spine { width: 0; flex-shrink: 0; }
 
     /* Page inner layout */
     .er-page-inner {
@@ -1960,9 +1956,30 @@
   };
 
   /* ── MEASUREMENT ─────────────────────────────────────────── */
-  const CW       = 294;   // page width 350 - padding 28*2
-  const MAX_NORM = 388;   // normal page content height
-  const MAX_FRST = 310;   // first page (chapter head occupies ~78px)
+  const CW = 294;   // page width 350 - padding 28*2
+  let MAX_NORM = 388;   // calibrated from live DOM in init()
+  let MAX_FRST = 310;   // calibrated: MAX_NORM minus chapter-head height
+
+  function calibrate() {
+    // Measure the real rendered content-area height so pagination matches exactly
+    const contentEl = document.getElementById('er-content-left');
+    if (contentEl && contentEl.clientHeight > 50) {
+      MAX_NORM = contentEl.clientHeight;
+    }
+    // Measure real chapter-head height by briefly rendering one
+    const probe = document.createElement('div');
+    probe.innerHTML =
+      '<div class="er-chapter-head">' +
+        '<div class="er-chapter-label">Introduction</div>' +
+        '<div class="er-chapter-name">Test Title</div>' +
+      '</div>';
+    const head = probe.firstChild;
+    contentEl.appendChild(head);
+    const headH = head.offsetHeight +
+      parseInt(getComputedStyle(head).marginBottom || 0);
+    contentEl.removeChild(head);
+    MAX_FRST = Math.max(80, MAX_NORM - headH);
+  }
 
   let msrStyle = null;
 
@@ -2079,36 +2096,44 @@
     if (flipping) return;
     flipping = true;
 
-    const ch      = CHAPTERS[chIdx];
-    const oldSI   = spreadIdx;
-    spreadIdx     = newSI;
+    const ch    = CHAPTERS[chIdx];
+    const oldSI = spreadIdx;
+    spreadIdx   = newSI;
 
-    // Content we're flipping AWAY from
     const [oldLP, oldRP] = spreadPages(oldSI);
     const oldLNum = oldSI * 2 + 1, oldRNum = oldSI * 2 + 2;
-
-    // Update underlying pages immediately (they sit behind the flipper)
-    applySpread(newSI, ch);
+    const [newLP, newRP] = spreadPages(newSI);
+    const newLNum = newSI * 2 + 1, newRNum = newSI * 2 + 2;
 
     const flipper = D.flipper;
 
     if (direction === 'forward') {
-      // Right page flips left — flipper sits over right page
-      // Front: old right  |  Back: new left
-      const [newLP] = spreadPages(newSI);
-      fillSlot(D.fFrontC, D.fFrontN, D.fFrontRH, oldRP,  oldRNum,       ch, false);
-      fillSlot(D.fBackC,  D.fBackN,  D.fBackRH,  newLP,  newSI * 2 + 1, ch, true);
-      flipper.style.cssText = 'left:380px;transform-origin:left center;display:block;transform:rotateY(0deg)';
+      // Flipper covers the RIGHT page. Pivot = left edge of flipper (at x=350, the spine seam).
+      // Front face = old right page (what user was reading — seamless hand-off).
+      // Back face  = new left page (revealed as the page swings over).
+      // Right page updates now  — it's hidden under the flipper from frame 1.
+      // Left page updates AFTER animation ends (while flipper still covers it) — no flash.
+      fillSlot(D.fFrontC, D.fFrontN, D.fFrontRH, oldRP, oldRNum, ch, false);
+      fillSlot(D.fBackC,  D.fBackN,  D.fBackRH,  newLP, newLNum, ch, true);
+      fillSlot(D.rContent, D.rNum,   D.rRH,       newRP, newRNum, ch, false);
+      // Left page intentionally kept as old content during animation
+      flipper.style.cssText =
+        'left:350px;transform-origin:left center;display:block;transform:rotateY(0deg)';
     } else {
-      // Left page flips right — flipper sits over left page
-      // Front: old left  |  Back: new right
-      const [, newRP] = spreadPages(newSI);
-      fillSlot(D.fFrontC, D.fFrontN, D.fFrontRH, oldLP,  oldLNum,       ch, true);
-      fillSlot(D.fBackC,  D.fBackN,  D.fBackRH,  newRP,  newSI * 2 + 2, ch, false);
-      flipper.style.cssText = 'left:0;transform-origin:right center;display:block;transform:rotateY(0deg)';
+      // Flipper covers the LEFT page. Pivot = right edge of flipper (at x=350).
+      // Front face = old left page.
+      // Back face  = new right page.
+      // Left page updates now — hidden under flipper from frame 1.
+      // Right page updates AFTER animation ends — no flash.
+      fillSlot(D.fFrontC, D.fFrontN, D.fFrontRH, oldLP, oldLNum, ch, true);
+      fillSlot(D.fBackC,  D.fBackN,  D.fBackRH,  newRP, newRNum, ch, false);
+      fillSlot(D.lContent, D.lNum,   D.lRH,       newLP, newLNum, ch, true);
+      // Right page intentionally kept as old content during animation
+      flipper.style.cssText =
+        'left:0;transform-origin:right center;display:block;transform:rotateY(0deg)';
     }
 
-    // Force reflow, then start animation
+    // Force reflow before adding animation class
     void flipper.offsetHeight;
     flipper.classList.remove('go-forward', 'go-backward');
     void flipper.offsetHeight;
@@ -2117,6 +2142,12 @@
     flipper.addEventListener('animationend', function done() {
       flipper.removeEventListener('animationend', done);
       flipper.classList.remove('go-forward', 'go-backward');
+      // Update the still-visible page NOW, while flipper still covers its area — zero flash
+      if (direction === 'forward') {
+        fillSlot(D.lContent, D.lNum, D.lRH, newLP, newLNum, ch, true);
+      } else {
+        fillSlot(D.rContent, D.rNum, D.rRH, newRP, newRNum, ch, false);
+      }
       flipper.style.display = 'none';
       flipping = false;
       updateUI();
@@ -2162,7 +2193,7 @@
   });
 
   /* ── INIT ────────────────────────────────────────────────── */
-  const init = () => loadChapter(0);
+  const init = () => { calibrate(); loadChapter(0); };
   if (document.fonts && document.fonts.ready) {
     document.fonts.ready.then(init);
   } else {

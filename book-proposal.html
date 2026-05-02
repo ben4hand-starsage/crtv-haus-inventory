@@ -2132,9 +2132,18 @@
         pgBlks.push(blocks.shift());
       }
 
-      // Anti-orphan: never let a heading be the last item on a page —
-      // push it back so it opens the next page with its content below it.
+      // Anti-orphan: don't let a heading be the last item on a page —
+      // BUT only eject it if heading + its next block will actually fit
+      // together on the following page. If the next paragraph is too long
+      // to share a page with the heading, leaving the heading at the bottom
+      // of the current page is far better than leaving it alone on the next.
       while (pgBlks.length > 1 && blocks.length > 0 && pgBlks[pgBlks.length - 1].t === 'h') {
+        const hblk = pgBlks[pgBlks.length - 1];
+        // Probe: heading + next block on the following page (always MAX_NORM)
+        msr.innerHTML = '';
+        msr.appendChild(makeBlockEl(hblk));
+        if (blocks.length > 0) msr.appendChild(makeBlockEl(blocks[0]));
+        if (msr.scrollHeight > MAX_NORM) break; // won't fit together → keep heading here
         blocks.unshift(pgBlks.pop());
       }
 
@@ -2170,8 +2179,12 @@
         if (msrH(probe) > MAX_NORM) break;
         rp.blocks.unshift(lp.blocks.pop());
       }
-      // Re-apply anti-orphan on left after rebalancing
+      // Re-apply anti-orphan on left after rebalancing — same probe:
+      // only move heading to right if heading + right's first block fit together
       while (lp.blocks.length > 1 && lp.blocks[lp.blocks.length - 1].t === 'h') {
+        const hblk = lp.blocks[lp.blocks.length - 1];
+        const probe = [hblk].concat(rp.blocks.slice(0, 1));
+        if (msrH(probe) > MAX_NORM) break; // would strand heading alone → keep on left
         rp.blocks.unshift(lp.blocks.pop());
       }
     }

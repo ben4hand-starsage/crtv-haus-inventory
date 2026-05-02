@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sample Chapters — Saying "I Do" Everyday · Aaron Delay</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Lora:ital,wght@0,400;0,500;1,400;1,500&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+
+/* ── RESET ─────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── PRINT PAGE SETUP ──────────────────────────────────── */
+@page {
+  size: letter;
+  margin: 0.85in 1.1in 0.9in 1.1in;
+}
+@page :first { margin-top: 0; }
+
+/* ── SCREEN BODY ───────────────────────────────────────── */
+body {
+  font-family: 'Lora', Georgia, serif;
+  font-size: 11pt;
+  line-height: 1.84;
+  color: #231E17;
+  background: #E8E4D8;
+}
+
+/* ── SCREEN WRAPPER ────────────────────────────────────── */
+.doc {
+  max-width: 680px;
+  margin: 0 auto;
+  background: #FAF7F1;
+  box-shadow: 0 4px 40px rgba(0,0,0,0.18), 0 1px 4px rgba(0,0,0,0.10);
+}
+
+/* ── RUNNING HEADER (repeats every printed page) ───────── */
+.running-header {
+  display: none;
+}
+@media print {
+  .running-header {
+    display: flex;
+    position: fixed;
+    top: -0.62in;
+    left: 0; right: 0;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding-bottom: 6pt;
+    border-bottom: 0.5pt solid #C8C0B0;
+    font-family: 'Lora', Georgia, serif;
+    font-size: 7.5pt;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: #9A9080;
+  }
+  .running-footer {
+    display: flex !important;
+    position: fixed;
+    bottom: -0.65in;
+    left: 0; right: 0;
+    justify-content: center;
+    padding-top: 7pt;
+    border-top: 0.5pt solid #C8C0B0;
+    font-family: 'Lora', Georgia, serif;
+    font-size: 8pt;
+    font-style: italic;
+    color: #ADA89C;
+  }
+  body { background: #FAF7F1; }
+  .doc { box-shadow: none; max-width: 100%; }
+  .screen-nav { display: none !important; }
+}
+.running-footer { display: none; }
+
+/* ── SCREEN NAV ────────────────────────────────────────── */
+.screen-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #2C3F2A;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 36px;
+  gap: 24px;
+}
+.screen-nav-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 13px;
+  font-style: italic;
+  color: rgba(255,255,255,0.80);
+  flex: 1;
+}
+.screen-nav-eyebrow {
+  font-family: 'Inter', sans-serif;
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #C8A84A;
+  flex: 1;
+}
+.screen-nav-print {
+  font-family: 'Inter', sans-serif;
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.15);
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.screen-nav-print:hover { background: rgba(255,255,255,0.14); color: white; }
+
+/* ── COVER PAGE ────────────────────────────────────────── */
+.cover-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 80px 60px;
+  background: #FAF7F1;
+  page-break-after: always;
+}
+.cover-stamp {
+  font-family: 'Inter', sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: #8B6B18;
+  margin-bottom: 28px;
+}
+.cover-rule {
+  width: 36px;
+  height: 2px;
+  background: #8B6B18;
+  margin: 0 auto 36px;
+}
+.cover-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 38px;
+  font-weight: 700;
+  color: #1a2e1a;
+  line-height: 1.15;
+  margin-bottom: 18px;
+}
+.cover-title em { font-style: italic; color: #8B6B18; }
+.cover-subtitle {
+  font-family: 'Lora', Georgia, serif;
+  font-size: 13px;
+  color: #565248;
+  font-style: italic;
+  line-height: 1.6;
+  margin-bottom: 44px;
+  max-width: 340px;
+}
+.cover-divider {
+  width: 36px;
+  height: 1px;
+  background: #D2CEC2;
+  margin: 0 auto 40px;
+}
+.cover-author {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #364E33;
+  margin-bottom: 8px;
+}
+.cover-cred {
+  font-family: 'Lora', serif;
+  font-size: 10px;
+  color: #8C887C;
+  font-style: italic;
+  line-height: 1.7;
+  margin-bottom: 44px;
+}
+.cover-foreword-bar {
+  display: inline-block;
+  border: 1px solid #C8A84A;
+  padding: 12px 24px;
+  text-align: center;
+}
+.cover-foreword-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 7.5px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #8B6B18;
+  margin-bottom: 5px;
+}
+.cover-foreword-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 13px;
+  color: #1a2e1a;
+}
+.cover-foreword-note {
+  font-family: 'Lora', serif;
+  font-size: 9px;
+  font-style: italic;
+  color: #8C887C;
+  margin-top: 3px;
+}
+.cover-contents {
+  margin-top: 48px;
+  text-align: left;
+  width: 100%;
+  max-width: 300px;
+  border-top: 1px solid #E6E2D8;
+  padding-top: 24px;
+}
+.cover-contents-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 7.5px;
+  font-weight: 700;
+  letter-spacing: 0.20em;
+  text-transform: uppercase;
+  color: #8C887C;
+  margin-bottom: 14px;
+}
+.cover-contents-item {
+  font-family: 'Lora', serif;
+  font-size: 10.5px;
+  color: #565248;
+  padding: 5px 0;
+  border-bottom: 1px solid #E6E2D8;
+  display: flex;
+  justify-content: space-between;
+}
+.cover-contents-item:last-child { border-bottom: none; }
+.cover-contents-ch {
+  color: #8B6B18;
+  font-style: italic;
+  font-size: 9.5px;
+}
+
+/* ── CHAPTER PAGES ─────────────────────────────────────── */
+.chapter {
+  padding: 72px 64px 80px;
+  page-break-before: always;
+  background: #FAF7F1;
+  min-height: 100vh;
+}
+.chapter:nth-child(even) { background: #F7F4EE; }
+
+@media print {
+  .chapter { min-height: 0; padding: 0; background: #FAF7F1 !important; }
+  .cover-page { padding: 1in 0; min-height: 0; }
+}
+
+/* Chapter head */
+.chapter-head {
+  text-align: center;
+  padding-bottom: 32px;
+  margin-bottom: 36px;
+  border-bottom: 1px solid #DDD8CE;
+}
+.chapter-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #8B6B18;
+  margin-bottom: 14px;
+}
+.chapter-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: #1a2e1a;
+  line-height: 1.2;
+}
+
+/* Body typography */
+.chapter p {
+  margin: 0 0 0.9em;
+  text-align: justify;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
+.chapter p:last-child { margin-bottom: 0; }
+
+.chapter h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: #1a2e1a;
+  margin: 32px 0 10px;
+  line-height: 1.3;
+}
+
+.chapter blockquote {
+  border-left: 2.5px solid #8B6B18;
+  margin: 22px 0;
+  padding: 6px 20px;
+  font-style: italic;
+  color: #4A4030;
+  font-size: 10.5pt;
+  line-height: 1.75;
+}
+.chapter blockquote p { margin: 0; text-align: left; }
+
+/* Chapter separator */
+.chapter-end-rule {
+  width: 40px;
+  height: 1px;
+  background: #C8A84A;
+  margin: 48px auto 0;
+}
+
+/* ── SCREEN-ONLY FOOTER ────────────────────────────────── */
+.doc-footer {
+  background: #2C3F2A;
+  padding: 28px 36px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.doc-footer-text {
+  font-family: 'Lora', serif;
+  font-size: 10px;
+  font-style: italic;
+  color: rgba(255,255,255,0.40);
+}
+.doc-footer-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 12px;
+  color: rgba(255,255,255,0.65);
+}
+@media print { .doc-footer { display: none; } }
+
+</style>
+</head>
+<body>
+
+<!-- Repeating page header (print only) -->
+<div class="running-header">
+  <span>Saying &#8220;I Do&#8221; Everyday</span>
+  <span>Aaron Delay, LPC-MHSP</span>
+</div>
+<div class="running-footer">
+  Sample Material &middot; Advance Review Copy
+</div>
+
+<div class="doc">
+
+  <!-- Screen nav bar -->
+  <div class="screen-nav">
+    <span class="screen-nav-eyebrow">Sample Chapters</span>
+    <span class="screen-nav-title">Saying &#8220;I Do&#8221; Everyday</span>
+    <button class="screen-nav-print" onclick="window.print()">
+      <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M3 4V1h7v3M3 9H1V5h11v4h-2M3 9v3h7V9" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+      Save as PDF
+    </button>
+  </div>
+
+  <!-- ── COVER PAGE ─────────────────────────────────────── -->
+  <div class="cover-page">
+    <div class="cover-stamp">Sample Material &middot; Advance Review Copy</div>
+    <div class="cover-rule"></div>
+    <div class="cover-title">Saying <em>&#8220;I Do&#8221;</em><br>Everyday</div>
+    <div class="cover-subtitle">How Intentional Choices Build a Lasting Marriage</div>
+    <div class="cover-divider"></div>
+    <div class="cover-author">Aaron Delay, LPC-MHSP</div>
+    <div class="cover-cred">
+      Licensed Professional Counselor &middot; Credentialed Minister<br>
+      Founder, Life Wellness Counseling &middot; Memphis, Tennessee
+    </div>
+    <div class="cover-foreword-bar">
+      <div class="cover-foreword-label">Foreword by</div>
+      <div class="cover-foreword-name">Dr. Gary Chapman</div>
+      <div class="cover-foreword-note">Author of <em>The Five Love Languages</em> &middot; 20M+ copies sold</div>
+    </div>
+    <div class="cover-contents">
+      <div class="cover-contents-label">Chapters included</div>
+      <div class="cover-contents-item">
+        <span>The Choice You Keep Making</span>
+        <span class="cover-contents-ch">Introduction</span>
+      </div>
+      <div class="cover-contents-item">
+        <span>Understanding the Vows</span>
+        <span class="cover-contents-ch">Chapter One</span>
+      </div>
+      <div class="cover-contents-item">
+        <span>For Better or For Worse</span>
+        <span class="cover-contents-ch">Chapter Three</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── INTRODUCTION ──────────────────────────────────── -->
+  <div class="chapter">
+    <div class="chapter-head">
+      <div class="chapter-label">Introduction</div>
+      <div class="chapter-title">The Choice You Keep Making</div>
+    </div>
+
+    <p>This book is about marriage&mdash;and the good, the bad, and the ugly that come with it. All of it is real. You&#8217;ll have good days that turn into epic days, and epic days that slam straight into disaster. That constant change and uncertainty that runs through the rest of life runs through marriage too&mdash;without exception.</p>
+    <p>So why do some couples look like they have it all together while others feel like a constant battle with very little happiness? The answer isn&#8217;t hard to understand; it&#8217;s just hard to apply.</p>
+    <p>The couples who make it&mdash;really make it&mdash;aren&#8217;t the ones who never argued, never doubted, never sat in separate rooms wondering if this was still worth it. They&#8217;re the ones who made a decision every single day to stay in it, to grow, to try again.</p>
+
+    <blockquote><p>&#8220;At the foundation of almost every marital conflict, you&#8217;ll find two people staring at each other like mirrors&mdash;each waiting for the reflection to move first.&#8221;</p></blockquote>
+
+    <h3>Foundations Before Details</h3>
+    <p>If you want to understand what&#8217;s really going on, you have to think foundationally. That means resisting the urge to obsess over the details that soak up attention and fuel arguments&mdash;the little habits that drive you crazy, the easy jabs you know you&#8217;ll regret later, the mental spreadsheets of everything your spouse &#8220;always&#8221; or &#8220;never&#8221; does.</p>
+    <p>When you fix a foundation, the details often sort themselves out. But when you attack the details without addressing the foundation, you&#8217;re just rearranging furniture in a house that&#8217;s already sinking.</p>
+    <p>Change is difficult. Admitting that a part of you&mdash;one that&#8217;s lived for years without much accountability&mdash;needs to grow? That&#8217;s tough for all of us. But contrary to popular belief, that is not an admission of guilt or wrongdoing. I call that emotional intelligence.</p>
+
+    <h3>Autoplastic vs. Alloplastic</h3>
+    <p>Those two words may sound clinical, but stay with me. They describe two fundamentally different orientations to the world&mdash;and to marriage.</p>
+    <p><em>Autoplastic</em> means I&#8217;m willing to change and adapt to my environment when there&#8217;s resistance. <em>Alloplastic</em> means I try to change my environment&mdash;or everyone in it&mdash;rather than change myself. Apply those mindsets to marriage and you&#8217;ll see the pattern immediately.</p>
+    <p>Couples who flourish are usually two autoplastic people: <em>What can I do for us? How can I love you better today?</em> Couples who struggle are often caught in an alloplastic standoff: <em>Why won&#8217;t you just change? If you would only do this one thing differently.</em></p>
+    <p>When two alloplastic people meet, both are waiting for the other to move first. Both are convinced the problem is outside themselves. Both are building a case instead of building a life.</p>
+
+    <blockquote><p>&#8220;The only question that really matters day after day&mdash;the one that keeps you saying &#8216;I do&#8217; long after the wedding&mdash;is: Am I willing to change today?&#8221;</p></blockquote>
+
+    <h3>What This Book Is Not</h3>
+    <p>This is not a book about fixing your spouse. If you&#8217;re reading hoping to find a chapter titled &#8220;How to Finally Get Your Partner to Listen&#8221; or &#8220;The Seven Things You Need to Tell Your Spouse,&#8221; you&#8217;re going to be disappointed.</p>
+    <p>This is not a book of techniques. Techniques are useful, but they&#8217;re not the foundation. You can learn every communication framework ever devised and still find yourself in the same arguments, because the real issue isn&#8217;t your strategy&mdash;it&#8217;s your posture.</p>
+    <p>What this is, is a call to look inward before you look outward. It&#8217;s a challenge to stop waiting for your marriage to feel different before you start acting different.</p>
+
+    <h3>What You&#8217;ll Find Here</h3>
+    <p>Each chapter follows the structure of traditional marriage vows&mdash;not because I think ceremonies are magic, but because those vows contain a blueprint for what lasting love actually requires. They were written to cover every possible season of a marriage, and they hold up.</p>
+    <p>The vows weren&#8217;t designed as poetry. They were designed as a contract with reality. And the couples who take them seriously&mdash;not as words spoken once, but as commitments renewed daily&mdash;are the ones who look back fifty years later and mean it when they say it was worth it.</p>
+    <p>By the time you reach the end of this book, my hope is that you&#8217;ll have a clearer picture of what you&#8217;re actually responsible for in your marriage&mdash;and a more honest view of where you&#8217;ve been outsourcing that responsibility.</p>
+
+    <blockquote><p>&#8220;The couples who make it aren&#8217;t the ones who never wanted to quit. They&#8217;re the ones who kept choosing anyway.&#8221;</p></blockquote>
+
+    <h3>A Word About Me</h3>
+    <p>I&#8217;ve spent years as a licensed professional counselor working with couples at every stage of marriage&mdash;newlyweds navigating their first real conflict, couples in crisis wondering if they&#8217;ve already waited too long, and long-married partners trying to reconnect after decades of drift.</p>
+    <p>I&#8217;ve sat across from people who were convinced their marriage was unsalvageable&mdash;and watched them rebuild something stronger than what they&#8217;d lost. I&#8217;ve also sat across from people who had every tool but weren&#8217;t willing to use them.</p>
+    <p>I&#8217;m not writing this book as a perfect husband. I write it as a therapist, a minister, and a man who has had to look honestly at his own tendencies&mdash;alloplastic ones included&mdash;and choose differently.</p>
+
+    <h3>Let&#8217;s Begin</h3>
+    <p>Marriage is a choice. Not the choice you made once in front of everyone you love&mdash;though that matters. The choice you make every morning when you wake up, every evening when you come home, every time the tension rises and the easy path would be to pull back instead of lean in.</p>
+    <p>This book is about that choice&mdash;and how to keep making it, even on the days when it&#8217;s the hardest thing you do.</p>
+
+    <div class="chapter-end-rule"></div>
+  </div>
+
+  <!-- ── CHAPTER ONE ─────────────────────────────────────── -->
+  <div class="chapter">
+    <div class="chapter-head">
+      <div class="chapter-label">Chapter One</div>
+      <div class="chapter-title">Understanding the Vows</div>
+    </div>
+
+    <p>When most people think about marriage vows, they picture a ceremony. Two people standing face to face, candlelight or sunlight or whatever the setting allowed, repeating words that have echoed through centuries of weddings before theirs. It&#8217;s a beautiful moment. But the problem is that most couples spend far more time planning for that moment than they spend understanding what it actually means.</p>
+    <p>Here&#8217;s what nobody tells you about vows: they&#8217;re not a description of how you feel. They&#8217;re a declaration of what you&#8217;re choosing&mdash;regardless of how you feel.</p>
+
+    <blockquote><p>&#8220;A vow is not a feeling. It&#8217;s a decision made in advance, for every version of tomorrow you haven&#8217;t seen yet.&#8221;</p></blockquote>
+
+    <h3>What You Actually Promised</h3>
+    <p>&#8220;I do&#8221; sounds like a single moment because it is. But the thing you said yes to is not a single moment&mdash;it&#8217;s a series of ten thousand mornings and evenings and meals and arguments and reconciliations and ordinary days that don&#8217;t feel like anything special at all.</p>
+    <p>The problem is that we often hold our spouses to the feeling version of those vows. We want them to love us the way they did on the wedding day&mdash;with that particular intensity, that attention, that tenderness. And when the intensity fades, we interpret the fading as a failure rather than a transition.</p>
+    <p>Consider how many times you&#8217;ve heard someone say, &#8220;We just fell out of love.&#8221; That phrase tells you everything about how they understand love&mdash;as something that happens to you, not something you do. You don&#8217;t fall out of love. You drift out of practice.</p>
+    <p>When we understand vows as daily decisions rather than permanent feelings, we stop waiting for the feeling to return and start creating the conditions that help it grow. That&#8217;s a completely different posture&mdash;and it&#8217;s one that actually works.</p>
+
+    <blockquote><p>&#8220;Most couples don&#8217;t fall out of love. They fall out of commitment to the daily choices that love requires.&#8221;</p></blockquote>
+
+    <h3>The Expectation Gap</h3>
+    <p>One of the most common sources of marital pain isn&#8217;t conflict&mdash;it&#8217;s disappointment. And disappointment is almost always the result of an unmet expectation. The question worth asking is: where did that expectation come from?</p>
+    <p>We enter marriage with a mental image of what it will look and feel like. That image is assembled from our family of origin, every relationship we&#8217;ve observed, every movie and book and conversation about love we&#8217;ve absorbed. It&#8217;s not a conscious construction&mdash;it&#8217;s more like a blueprint we didn&#8217;t know we were drawing.</p>
+    <p>I call this the Expectation Gap: the distance between the marriage you imagined and the marriage you&#8217;re actually in. Every couple has one. The size of that gap and what you do with it determine a great deal about how your marriage unfolds.</p>
+    <p>The gap isn&#8217;t always dramatic. Sometimes it&#8217;s the small things: you expected a partner who would want to talk through problems the same way you do. You expected finances to be handled a certain way. You expected to be chosen above certain things, or to have certain needs understood without having to articulate them.</p>
+
+    <blockquote><p>&#8220;Expectations are resentments waiting to happen&mdash;unless you communicate them. Most couples are disappointed by things they never said out loud.&#8221;</p></blockquote>
+
+    <h3>When Reality Doesn&#8217;t Match the Script</h3>
+    <p>She expected him to know when she needed space because that&#8217;s how her family had always operated&mdash;space was given intuitively, without a request. He expected her to understand that silence meant he was processing, not withdrawing. Neither of them had ever said these things out loud. Both of them had built a quiet case against each other for years.</p>
+    <p>He expected that love meant never having to ask. She expected that love meant always asking. Neither expectation was wrong on its own&mdash;they just hadn&#8217;t been shared, compared, or negotiated. And unexplained expectations are almost always experienced as unmet demands.</p>
+    <p>Understanding the vows means releasing your spouse from the obligation to fulfill an image you never showed them. It means doing the harder work of putting your expectations into words&mdash;and being genuinely open to the conversation that follows.</p>
+
+    <h3>The Daily Renewal</h3>
+    <p>I want to challenge you to think of your &#8220;I do&#8221; as a daily practice rather than a historical event. Not in a way that makes your commitment feel fragile&mdash;but in a way that makes it feel intentional.</p>
+    <p>Every morning you wake up next to your spouse is another opportunity to say yes to the relationship. That doesn&#8217;t mean you perform some grand gesture every day. It means you stay present. You stay engaged. You keep asking the questions that keep connection alive: <em>How are you, really? What do you need today? What can I do for us?</em></p>
+    <p>Some days that renewal feels natural&mdash;even joyful. Other days it feels like a discipline. Both versions count. In fact, the discipline days might count more, because those are the days when you learn whether you mean what you said.</p>
+
+    <blockquote><p>&#8220;The couples who thrive aren&#8217;t the ones who never struggle with their vows. They&#8217;re the ones who keep renewing them anyway.&#8221;</p></blockquote>
+
+    <h3>A Practical Starting Point</h3>
+    <p>This week, I want you to do something simple but potentially uncomfortable. Write down three expectations you have of your spouse that you have never fully communicated. Not complaints&mdash;expectations. Things you assumed were understood. Things you hoped they would just know.</p>
+    <p>Then share the list. Not as an accusation, not as a catalog of grievances&mdash;but as an honest opening: &#8220;I realized I&#8217;ve been expecting this of you without ever saying it. I want to talk about it.&#8221;</p>
+    <p>You may be surprised by what you find. You may discover that your spouse had no idea. You may also discover that they had their own list&mdash;one they&#8217;d been carrying just as quietly.</p>
+    <p>That conversation&mdash;uncomfortable as it may be&mdash;is the beginning of understanding the vows. Not as words you said once, but as commitments you&#8217;re choosing to understand together, every day.</p>
+
+    <div class="chapter-end-rule"></div>
+  </div>
+
+  <!-- ── CHAPTER THREE ───────────────────────────────────── -->
+  <div class="chapter">
+    <div class="chapter-head">
+      <div class="chapter-label">Chapter Three</div>
+      <div class="chapter-title">For Better or For Worse</div>
+    </div>
+
+    <p>This chapter is hard to write because the word <em>commitment</em> has become a moving target. For some, it means loyalty until things get uncomfortable. For others, it&#8217;s a lifetime promise, even when comfort disappears entirely. By definition, commitment means &#8220;the state or quality of being dedicated to a cause, activity, or person.&#8221; It&#8217;s a word that should feel weighty&mdash;but somewhere along the way, it&#8217;s lost its gravity.</p>
+    <p>We live in an era of unprecedented optionality. If something isn&#8217;t working&mdash;a job, a city, a subscription service&mdash;there&#8217;s an exit. And that mentality has quietly seeped into how we think about marriage. We&#8217;ve started treating a covenant like a contract&mdash;with escape clauses.</p>
+
+    <blockquote><p>&#8220;Anyone will sit down with you to eat steak. But when all you&#8217;ve got left is beans, you&#8217;ll see who&#8217;s really with you.&#8221;</p></blockquote>
+
+    <h3>What Commitment Actually Looks Like</h3>
+    <p>Commitment doesn&#8217;t show up on the good days. It shows up when the money runs out, when the diagnosis comes, when attraction has quieted down to something slower and steadier, when you&#8217;ve had the same argument so many times you could script both sides.</p>
+    <p>The couples who model commitment best aren&#8217;t the ones who never struggled. They&#8217;re the ones who stayed in the conversation when everything in them wanted to leave the room. That distinction matters enormously&mdash;because it means commitment isn&#8217;t a feeling or a personality trait. It&#8217;s a practice.</p>
+    <p>True commitment doesn&#8217;t mean pretending things are fine when they aren&#8217;t. It doesn&#8217;t mean suppressing legitimate pain or staying silent in the name of keeping the peace. It means staying engaged&mdash;staying in the room, in the relationship, in the work&mdash;even when it&#8217;s hard.</p>
+
+    <h3>The Elbow and the Punch</h3>
+    <p>Intent is one of the most misunderstood dynamics in any marriage. Think about this: you bump someone in a crowded hallway. It was an accident. You say sorry. They say no problem. The exchange is over in ten seconds because both parties understood the intent. Nobody interpreted your elbow as an assault.</p>
+    <p>In marriage, elbows happen all the time. You say something careless after a long day, and your spouse hears rejection instead of exhaustion. You try to solve a problem they only wanted empathy for. You&#8217;re distracted during a conversation that turned out to matter more than you realized. These are elbows&mdash;unintentional, common, and survivable.</p>
+    <p>The problem comes when we stop believing they&#8217;re elbows. When hurt accumulates and trust erodes, every accidental bump starts to feel deliberate. At that point, both people are on alert&mdash;scanning for evidence of the story they&#8217;ve already decided is true.</p>
+
+    <blockquote><p>&#8220;Trust doesn&#8217;t mean pretending the elbow didn&#8217;t hurt. It means believing your partner didn&#8217;t mean to throw it.&#8221;</p></blockquote>
+
+    <h3>When Elbows Become Patterns</h3>
+    <p>The danger comes when we start interpreting every elbow as intentional&mdash;when we build a narrative of malice around what was actually carelessness or fatigue. I see this constantly in couples who&#8217;ve been hurting for a long time: they&#8217;ve stopped giving each other the benefit of the doubt.</p>
+    <p>When one spouse treats every elbow like a punch, both start swinging. What started as a misunderstanding turns into a full-blown conflict where no one remembers how it began. And each round adds another layer of armor, another reason to stay guarded.</p>
+    <p>Over time, both partners become so defended that there&#8217;s no longer any room for actual connection. They&#8217;re coexisting&mdash;managing the relationship rather than living in it. And both are lonely in a way that&#8217;s particularly painful because they&#8217;re lonely <em>together</em>.</p>
+    <p>The antidote isn&#8217;t naive optimism. It&#8217;s a practiced decision to lead with grace&mdash;to assume the best interpretation of your spouse&#8217;s behavior until you have clear evidence otherwise. That&#8217;s not weakness. That&#8217;s the daily choice that commitment actually looks like.</p>
+
+    <h3>Wants vs. Don&#8217;t Wants</h3>
+    <p>I often ask couples: &#8220;What&#8217;s driving your effort right now&mdash;what you want, or what you&#8217;re trying to avoid?&#8221; The distinction matters more than people realize.</p>
+    <p>A <em>want</em> is fueled by desire. You&#8217;re moving toward something: closeness, growth, genuine partnership, the kind of love you know is possible. A <em>don&#8217;t want</em> is fueled by avoidance: you don&#8217;t want another fight, don&#8217;t want to feel lonely, don&#8217;t want to be the one who let the marriage fail.</p>
+    <p>Both can drive change in the short term. But only want-motivation builds something lasting, because it has a destination. Don&#8217;t-want motivation burns out the moment the immediate threat recedes. As soon as the argument cools, the effort drops. As soon as things feel stable enough, growth stops.</p>
+
+    <blockquote><p>&#8220;When you&#8217;re only running from something, you&#8217;ll stop the moment you feel safe. But if you&#8217;re running toward something, you&#8217;ll keep going.&#8221;</p></blockquote>
+
+    <h3>Commitment Under Pressure</h3>
+    <p>Your commitment will be tested. Not because your marriage is defective&mdash;but because that&#8217;s what marriage does. It puts two people with different histories, different wounds, and different instincts into close proximity and asks them to build something together. That process is inherently uncomfortable.</p>
+    <p>There will be seasons where you genuinely don&#8217;t like your spouse very much. Where the attraction has quieted and the irritations have gotten loud. Where you wonder, honestly, whether you made the right choice. Those seasons don&#8217;t disqualify your marriage. They test it.</p>
+    <p>Commitment doesn&#8217;t mean you won&#8217;t feel that way. It means you choose to stay in the room anyway&mdash;to keep working, keep talking, keep choosing. Because the couples who come out the other side of those seasons often describe it as the turning point: the place where their marriage became something deeper than they&#8217;d thought possible.</p>
+
+    <h3>Everyday &#8220;I Do&#8221; &mdash; Chapter Three</h3>
+    <p><strong>Pause before reacting.</strong> When something your spouse does or says hurts, take a breath before you respond. Ask yourself: &#8220;Is this an elbow or a punch? Do I know their intent, or am I assuming it?&#8221; That pause is where grace lives.</p>
+    <p><strong>Use clarity cues.</strong> Before a hard conversation, tell your spouse what you need from them: listening, feedback, or help problem-solving. Most elbows happen because we didn&#8217;t communicate the context. Removing that ambiguity changes the whole dynamic.</p>
+    <p><strong>Flip your language.</strong> This week, catch yourself using don&#8217;t-want framing and replace it with want framing. &#8220;I don&#8217;t want to keep fighting about this&#8221; becomes &#8220;I want us to find a way through this together.&#8221; The words you use shape the direction you move.</p>
+    <p><strong>Give grace first.</strong> Choose one moment this week to extend the benefit of the doubt&mdash;to interpret your spouse&#8217;s action charitably before building a case against it. Do it even when you&#8217;re not sure they deserve it. That&#8217;s what commitment looks like when it&#8217;s working.</p>
+
+    <div class="chapter-end-rule"></div>
+  </div>
+
+  <!-- Screen footer -->
+  <div class="doc-footer">
+    <span class="doc-footer-text">Sample Material &middot; Advance Review Copy &middot; Not for distribution</span>
+    <span class="doc-footer-title">Saying &#8220;I Do&#8221; Everyday</span>
+  </div>
+
+</div><!-- /.doc -->
+</body>
+</html>

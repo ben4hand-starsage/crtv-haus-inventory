@@ -812,7 +812,39 @@
     }
 
     @media print {
-      .toc-nav { display: none; }
+      * {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .toc-nav  { display: none; }
+      .cover-scroll { display: none; }
+
+      /* Kill the gradient blob — it covers the content in PDF */
+      .cover::before { display: none; }
+
+      /* Let the cover breathe without viewport-relative height */
+      .cover {
+        min-height: 0;
+        padding: 56px 0 64px;
+        page-break-after: always;
+      }
+
+      /* Topbar was absolute — reflow it into the document for print */
+      .cover-topbar {
+        position: static;
+        margin-bottom: 40px;
+      }
+      .cover-topbar .wrap {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      /* Prevent orphaned section headers */
+      .section-header { page-break-after: avoid; }
+      .chapter-item   { page-break-inside: avoid; }
+      section         { page-break-inside: avoid; }
     }
   </style>
 </head>

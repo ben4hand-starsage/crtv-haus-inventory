@@ -1662,12 +1662,8 @@
   </div>
 </section>
 
-<hr class="divider" />
-
-<!-- ══════════════════════════════════════════════════════════ -->
-<!-- SAMPLE MATERIAL                                             -->
-<!-- ══════════════════════════════════════════════════════════ -->
-<section id="sample">
+<!-- SAMPLE MATERIAL (hidden — replaced by e-reader below) -->
+<section id="sample" style="display:none">
   <div class="wrap">
     <div class="section-header">
       <p class="eyebrow">Sample Material</p>
@@ -2392,7 +2388,7 @@ chaptersHTML +
 /* ═══════════════════════════════════════════════════════════════
    NAV DOTS
 ═══════════════════════════════════════════════════════════════ */
-  const ids  = ['cover','overview','contents','audience','author','market','promotion','sample'];
+  const ids  = ['cover','overview','contents','audience','author','market','promotion','ereader'];
   const dots = document.querySelectorAll('.toc-dot');
   const obs  = new IntersectionObserver(entries => {
     entries.forEach(e => {

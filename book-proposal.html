@@ -2049,10 +2049,10 @@
     // Measure the real rendered content-area height so pagination matches exactly
     const contentEl = document.getElementById('er-content-left');
     if (contentEl && contentEl.clientHeight > 50) {
-      // Subtract 28px: one full line's worth of buffer (13px font × 1.82 lh ≈ 24px)
-      // plus a few px for sub-pixel/font-metric differences between the off-screen
-      // measurer and the visible page. This ensures the last line is never clipped.
-      MAX_NORM = contentEl.clientHeight - 28;
+      // Subtract 48px: two full lines of safety buffer (13px × 1.82 lh ≈ 24px/line).
+      // The extra room guards against sub-pixel font rendering drift between the
+      // off-screen measurer and the visible page, preventing last-line clipping.
+      MAX_NORM = contentEl.clientHeight - 48;
     }
     // Measure real chapter-head height by briefly rendering one
     const probe = document.createElement('div');
@@ -2075,7 +2075,7 @@
     if (msrStyle) return;
     msrStyle = document.createElement('style');
     msrStyle.textContent =
-      '.er-msr p{margin:0 0 0.70em;text-align:justify}' +
+      '.er-msr p{margin:0 0 0.70em;text-align:justify;hyphens:auto;-webkit-hyphens:auto}' +
       '.er-msr p:last-child{margin-bottom:0}' +
       '.er-msr p.er-vow{margin-bottom:0.18em;text-align:left}' +
       '.er-msr p.er-vow:last-child{margin-bottom:0}' +
@@ -2112,7 +2112,8 @@
     msr.className = 'er-msr';
     msr.style.cssText =
       'position:fixed;top:0;left:-9999px;visibility:hidden;pointer-events:none;overflow:hidden;' +
-      'width:' + CW + 'px;font-family:"Lora",Georgia,serif;font-size:13px;line-height:1.82;color:#231E17;';
+      'width:' + CW + 'px;font-family:"Lora",Georgia,serif;font-size:13px;line-height:1.82;color:#231E17;' +
+      'hyphens:auto;-webkit-hyphens:auto;text-align:justify;';
     document.body.appendChild(msr);
 
     // Split a paragraph at the last sentence boundary that still fits in the

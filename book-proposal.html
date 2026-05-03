@@ -2049,9 +2049,10 @@
     // Measure the real rendered content-area height so pagination matches exactly
     const contentEl = document.getElementById('er-content-left');
     if (contentEl && contentEl.clientHeight > 50) {
-      // Subtract 14px: accounts for sub-pixel rendering differences and
-      // any margin that the overflow:hidden BFC adds vs. the measurer.
-      MAX_NORM = contentEl.clientHeight - 14;
+      // Subtract 28px: one full line's worth of buffer (13px font × 1.82 lh ≈ 24px)
+      // plus a few px for sub-pixel/font-metric differences between the off-screen
+      // measurer and the visible page. This ensures the last line is never clipped.
+      MAX_NORM = contentEl.clientHeight - 28;
     }
     // Measure real chapter-head height by briefly rendering one
     const probe = document.createElement('div');
@@ -2144,7 +2145,9 @@
         const el = document.createElement('p');
         el.innerHTML = partA;
         msr.appendChild(el);
-        const fits = msr.scrollHeight <= maxH;
+        // Extra 20px buffer inside splits: keeps at least one spare line at
+        // the page bottom so font-metric drift never clips the last line.
+        const fits = msr.scrollHeight <= maxH - 20;
         msr.removeChild(el);
         if (fits) best = [{ t: 'p', x: partA }, { t: 'p', x: partB }];
         else break; // longer prefix won't fit either

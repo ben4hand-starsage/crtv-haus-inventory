@@ -2147,6 +2147,23 @@
         blocks.unshift(pgBlks.pop());
       }
 
+      // Lone-heading fix: if this page contains ONLY a heading (its following
+      // paragraph is too large to share the page), try pulling the heading back
+      // onto the bottom of the PREVIOUS page so we get heading-then-content on
+      // facing pages rather than a nearly-blank right page with just a heading.
+      if (pgBlks.length === 1 && pgBlks[0].t === 'h' && result.length > 0 && blocks.length > 0) {
+        const hblk = pgBlks[0];
+        const prevPage = result[result.length - 1];
+        msr.innerHTML = '';
+        prevPage.blocks.forEach(b => msr.appendChild(makeBlockEl(b)));
+        msr.appendChild(makeBlockEl(hblk));
+        if (msr.scrollHeight <= MAX_NORM) {
+          // Fits on previous page — move heading there, start fresh page with next block
+          prevPage.blocks.push(hblk);
+          continue; // skip result.push; outer loop fills new page from blocks
+        }
+      }
+
       result.push({ blocks: pgBlks, first });
       first = false;
     }

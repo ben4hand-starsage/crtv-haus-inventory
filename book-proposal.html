@@ -893,10 +893,17 @@
       letter-spacing: 0.20em;
       text-transform: uppercase;
       color: #8B6B18;
-      margin: 18px 0 7px;
+      margin: 24px 0 20px;
       padding-bottom: 4px;
       border-bottom: 0.5px solid rgba(139,107,24,0.30);
       line-height: 1.5;
+    }
+    /* Sink heading: when a section heading follows body text, give it
+       significant space above — this is standard book typography ("sink")
+       that makes the white space feel intentional, not accidental. */
+    .er-page-content p + h3,
+    .er-page-content blockquote + h3 {
+      margin-top: 120px;
     }
     /* Pull quotes — gold left bar, sepia italic */
     .er-page-content blockquote {
@@ -2078,7 +2085,8 @@
       '.er-msr p:last-child{margin-bottom:0}' +
       '.er-msr p.er-vow{margin-bottom:0.18em;text-align:left}' +
       '.er-msr p.er-vow:last-child{margin-bottom:0}' +
-      '.er-msr h3{font-family:"Inter",sans-serif;font-size:7px;font-weight:700;letter-spacing:0.20em;text-transform:uppercase;color:#8B6B18;margin:18px 0 7px;padding-bottom:4px;border-bottom:0.5px solid rgba(139,107,24,0.30);line-height:1.5}' +
+      '.er-msr h3{font-family:"Inter",sans-serif;font-size:7px;font-weight:700;letter-spacing:0.20em;text-transform:uppercase;color:#8B6B18;margin:24px 0 20px;padding-bottom:4px;border-bottom:0.5px solid rgba(139,107,24,0.30);line-height:1.5}' +
+      '.er-msr p+h3,.er-msr blockquote+h3{margin-top:120px}' +
       '.er-msr blockquote{border-left:2.5px solid #C8A84A;margin:11px 0;padding:4px 0 4px 11px;font-style:italic;color:#3D3220;font-size:12.5px;line-height:1.72}' +
       '.er-msr blockquote p{margin:0;text-align:left}';
     document.head.appendChild(msrStyle);

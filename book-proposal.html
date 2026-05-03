@@ -2236,13 +2236,16 @@
       const lp = result[i];
       const rp = result[i + 1];
       // Keep pulling blocks from left → right until right hits MIN_FILL
-      // or left would drop to 1 block, or right would overflow MAX_NORM
+      // or left would drop to 1 block, or right would overflow MAX_NORM.
+      // Never leave left with only a heading — that's worse than a sparse right.
       let safety = 12;
       while (safety-- > 0 && lp.blocks.length > 1 && msrH(rp.blocks) < MIN_FILL) {
         const moved = lp.blocks[lp.blocks.length - 1];
         // Probe: would right overflow if we add this block?
         const probe = [moved].concat(rp.blocks);
         if (msrH(probe) > MAX_NORM) break;
+        // Refuse to strand a heading alone on the left page
+        if (lp.blocks.length === 2 && lp.blocks[0].t === 'h') break;
         rp.blocks.unshift(lp.blocks.pop());
       }
       // Re-apply anti-orphan on left after rebalancing — same probe:

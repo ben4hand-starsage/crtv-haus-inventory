@@ -1,0 +1,661 @@
+<title>Built to Stand</title>
+<style>
+  /* ============ TOKENS ============ */
+  :root{
+    --orange:#FF6A13;
+    --orange-soft:#FF8A3D;
+    --grape:#3A1A57;
+    --grape-deep:#2A1140;
+    --rock:#147A52;      /* Builder 1 / YOU  */
+    --sand:#C9761F;      /* Builder 2 / HER  */
+    --sand-tag:#DB8A3C;
+    /* cue hues */
+    --c-sound:#1E6FB8;
+    --c-video:#7A2FA6;
+    --c-lights:#C98A00;
+    --c-fx:#0E8D9E;
+    --c-props:#7E6327;
+    --c-aud:#FF6A13;
+    --c-teach:#3A1A57;
+    /* surfaces */
+    --paper:#FBF5EC;
+    --card:#FFFFFF;
+    --card-2:#FFF8EE;
+    --ink:#241A31;
+    --ink-soft:#5E5268;
+    --hair:#E7DCCB;
+    --hair-2:#EFE6D6;
+    --shadow:0 2px 0 rgba(58,26,87,.08), 0 10px 30px rgba(58,26,87,.10);
+    --radius:18px;
+    --f-display:'Arial Rounded MT Bold','Helvetica Neue','Segoe UI',system-ui,sans-serif;
+    --f-body:'Helvetica Neue',-apple-system,'Segoe UI',Roboto,Arial,sans-serif;
+    --f-mono:'SF Mono','Roboto Mono',ui-monospace,Menlo,Consolas,monospace;
+  }
+  :root:not([data-theme="light"]){}
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --orange:#FF7F2E; --orange-soft:#FF9A52;
+      --grape:#8A5CC0; --grape-deep:#1B0F2B;
+      --rock:#3CC489; --sand:#E9A24A; --sand-tag:#E9A24A;
+      --c-sound:#5AA6E8; --c-video:#B583E6; --c-lights:#F0C24A;
+      --c-fx:#3FC4D6; --c-props:#C7A55E; --c-aud:#FF9A52; --c-teach:#B79BE0;
+      --paper:#15101F; --card:#1E1730; --card-2:#241B38;
+      --ink:#F3ECFB; --ink-soft:#B4A6C6; --hair:#332748; --hair-2:#2A2040;
+      --shadow:0 2px 0 rgba(0,0,0,.30), 0 14px 34px rgba(0,0,0,.42);
+    }
+  }
+  :root[data-theme="dark"]{
+    --orange:#FF7F2E; --orange-soft:#FF9A52;
+    --grape:#8A5CC0; --grape-deep:#1B0F2B;
+    --rock:#3CC489; --sand:#E9A24A; --sand-tag:#E9A24A;
+    --c-sound:#5AA6E8; --c-video:#B583E6; --c-lights:#F0C24A;
+    --c-fx:#3FC4D6; --c-props:#C7A55E; --c-aud:#FF9A52; --c-teach:#B79BE0;
+    --paper:#15101F; --card:#1E1730; --card-2:#241B38;
+    --ink:#F3ECFB; --ink-soft:#B4A6C6; --hair:#332748; --hair-2:#2A2040;
+    --shadow:0 2px 0 rgba(0,0,0,.30), 0 14px 34px rgba(0,0,0,.42);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:var(--f-body); font-size:17px; line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:940px; margin:0 auto; padding:0 20px 96px}
+
+  /* ============ MASTHEAD ============ */
+  .mast{
+    background:linear-gradient(180deg,var(--grape) 0%, var(--grape-deep) 100%);
+    color:#fff; border-radius:0 0 30px 30px; overflow:hidden;
+    position:relative; margin-bottom:26px;
+  }
+  .mast-inner{max-width:940px; margin:0 auto; padding:30px 26px 34px; position:relative; z-index:2}
+  .splat{
+    display:inline-flex; align-items:center; gap:9px;
+    background:var(--orange); color:#fff; font-family:var(--f-display);
+    font-weight:800; letter-spacing:.14em; font-size:12px; text-transform:uppercase;
+    padding:7px 15px; border-radius:999px;
+  }
+  .splat b{font-size:15px; line-height:0}
+  h1.title{
+    font-family:var(--f-display); font-weight:800;
+    font-size:clamp(52px,11vw,104px); line-height:.9; letter-spacing:-.02em;
+    margin:16px 0 4px; text-wrap:balance;
+    text-shadow:0 4px 0 rgba(0,0,0,.18);
+  }
+  h1.title .stand{color:var(--orange-soft); display:block}
+  .tagline{font-size:18px; color:#E6D8F5; max-width:52ch; margin:8px 0 22px}
+  .tagline b{color:#fff}
+  .meta{
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    gap:12px; margin-top:6px;
+  }
+  .meta .cell{
+    background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.14);
+    border-radius:14px; padding:12px 14px;
+  }
+  .meta .k{font-family:var(--f-mono); font-size:11px; letter-spacing:.12em;
+    text-transform:uppercase; color:#C6AEE6; margin-bottom:4px}
+  .meta .v{font-weight:700; font-size:16px; color:#fff}
+  .meta .v small{display:block; font-weight:400; font-size:13px; color:#DBCBEF; margin-top:2px}
+  .mast::after{
+    content:""; position:absolute; inset:auto 0 0 0; height:12px;
+    background:repeating-linear-gradient(45deg,var(--orange) 0 22px,#1a1226 22px 44px);
+    opacity:.9;
+  }
+
+  /* ============ STICKY SCENE NAV ============ */
+  nav.scenes{
+    position:sticky; top:0; z-index:40; background:color-mix(in srgb,var(--paper) 88%, transparent);
+    backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+    border-bottom:2px solid var(--hair); margin:0 -20px 26px; padding:9px 14px;
+  }
+  nav.scenes .row{max-width:940px; margin:0 auto; display:flex; gap:7px; overflow-x:auto; padding-bottom:2px}
+  nav.scenes a{
+    flex:0 0 auto; text-decoration:none; font-family:var(--f-mono); font-size:11.5px;
+    color:var(--ink-soft); background:var(--card); border:1.5px solid var(--hair);
+    padding:6px 11px; border-radius:999px; white-space:nowrap; font-weight:600;
+    transition:.15s;
+  }
+  nav.scenes a:hover,nav.scenes a:focus-visible{border-color:var(--orange); color:var(--orange); outline:none}
+  nav.scenes a b{color:var(--ink)}
+
+  /* ============ SHARED ============ */
+  .eyebrow{font-family:var(--f-mono); font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-soft)}
+  h2.sec{font-family:var(--f-display); font-weight:800; font-size:26px; letter-spacing:-.01em; margin:0}
+
+  /* ============ LEGEND ============ */
+  .legend{
+    background:var(--card); border:2px solid var(--hair); border-radius:var(--radius);
+    padding:20px 22px; box-shadow:var(--shadow); margin-bottom:14px;
+  }
+  .legend h2{margin-bottom:4px}
+  .legend p.lead{color:var(--ink-soft); margin:6px 0 18px; max-width:62ch}
+  .keys{display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:10px}
+  .key{display:flex; gap:11px; align-items:flex-start; padding:9px 11px; border-radius:12px; background:var(--card-2); border:1px solid var(--hair-2)}
+  .key .dot{flex:0 0 auto; width:30px; height:30px; border-radius:9px; display:grid; place-items:center; font-size:15px}
+  .key .kt{font-weight:700; font-size:14px; line-height:1.2}
+  .key .kd{font-size:12.5px; color:var(--ink-soft); line-height:1.35}
+  .who-key{display:flex; gap:10px; flex-wrap:wrap; margin-top:14px}
+  .who-key .tag{font-size:13px}
+
+  /* ============ SCENE CARD ============ */
+  .scene{
+    background:var(--card); border:2px solid var(--hair); border-radius:var(--radius);
+    box-shadow:var(--shadow); margin:20px 0; overflow:hidden; scroll-margin-top:74px;
+  }
+  .scene > .head{
+    display:flex; align-items:center; gap:16px; flex-wrap:wrap;
+    background:linear-gradient(90deg,var(--grape),var(--grape-deep));
+    color:#fff; padding:15px 20px;
+  }
+  .scene > .head .tc{
+    font-family:var(--f-mono); font-weight:700; font-size:14px;
+    background:var(--orange); color:#fff; padding:6px 12px; border-radius:9px; white-space:nowrap;
+  }
+  .scene > .head .no{font-family:var(--f-mono); font-size:12px; color:#C6AEE6; letter-spacing:.1em}
+  .scene > .head h3{font-family:var(--f-display); font-weight:800; font-size:23px; margin:0; letter-spacing:-.01em}
+  .scene > .head .runtime{margin-left:auto; font-family:var(--f-mono); font-size:11.5px; color:#C6AEE6}
+  .body{padding:20px 22px}
+
+  .beat{
+    font-family:var(--f-mono); font-size:11.5px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--orange); font-weight:700; margin:22px 0 10px; display:flex; align-items:center; gap:9px;
+  }
+  .beat:first-child{margin-top:0}
+  .beat::after{content:""; flex:1; height:2px; background:var(--hair); border-radius:2px}
+
+  /* stage picture list */
+  .stage{background:var(--card-2); border:1px dashed var(--hair); border-radius:12px; padding:14px 16px; margin:0 0 6px}
+  .stage .lbl{font-family:var(--f-mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-soft); margin-bottom:8px}
+  .stage ul{margin:0; padding-left:18px; columns:2; column-gap:26px}
+  .stage li{margin:3px 0; break-inside:avoid; font-size:14.5px}
+  @media(max-width:560px){.stage ul{columns:1}}
+
+  /* ============ DIALOGUE ============ */
+  .line{display:flex; gap:13px; margin:11px 0; align-items:baseline}
+  .tag{
+    flex:0 0 auto; font-family:var(--f-display); font-weight:800; font-size:12px;
+    letter-spacing:.06em; color:#fff; padding:4px 11px; border-radius:8px; min-width:58px; text-align:center;
+    text-transform:uppercase;
+  }
+  .tag.you{background:var(--rock)}
+  .tag.her{background:var(--sand-tag)}
+  .tag.boss{background:var(--grape)}
+  .tag.all{background:var(--orange)}
+  .said{flex:1}
+  .said em{color:var(--ink-soft)}
+
+  /* stage direction */
+  .dir{font-style:italic; color:var(--ink-soft); margin:9px 0 9px 71px; font-size:15px; position:relative}
+  .dir::before{content:"›"; position:absolute; left:-16px; font-style:normal; color:var(--orange); font-weight:800}
+
+  /* ============ CUE STRIP ============ */
+  .cue{
+    display:flex; gap:12px; align-items:flex-start; margin:12px 0;
+    background:var(--card-2); border:1px solid var(--hair-2);
+    border-left:6px solid var(--cc,#888); border-radius:0 12px 12px 0; padding:11px 14px 11px 13px;
+  }
+  .cue .ci{flex:0 0 auto; width:30px; height:30px; border-radius:8px; display:grid; place-items:center; font-size:15px; background:color-mix(in srgb,var(--cc) 16%, transparent)}
+  .cue .ctxt{flex:1}
+  .cue .clabel{font-family:var(--f-mono); font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--cc); display:block; margin-bottom:1px}
+  .cue--sound{--cc:var(--c-sound)}
+  .cue--video{--cc:var(--c-video)}
+  .cue--lights{--cc:var(--c-lights)}
+  .cue--fx{--cc:var(--c-fx)}
+  .cue--props{--cc:var(--c-props)}
+  .cue--audience{--cc:var(--c-aud)}
+
+  /* ============ TEACHING BOX ============ */
+  .teach{
+    background:linear-gradient(180deg,color-mix(in srgb,var(--c-teach) 12%,var(--card)),var(--card));
+    border:2px solid color-mix(in srgb,var(--c-teach) 40%, var(--hair));
+    border-radius:14px; padding:16px 18px; margin:14px 0;
+  }
+  .teach .tl{font-family:var(--f-mono); font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--c-teach); display:flex; align-items:center; gap:8px; margin-bottom:7px}
+  .teach p{margin:7px 0}
+  .teach .big{font-family:var(--f-display); font-weight:800; font-size:19px; line-height:1.25; color:var(--ink); text-wrap:balance}
+  .teach ul{margin:8px 0 2px; padding-left:20px}
+  .teach li{margin:4px 0}
+
+  .scripture{
+    background:var(--grape); color:#fff; border:none;
+    background:linear-gradient(160deg,var(--grape),var(--grape-deep));
+  }
+  .scripture .tl{color:var(--orange-soft)}
+  .scripture .big{color:#fff}
+  .scripture p{color:#E6D8F5}
+
+  /* chant / call-response */
+  .chant{display:grid; gap:8px; margin:12px 0}
+  .chant .beatline{
+    background:var(--orange); color:#fff; font-family:var(--f-display); font-weight:800;
+    font-size:clamp(20px,4.4vw,30px); letter-spacing:.01em; text-align:center;
+    padding:14px 16px; border-radius:14px; text-wrap:balance;
+  }
+  .chant .cue-note{text-align:center; font-family:var(--f-mono); font-size:12px; color:var(--ink-soft)}
+
+  /* screen statement / final */
+  .final{
+    background:linear-gradient(180deg,var(--grape),var(--grape-deep)); color:#fff;
+    border-radius:22px; padding:34px 26px; text-align:center; margin:26px 0 0;
+    position:relative; overflow:hidden;
+  }
+  .final .eb{font-family:var(--f-mono); font-size:12px; letter-spacing:.16em; text-transform:uppercase; color:var(--orange-soft)}
+  .final .stmt{font-family:var(--f-display); font-weight:800; font-size:clamp(30px,7vw,58px); line-height:.98; margin:14px 0 8px; letter-spacing:-.01em; text-wrap:balance}
+  .final .stmt span{color:var(--orange-soft)}
+
+  /* safety-net banner */
+  .safety{
+    border:2px dashed var(--orange); border-radius:16px; background:color-mix(in srgb,var(--orange) 8%,var(--card));
+    padding:18px 20px; margin:24px 0;
+  }
+  .safety .tl{font-family:var(--f-mono); font-size:11.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--orange); font-weight:700; margin-bottom:7px; display:flex; gap:8px; align-items:center}
+  .safety .one{font-family:var(--f-display); font-weight:800; font-size:clamp(20px,4.6vw,28px); line-height:1.2; text-wrap:balance}
+  .safety p{color:var(--ink-soft); margin:9px 0 0; font-size:15px}
+
+  .note{font-size:14px; color:var(--ink-soft); font-style:italic; margin:8px 0 8px 71px}
+
+  footer{margin-top:40px; text-align:center; color:var(--ink-soft); font-size:13px; font-family:var(--f-mono)}
+
+  a.focusable:focus-visible{outline:3px solid var(--orange); outline-offset:2px; border-radius:6px}
+
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+  /* ============ PRINT ============ */
+  @media print{
+    body{background:#fff; color:#000; font-size:11.5pt}
+    nav.scenes,footer{display:none}
+    .mast{border-radius:0; color:#000; background:#fff; border-bottom:3px solid #000}
+    .mast-inner{padding:0 0 12px}
+    .mast::after,.splat{background:#000}
+    h1.title{text-shadow:none; color:#000}
+    h1.title .stand,.tagline b{color:#000}
+    .tagline,.meta .v,.meta .k{color:#000}
+    .meta .cell{background:#fff; border:1px solid #999}
+    .scene,.legend,.safety,.teach,.cue,.stage{break-inside:avoid; box-shadow:none}
+    .scene>.head{background:#eee; color:#000}
+    .scene>.head .tc{background:#000; color:#fff}
+    .scene>.head .no,.scene>.head .runtime{color:#333}
+    .final,.scripture{background:#eee !important; color:#000 !important}
+    .final .stmt,.final .stmt span,.final .eb,.scripture .big,.scripture p,.scripture .tl{color:#000 !important}
+    .chant .beatline{background:#000; color:#fff}
+  }
+</style>
+
+<header class="mast">
+  <div class="mast-inner">
+    <span class="splat"><b>✳</b> Kids Life Stage Drama</span>
+    <h1 class="title">Built to<span class="stand">Stand</span></h1>
+    <p class="tagline"><b>A strong life is built by hearing what Jesus says and doing it.</b> Two builders. One storm. Same rain, different foundation.</p>
+    <div class="meta">
+      <div class="cell"><div class="k">Main Text</div><div class="v">Matthew 7:24–27<small>Supporting: John 1:1, 14</small></div></div>
+      <div class="cell"><div class="k">Runtime</div><div class="v">20:00 max<small>Hard cap — watch the clock</small></div></div>
+      <div class="cell"><div class="k">Big Idea</div><div class="v">Hear it & do it<small>Build on the Rock</small></div></div>
+      <div class="cell"><div class="k">Cast</div><div class="v">Builder 1 &amp; 2<small>+ Boss (voice/cameo)</small></div></div>
+    </div>
+  </div>
+</header>
+
+<nav class="scenes" aria-label="Jump to scene">
+  <div class="row">
+    <a href="#legend" class="focusable">KEY</a>
+    <a href="#cast" class="focusable">CAST</a>
+    <a href="#s1" class="focusable"><b>S1</b> · 0:00 The Job</a>
+    <a href="#s2" class="focusable"><b>S2</b> · 2:00 Easy vs Right</a>
+    <a href="#s3" class="focusable"><b>S3</b> · 5:00 Boss Checks In</a>
+    <a href="#s4" class="focusable"><b>S4</b> · 6:30 The Nap</a>
+    <a href="#s5" class="focusable"><b>S5</b> · 8:00 The Storm</a>
+    <a href="#s6" class="focusable"><b>S6</b> · 10:00 The Ruins</a>
+    <a href="#s7" class="focusable"><b>S7</b> · 13:00 Three Ways</a>
+    <a href="#s8" class="focusable"><b>S8</b> · 17:00 Fresh Start</a>
+    <a href="#s9" class="focusable"><b>S9</b> · 19:30 Build Again</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <!-- ============ LEGEND ============ -->
+  <section class="legend" id="legend">
+    <span class="eyebrow">How to read this script</span>
+    <h2 class="sec">Cue Key</h2>
+    <p class="lead">Every production cue is a colored strip — spot your color, hit your cue. Dialogue tags are color-coded by builder. Purple boxes are the teaching beats; don't rush them.</p>
+    <div class="keys">
+      <div class="key"><div class="dot" style="background:color-mix(in srgb,var(--c-sound) 18%,transparent);color:var(--c-sound)">🔊</div><div><div class="kt" style="color:var(--c-sound)">SOUND</div><div class="kd">Music, SFX, ambience, construction bed</div></div></div>
+      <div class="key"><div class="dot" style="background:color-mix(in srgb,var(--c-video) 18%,transparent);color:var(--c-video)">🎬</div><div><div class="kt" style="color:var(--c-video)">SCREEN</div><div class="kd">Video walls, graphics, forecast, storm cloud</div></div></div>
+      <div class="key"><div class="dot" style="background:color-mix(in srgb,var(--c-lights) 18%,transparent);color:var(--c-lights)">💡</div><div><div class="kt" style="color:var(--c-lights)">LIGHTS</div><div class="kd">State changes — day, storm, sun, blackout</div></div></div>
+      <div class="key"><div class="dot" style="background:color-mix(in srgb,var(--c-fx) 18%,transparent);color:var(--c-fx)">🌩️</div><div><div class="kt" style="color:var(--c-fx)">FX</div><div class="kd">Water, wind machine, the house collapse</div></div></div>
+      <div class="key"><div class="dot" style="background:color-mix(in srgb,var(--c-props) 18%,transparent);color:var(--c-props)">🧰</div><div><div class="kt" style="color:var(--c-props)">PROPS / SET</div><div class="kd">Handled items & set moves to pre-set</div></div></div>
+      <div class="key"><div class="dot" style="background:color-mix(in srgb,var(--c-aud) 18%,transparent);color:var(--c-aud)">👥</div><div><div class="kt" style="color:var(--c-aud)">AUDIENCE</div><div class="kd">Direct kid interaction — let them yell</div></div></div>
+    </div>
+    <div class="who-key">
+      <span class="tag you">YOU</span>
+      <span class="tag her">HER</span>
+      <span class="tag boss">BOSS</span>
+      <span class="tag all">KIDS</span>
+    </div>
+  </section>
+
+  <!-- ============ CAST ============ -->
+  <section class="scene" id="cast">
+    <div class="head"><span class="no">THE CAST</span><h3>Who's on stage</h3></div>
+    <div class="body">
+      <div class="line"><span class="tag you">YOU</span><span class="said"><b>Builder 1.</b> Takes the job seriously. Reads the blueprint. Works hard. Not boring or uptight — just <em>convinced the instructions matter.</em></span></div>
+      <div class="line"><span class="tag her">HER</span><span class="said"><b>Builder 2.</b> Confident, funny, shortcuts everything. She isn't "bad." She genuinely thinks she's figured out an easier way to do life.</span></div>
+      <div class="note">Character note: She's not trying to destroy her house. She wants the <em>same result</em> without following the instructions. Play the confidence, not the villainy.</div>
+      <div class="line"><span class="tag boss">BOSS</span><span class="said">Appears or calls in once (Scene 3). The one who gave the blueprint. Warm, not scary.</span></div>
+    </div>
+  </section>
+
+  <!-- ============ SCENE 1 ============ -->
+  <section class="scene" id="s1">
+    <div class="head"><span class="tc">0:00 – 2:00</span><span class="no">SCENE 1</span><h3>The Job</h3><span class="runtime">≈ 2 min</span></div>
+    <div class="body">
+
+      <div class="stage">
+        <div class="lbl">Stage Picture — pre-set before doors</div>
+        <ul>
+          <li>Two house-building areas</li>
+          <li>Building materials</li>
+          <li>Large pile / container of sand</li>
+          <li>Rocks or simulated bedrock</li>
+          <li>Two houses / structures</li>
+          <li>Blueprints (x2)</li>
+          <li>Construction tools</li>
+          <li>Lawn chair, drink, Nintendo Switch</li>
+          <li>Bible — hidden but accessible for later</li>
+        </ul>
+      </div>
+      <div class="cue cue--sound"><div class="ci">🔊</div><div class="ctxt"><span class="clabel">Sound</span>Construction ambience runs <em>underneath</em> the whole scene — hammers, distant saw. Keep it low under dialogue.</div></div>
+
+      <div class="beat">Story Beat</div>
+      <div class="dir">You both enter as construction workers ready for a huge assignment.</div>
+      <div class="dir">Establish that the Boss hired you to build houses and gave you blueprints. The blueprint specifically calls for a strong foundation.</div>
+
+      <div class="beat">Her Choice</div>
+      <div class="dir">She discovers the sand. It's lighter. It's easier. It's <em>right there.</em> The rocks are heavy and inconvenient. She immediately chooses sand.</div>
+      <div class="cue cue--props"><div class="ci">🧰</div><div class="ctxt"><span class="clabel">Props</span>HER makes a big physical show of how heavy the rocks are vs. how easy the sand pours. Sell the contrast.</div></div>
+
+      <div class="beat">Key Interaction</div>
+      <div class="line"><span class="tag you">YOU</span><span class="said">The blueprint says we need a strong foundation.</span></div>
+      <div class="line"><span class="tag her">HER</span><span class="said">Those things are basically <em>suggestions.</em></span></div>
+      <div class="note">HER can riff: the blueprints are old, outdated, complicated, who-even-reads-these, etc.</div>
+      <div class="line"><span class="tag you">YOU</span><span class="said">The person we're building this for gave us the instructions. I think we should probably listen to him.</span></div>
+      <div class="dir">She disagrees.</div>
+
+      <div class="teach">
+        <div class="tl">🌱 Underlying Lesson — don't teach yet</div>
+        <p>Just let the kids <em>see</em> the first mistake: she wants to build the house her way instead of the Builder's way. Plant it. Don't explain it.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SCENE 2 ============ -->
+  <section class="scene" id="s2">
+    <div class="head"><span class="tc">2:00 – 5:00</span><span class="no">SCENE 2</span><h3>Easy vs. Right</h3><span class="runtime">≈ 3 min</span></div>
+    <div class="body">
+      <div class="dir">The contrast between the two builders gets bigger.</div>
+
+      <div class="beat">Her Side</div>
+      <div class="dir">She gets her house up ridiculously fast. She celebrates. She's proud of herself. Meanwhile you're still carrying rocks, checking measurements, working.</div>
+      <div class="dir">She starts mocking how unnecessarily difficult you're making everything. Then comes the lawn chair. Drink. Feet up. Maybe sunglasses. She's living the dream.</div>
+      <div class="cue cue--props"><div class="ci">🧰</div><div class="ctxt"><span class="clabel">Props</span>Lawn chair, drink, sunglasses staged within reach for HER. Switch stays hidden until the beat below.</div></div>
+
+      <div class="beat">Her Philosophy</div>
+      <div class="note">Important character beat — she isn't simply "lazy." It's: <em>"Why do something the hard way when there's an easier way?"</em></div>
+      <div class="line"><span class="tag her">HER</span><span class="said">Look at me. House built. Relaxing. Look at you. Sweating. Who's the smart builder here?</span></div>
+
+      <div class="beat">Video Game Beat</div>
+      <div class="cue cue--props"><div class="ci">🧰</div><div class="ctxt"><span class="clabel">Props</span>HER pulls out the Nintendo Switch and invites YOU to play.</div></div>
+      <div class="line"><span class="tag you">YOU</span><span class="said">There's nothing wrong with playing video games. But right now, I've got a job to finish.</span></div>
+      <div class="dir">Then introduce the coming storm — you've checked the forecast, bad weather is coming.</div>
+      <div class="cue cue--screen cue--video"><div class="ci">🎬</div><div class="ctxt"><span class="clabel">Screen</span>Optional: flash a cartoon weather forecast graphic on the video wall as YOU "checks" it.</div></div>
+      <div class="line"><span class="tag her">HER</span><span class="said">The weather guy is wrong all the time.</span></div>
+
+      <div class="teach">
+        <div class="tl">🌱 Core Idea being illustrated — still planting</div>
+        <p class="big">Discipline is choosing what you need to do over what you feel like doing.</p>
+        <p>Don't fully teach it yet. You're planting it.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SCENE 3 ============ -->
+  <section class="scene" id="s3">
+    <div class="head"><span class="tc">5:00 – 6:30</span><span class="no">SCENE 3</span><h3>The Boss Checks In</h3><span class="runtime">≈ 1.5 min</span></div>
+    <div class="body">
+      <div class="dir">This is the honesty setup.</div>
+      <div class="cue cue--sound"><div class="ci">🔊</div><div class="ctxt"><span class="clabel">Sound</span>If BOSS calls in rather than enters — phone ring SFX / walkie crackle to cue the moment.</div></div>
+      <div class="dir">The Boss enters or calls. He asks how everything is going. You report honestly. Then he asks her.</div>
+      <div class="dir">She's been sitting around playing video games. She immediately jumps up and pretends she's exhausted from working.</div>
+
+      <div class="beat">Her Lie</div>
+      <div class="line"><span class="tag her">HER</span><span class="said">Oh, it's going <em>GREAT.</em> I've been working <em>SO</em> hard. Haven't stopped all day.</span></div>
+      <div class="dir">You just stare at her. She stares back. Maybe the kids react. <b>Don't correct her yet — let the lie hang there.</b></div>
+
+      <div class="teach">
+        <div class="tl">🌱 Why this beat matters</div>
+        <p>The lie comes because telling the truth would cost her something. That's exactly what you return to later.</p>
+        <p class="big">Honesty means telling the truth even when a lie would make things easier.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SCENE 4 ============ -->
+  <section class="scene" id="s4">
+    <div class="head"><span class="tc">6:30 – 8:00</span><span class="no">SCENE 4</span><h3>The Nap</h3><span class="runtime">≈ 1.5 min</span></div>
+    <div class="body">
+      <div class="dir">The Boss leaves. She celebrates getting away with it. Then she's tired. Time for a nap. She gets comfortable and falls asleep. You're still working.</div>
+      <div class="dir"><b>This is your strongest audience interaction before the storm.</b></div>
+
+      <div class="beat">Audience Interaction</div>
+      <div class="cue cue--audience"><div class="ci">👥</div><div class="ctxt"><span class="clabel">Audience</span>Stop working. Show you're exhausted. Look at her → look at your unfinished house → look at the kids.</div></div>
+      <div class="line"><span class="tag you">YOU</span><span class="said">Guys, I'm tired. Should I just quit and take a nap too?</span></div>
+      <div class="dir">Let them yell. Push back a little:</div>
+      <div class="line"><span class="tag you">YOU</span><span class="said">But look at her! She's having a great time!</span></div>
+      <div class="dir">Let them convince you. Then:</div>
+      <div class="line"><span class="tag you">YOU</span><span class="said">All right. You're right. I've got a job to finish.</span></div>
+      <div class="dir">Back to work.</div>
+      <div class="note">This quietly gets the kids to choose discipline themselves — before you've taught the word.</div>
+    </div>
+  </section>
+
+  <!-- ============ SCENE 5 ============ -->
+  <section class="scene" id="s5">
+    <div class="head"><span class="tc">8:00 – 10:00</span><span class="no">SCENE 5</span><h3>The Storm</h3><span class="runtime">≈ 2 min · big cue sequence</span></div>
+    <div class="body">
+      <div class="dir">Your house gets finished just in time. Then everything changes.</div>
+
+      <div class="beat">The Turn — fire these in order</div>
+      <div class="cue cue--sound"><div class="ci">🔊</div><div class="ctxt"><span class="clabel">Sound — 1</span>Construction ambience <b>STOPS</b>. Beat of silence. Then a low rumble.</div></div>
+      <div class="cue cue--screen cue--video"><div class="ci">🎬</div><div class="ctxt"><span class="clabel">Screen — 2</span>Storm cloud appears on the video wall.</div></div>
+      <div class="cue cue--sound"><div class="ci">🔊</div><div class="ctxt"><span class="clabel">Sound — 3</span>Thunder crack.</div></div>
+      <div class="cue cue--lights"><div class="ci">💡</div><div class="ctxt"><span class="clabel">Lights — 4</span>Snap to storm state. Lightning flashes on thunder hits.</div></div>
+      <div class="dir">She wakes up terrified. Lightning. Wind.</div>
+
+      <div class="beat">Action</div>
+      <div class="line"><span class="tag you">YOU</span><span class="said">STORM! TAKE SHELTER!</span></div>
+      <div class="dir">Both scramble behind your houses.</div>
+      <div class="cue cue--fx"><div class="ci">🌩️</div><div class="ctxt"><span class="clabel">FX — 5</span>Rain starts — buckets / water effects.</div></div>
+      <div class="cue cue--fx"><div class="ci">🌩️</div><div class="ctxt"><span class="clabel">FX — 6</span>Wind machine / pressure-washer effect on the houses.</div></div>
+      <div class="cue cue--fx"><div class="ci">🌩️</div><div class="ctxt"><span class="clabel">FX — 7</span>HER sand begins moving. Her house starts shifting…</div></div>
+      <div class="cue cue--fx"><div class="ci">🌩️</div><div class="ctxt"><span class="clabel">FX — 8 · THE PAYOFF</span><b>CRASH — her house collapses.</b> YOUR house takes the same storm. It <b>STANDS.</b></div></div>
+
+      <div class="teach scripture">
+        <div class="tl">▲ The visual thesis — hold it</div>
+        <p class="big">SAME STORM. DIFFERENT FOUNDATION. DIFFERENT RESULT.</p>
+        <p>Don't rush this moment. It's the visual payoff of the entire message.</p>
+      </div>
+
+      <div class="cue cue--sound"><div class="ci">🔊</div><div class="ctxt"><span class="clabel">Sound — 9</span>Storm ends.</div></div>
+      <div class="cue cue--lights"><div class="ci">💡</div><div class="ctxt"><span class="clabel">Lights — 10</span>Sun comes out. Silence.</div></div>
+      <div class="dir">You both emerge.</div>
+    </div>
+  </section>
+
+  <!-- ============ SCENE 6 ============ -->
+  <section class="scene" id="s6">
+    <div class="head"><span class="tc">10:00 – 13:00</span><span class="no">SCENE 6</span><h3>Lunch at the Ruins</h3><span class="runtime">≈ 3 min · the turn</span></div>
+    <div class="body">
+      <div class="dir">Her energy changes. Not melodramatic — she's genuinely confused.</div>
+      <div class="line"><span class="tag her">HER</span><span class="said">My house is gone.</span></div>
+      <div class="dir">She starts frantically trying to rebuild. You stop her — it's lunchtime. You both sit. Her destroyed house sits right there while you talk. That's the perfect backdrop.</div>
+      <div class="cue cue--props"><div class="ci">🧰</div><div class="ctxt"><span class="clabel">Set</span>Keep the collapsed house in full view during the whole conversation — do not clear it.</div></div>
+
+      <div class="beat">Her Realization — she connects the dots herself</div>
+      <div class="line"><span class="tag her">HER</span><span class="said">I probably should've used those rocks.</span></div>
+      <div class="line"><span class="tag you">YOU</span><span class="said">Yep.</span></div>
+      <div class="line"><span class="tag her">HER</span><span class="said">And I probably shouldn't have played video games when I was supposed to be working.</span></div>
+      <div class="line"><span class="tag you">YOU</span><span class="said">Probably.</span></div>
+      <div class="line"><span class="tag her">HER</span><span class="said">And the nap?</span></div>
+      <div class="line"><span class="tag you">YOU</span><span class="said">Definitely the nap.</span></div>
+      <div class="line"><span class="tag her">HER</span><span class="said">How did you know?</span></div>
+      <div class="note">That's the doorway.</div>
+
+      <div class="beat">🔑 The Bible Reveal</div>
+      <div class="cue cue--props"><div class="ci">🧰</div><div class="ctxt"><span class="clabel">Props — key moment</span>YOU pull out the Bible that was hidden in Scene 1.</div></div>
+      <div class="line"><span class="tag her">HER</span><span class="said">No, no. I asked how you knew how to build the <em>house.</em></span></div>
+      <div class="line"><span class="tag you">YOU</span><span class="said">I know. This is where I learned it.</span></div>
+      <div class="note">That should feel surprising.</div>
+
+      <div class="beat">Matthew 7 Reveal</div>
+      <div class="dir">Read or paraphrase Matthew 7:24–27. Jesus describes two people. Both build. Both experience rain, floods, wind. One house stands. One falls.</div>
+      <div class="teach scripture">
+        <div class="tl">📖 Land this</div>
+        <p class="big">Jesus wasn't really teaching us how to build houses. He was teaching us how to build lives.</p>
+        <p><b>The difference wasn't the storm — both houses got hit. The difference was what they were built on.</b></p>
+        <p class="big">Jesus said the wise person hears what He says and does it. That's what it means to build on the Rock.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SCENE 7 ============ -->
+  <section class="scene" id="s7">
+    <div class="head"><span class="tc">13:00 – 17:00</span><span class="no">SCENE 7</span><h3>Three Ways to Build Strong</h3><span class="runtime">≈ 4 min · the teaching</span></div>
+    <div class="body">
+      <div class="note">Now use the entire skit as your sermon illustration. You don't need three mini-sermons — point back to what the kids already watched.</div>
+
+      <!-- 1 HONESTY -->
+      <div class="beat">1 · Honesty — point back to the Boss scene</div>
+      <div class="line"><span class="tag her">HER</span><span class="said">Okay, so what does building on the Rock actually look like?</span></div>
+      <div class="line"><span class="tag you">YOU</span><span class="said">Remember when the Boss asked if you had been working?</span></div>
+      <div class="dir">She remembers.</div>
+      <div class="line"><span class="tag you">YOU</span><span class="said">What did you tell him?</span></div>
+      <div class="dir">She admits she lied.</div>
+      <div class="teach">
+        <div class="tl">💡 Big Idea — Honesty</div>
+        <p class="big">Building a strong life means telling the truth even when lying would be easier.</p>
+        <p>Because Jesus teaches us to live truthfully. Sometimes telling the truth means admitting:</p>
+        <ul>
+          <li>"I did it." · "I broke it."</li>
+          <li>"I didn't finish my homework."</li>
+          <li>"I wasn't where I said I was."</li>
+          <li>"I treated my brother or sister badly."</li>
+        </ul>
+        <p>Every time you choose truth, you're putting another piece of your life on a strong foundation.</p>
+      </div>
+      <div class="line"><span class="tag her">HER</span><span class="said">So every time I tell the truth, even when it's hard, I'm building on the Rock?</span></div>
+      <div class="line"><span class="tag you">YOU</span><span class="said">Exactly.</span></div>
+
+      <!-- 2 DISCIPLINE -->
+      <div class="beat">2 · Discipline — point back to the Switch &amp; the nap</div>
+      <div class="teach">
+        <div class="tl">💡 Big Idea — Discipline</div>
+        <p class="big">Discipline means doing what you're supposed to do even when something easier or more fun is available.</p>
+        <p>Make it concrete. Sometimes building a strong life looks like:</p>
+        <ul>
+          <li>Doing homework when you'd rather play.</li>
+          <li>Cleaning your room when you'd rather watch TV.</li>
+          <li>Practicing when you'd rather quit.</li>
+          <li>Obeying your parents the first time.</li>
+          <li>Finishing something you started.</li>
+          <li>Doing your best even when nobody is watching.</li>
+        </ul>
+        <p>There's nothing wrong with resting or playing. The problem is when what I <em>want</em> to do keeps me from doing what I <em>need</em> to do.</p>
+      </div>
+      <div class="cue cue--audience"><div class="ci">👥</div><div class="ctxt"><span class="clabel">Audience</span>Ask: "Kids Life, what should she have done when it was time to work — play video games or finish the job?" Let them answer.</div></div>
+      <div class="line"><span class="tag her">HER</span><span class="said">Okay, okay. I get it.</span></div>
+
+      <!-- 3 BLUEPRINT -->
+      <div class="beat">3 · Follow the Blueprint — pick the blueprint back up</div>
+      <div class="cue cue--props"><div class="ci">🧰</div><div class="ctxt"><span class="clabel">Props</span>YOU physically pick the blueprint back up. This one is the biggest of the three.</div></div>
+      <div class="teach">
+        <div class="tl">💡 Big Idea — God's Word</div>
+        <p class="big">God's Word is the blueprint that teaches us how to build our lives.</p>
+        <p>The blueprint told you how to build the house — you didn't have to guess. In the same way, God hasn't left us guessing about how to live. The Bible teaches us:</p>
+        <ul>
+          <li>How to treat people · how to forgive · how to obey</li>
+          <li>How to handle anger · how to be a good friend</li>
+          <li>How to work · how to love · how to tell the truth</li>
+          <li>How to follow Jesus</li>
+        </ul>
+      </div>
+
+      <div class="beat">▲ Important Theological Turn — go one step deeper</div>
+      <div class="cue cue--props"><div class="ci">🧰</div><div class="ctxt"><span class="clabel">Props</span>Open to John 1. Don't leave the Rock as merely "the Bible."</div></div>
+      <div class="teach scripture">
+        <div class="tl">📖 John 1:1, 14 — the Word became flesh</div>
+        <p>The Bible isn't giving us random rules for becoming better people. It's teaching us to <b>know Jesus, hear Jesus, and follow Jesus.</b></p>
+        <p class="big">A strong life is built by hearing what Jesus says and doing it.</p>
+      </div>
+
+      <div class="beat">Call &amp; Response — have the kids repeat</div>
+      <div class="chant">
+        <div class="cue-note">YOU: "Kids Life, say this with me…"</div>
+        <div class="beatline">HEAR WHAT JESUS SAYS…</div>
+        <div class="cue-note">↳ kids repeat</div>
+        <div class="beatline">…AND DO IT!</div>
+        <div class="cue-note">↳ kids repeat · then again, LOUDER:</div>
+        <div class="beatline">HEAR WHAT JESUS SAYS AND DO IT!</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SCENE 8 ============ -->
+  <section class="scene" id="s8">
+    <div class="head"><span class="tc">17:00 – 19:30</span><span class="no">SCENE 8</span><h3>Fresh Start</h3><span class="runtime">≈ 2.5 min · salvation</span></div>
+    <div class="body">
+      <div class="dir">She looks at her destroyed house. Then the blueprint. Then the Bible.</div>
+      <div class="line"><span class="tag her">HER</span><span class="said">I built this house wrong. But what if I've been building my <em>life</em> wrong too?</span></div>
+      <div class="note">This is your natural transition into salvation — no need to stop the play to tack on an altar call.</div>
+      <div class="line"><span class="tag you">YOU</span><span class="said">You can start again.</span></div>
+
+      <div class="teach scripture">
+        <div class="tl">✝ Salvation Bridge</div>
+        <p>Jesus doesn't just want to make you a nicer person or a harder worker. Jesus came to save us from our sin.</p>
+        <p class="big">He died for us. He rose again. And we can choose to trust Him, follow Him, and build our lives on Him.</p>
+      </div>
+
+      <div class="dir">She asks if she can do that. Absolutely. Then, before praying:</div>
+      <div class="line"><span class="tag you">YOU</span><span class="said">But I don't think you're the only one who might want to make that decision.</span></div>
+      <div class="cue cue--audience"><div class="ci">👥</div><div class="ctxt"><span class="clabel">Audience — Fresh Start Moment</span>Turn toward Kids Life. Some may realize: "I've never decided that Jesus is going to be the foundation of my life." Invite them to make a Fresh Start with Jesus. Give the normal Kids Life response opportunity, then <b>pray together.</b></div></div>
+    </div>
+  </section>
+
+  <!-- ============ SCENE 9 ============ -->
+  <section class="scene" id="s9">
+    <div class="head"><span class="tc">19:30 – 20:00</span><span class="no">SCENE 9</span><h3>Let's Build Again</h3><span class="runtime">≈ 0.5 min · button</span></div>
+    <div class="body">
+      <div class="dir">After prayer, turn back toward her. Look at the destroyed house. She picks up the blueprint. Then she picks up a rock.</div>
+      <div class="line"><span class="tag her">HER</span><span class="said">So… where do we start?</span></div>
+      <div class="line"><span class="tag you">YOU</span><span class="said">With the foundation.</span></div>
+      <div class="dir">Both start rebuilding.</div>
+      <div class="cue cue--screen cue--video"><div class="ci">🎬</div><div class="ctxt"><span class="clabel">Screen — final statement</span>Push the closing statement to the video wall as the lights come up.</div></div>
+    </div>
+  </section>
+
+  <div class="final">
+    <div class="eb">Final screen statement</div>
+    <div class="stmt">HEAR WHAT JESUS SAYS.<br>DO WHAT HE SAYS.<br><span>BUILD A LIFE THAT STANDS.</span></div>
+  </div>
+
+  <!-- ============ SAFETY NET ============ -->
+  <div class="safety">
+    <div class="tl">🎯 The message in one sentence — if everything goes sideways</div>
+    <div class="one">A strong life is built by hearing what Jesus says and doing it.</div>
+    <p>If time gets cut, improv runs long, or you forget something — this is the sentence you cannot lose. Honesty, discipline, and God's Word all live underneath it. The goal isn't "Christians work hard and don't lie." The goal is: <b>"Jesus knows how to build my life. I can listen to Him, trust Him, and do what He says."</b> That keeps the message centered on Jesus — not on character development.</p>
+  </div>
+
+  <footer>BUILT TO STAND · Kids Life Stage Drama · Matthew 7:24–27 · run 20:00 max</footer>
+</div>

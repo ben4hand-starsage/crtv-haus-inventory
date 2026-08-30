@@ -27,7 +27,11 @@ ENV = os.path.join(ROOT, ".env")
 OUT = os.path.join(ROOT, "DELAY", "site", "pulse-8f3ac2", "data.json")
 
 ACCOUNT_TAG = "9452bc58f548c7b6593d7fd4945f2971"
-SITE_TAG = "fef72296ea8543278f6c3ee7e607079f"   # same value as the beacon token
+SITE_TAG = "99a9f55959984d91b395f573fabb3fe6"
+# NOT the beacon token. Web Analytics issues a separate site tag; the beacon
+# token in the page HTML is a different value and returns zero rows here.
+# Recover it by grouping rumPageloadEventsAdaptiveGroups on dimension siteTag
+# with no siteTag filter.
 ENDPOINT = "https://api.cloudflare.com/client/v4/graphql"
 
 # Paths we care about naming nicely in the UI.

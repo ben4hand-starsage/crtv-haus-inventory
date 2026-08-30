@@ -1,0 +1,65 @@
+{
+  "generated_at": "2026-08-30T20:50:32Z",
+  "window_days": 30,
+  "site": "aarondelaycounseling.com",
+  "totals": {
+    "pageviews": 10,
+    "visits": 10
+  },
+  "previous": {
+    "pageviews": 0,
+    "visits": 0
+  },
+  "by_date": [
+    {
+      "date": "2026-08-30",
+      "pageviews": 10,
+      "visits": 10
+    }
+  ],
+  "pages": [
+    {
+      "name": "/",
+      "label": "Home",
+      "pageviews": 10,
+      "visits": 10
+    }
+  ],
+  "referrers": [
+    {
+      "name": "(direct)",
+      "label": "(direct)",
+      "pageviews": 10,
+      "visits": 10
+    }
+  ],
+  "countries": [
+    {
+      "name": "US",
+      "label": "US",
+      "pageviews": 10,
+      "visits": 10
+    }
+  ],
+  "devices": [
+    {
+      "name": "desktop",
+      "label": "desktop",
+      "pageviews": 10,
+      "visits": 10
+    }
+  ],
+  "browsers": [
+    {
+      "name": "Chrome",
+      "label": "Chrome",
+      "pageviews": 10,
+      "visits": 10
+    }
+  ],
+  "funnel": {
+    "reset_views": 0,
+    "thanks_views": 0,
+    "rate": null
+  }
+}

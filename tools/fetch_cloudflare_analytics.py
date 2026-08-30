@@ -49,7 +49,13 @@ PAGE_LABELS = {
 
 
 def read_env(key):
-    """Parse .env for one key. Never source it - a malformed line would execute."""
+    """Read a secret from the environment, else parse .env.
+
+    CI sets it as an env var; locally it lives in .env. Never source the file -
+    a malformed line would execute as a shell command.
+    """
+    if os.environ.get(key):
+        return os.environ[key].strip()
     if not os.path.exists(ENV):
         return None
     pat = re.compile(r"^\s*" + re.escape(key) + r"\s*=\s*(.*)$")
@@ -192,6 +198,11 @@ def main():
     a = ap.parse_args()
 
     token = read_env("CLOUDFLARE_API_TOKEN")
+    if not token and os.environ.get("CI"):
+        sys.exit(
+            "No CLOUDFLARE_API_TOKEN in the environment.\n"
+            "Add it under Settings > Secrets and variables > Actions."
+        )
     if not token:
         sys.exit(
             "No CLOUDFLARE_API_TOKEN in .env.\n\n"
@@ -263,14 +274,35 @@ def main():
         },
     }
 
-    os.makedirs(os.path.dirname(a.out), exist_ok=True)
+    t = snapshot["totals"]
+    summary = (f"{a.days}d: {t['pageviews']} page views, {t['visits']} visits, "
+               f"{len(snapshot['by_date'])} days with data")
+
+    # generated_at moves on every run, so a naive write makes the file differ
+    # even when nothing happened - which would commit and rebuild the site daily
+    # forever. Compare everything except the timestamp and leave the file alone
+    # when the numbers have not moved.
+    if os.path.exists(a.out):
+        try:
+            with open(a.out) as fh:
+                previous = json.load(fh)
+            a_cmp = {k: v for k, v in snapshot.items() if k != "generated_at"}
+            b_cmp = {k: v for k, v in previous.items() if k != "generated_at"}
+            if a_cmp == b_cmp:
+                print(f"  unchanged - left {a.out} alone")
+                print(f"  {summary}")
+                return
+        except (ValueError, OSError):
+            pass  # unreadable or corrupt: fall through and rewrite it
+
+    d = os.path.dirname(a.out)
+    if d:
+        os.makedirs(d, exist_ok=True)
     with open(a.out, "w") as fh:
         json.dump(snapshot, fh, indent=2)
 
-    t = snapshot["totals"]
     print(f"  wrote {a.out}")
-    print(f"  {a.days}d: {t['pageviews']} page views, {t['visits']} visits, "
-          f"{len(snapshot['by_date'])} days with data")
+    print(f"  {summary}")
 
 
 if __name__ == "__main__":

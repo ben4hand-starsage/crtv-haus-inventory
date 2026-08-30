@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The 5-Minute Marriage Argument Reset · A Practical Tool</title>
+<link rel="stylesheet" href="./playbook.fonts.css">
+<style>
+:root{
+  /* A print piece is light-only — never let a dark OS theme repaint it. */
+  color-scheme: only light;
+  --ink:#262019; --ink-2:#574c40; --ink-3:#8a7d6b;
+  --cream:#F7F2EA; --surface:#FDFBF6;
+  --sand:#E7DECF; --sand-2:#DBCFB4;
+  --clay:#B4694E; --clay-deep:#9A5238; --stone:#A2937E;
+  --line:rgba(38,32,25,.16); --line-soft:rgba(38,32,25,.10);
+  --serif:"Fraunces",Georgia,serif;
+  --sans:"Montserrat",-apple-system,Segoe UI,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+
+@page{ size:8.5in 11in; margin:0; }
+
+html{ -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; }
+body{ font-family:var(--sans); color:var(--ink); background:#7c766c; counter-reset:pg; }
+
+/* ---------------- SHEET ---------------- */
+.sheet{
+  width:8.5in; height:11in; background:var(--cream);
+  position:relative; overflow:hidden;
+  display:flex; flex-direction:column;
+  padding:0.82in 0.9in 0.62in;
+  counter-increment:pg;
+  page-break-after:always; break-after:page;
+}
+/* Never let flex squeeze a block to fake a fit — overflow should be visible, not silent. */
+.sheet > *{ flex-shrink:0; }
+.sheet:last-child{ page-break-after:auto; break-after:auto; }
+@media screen{
+  body{ padding:28px 0; }
+  .sheet{ margin:0 auto 26px; box-shadow:0 6px 34px rgba(0,0,0,.34); }
+}
+
+/* running footer */
+.foot{
+  margin-top:auto; padding-top:14px; border-top:1px solid var(--line);
+  display:flex; justify-content:space-between; align-items:baseline;
+}
+.foot .run{ font-size:8.5pt; letter-spacing:.22em; text-transform:uppercase; font-weight:600; color:var(--stone); }
+.foot .pg{ font-family:var(--serif); font-size:14pt; color:var(--ink); font-weight:500; }
+.foot .pg::after{ content:counter(pg); }
+
+/* ---------------- SHARED TYPE ---------------- */
+.eyebrow{ font-size:9pt; letter-spacing:.28em; text-transform:uppercase; font-weight:600; color:var(--clay-deep); }
+.opener{ margin-bottom:14px; }
+.opener .eyebrow{ display:block; margin-bottom:12px; }
+.opener h2{ font-family:var(--serif); font-weight:400; font-size:34pt; line-height:1.02; letter-spacing:-.02em; color:var(--ink); }
+.opener h2 em{ font-style:italic; font-weight:500; }
+.opener.sm h2{ font-size:29pt; }
+.opener .subtitle{ margin-top:12px; font-size:11.5pt; line-height:1.6; color:var(--ink-2); max-width:52ch; }
+
+/* the short clay rule that opened every page of the original */
+.rule{ width:64px; height:2px; background:var(--clay); margin:20px 0 22px; }
+
+.body{ font-size:12pt; line-height:1.72; color:var(--ink-2); }
+.body p{ margin-bottom:14px; }
+.body p:last-child{ margin-bottom:0; }
+.body strong{ color:var(--ink); font-weight:600; }
+.body em{ font-style:italic; }
+.lead{ font-size:13pt; }
+
+.panel{ background:var(--sand); border-radius:5px; padding:24px 30px; }
+.panel .eyebrow{ display:block; margin-bottom:12px; }
+.panel h3{ font-family:var(--serif); font-style:italic; font-weight:500; font-size:22pt; color:var(--ink); margin-bottom:14px; line-height:1.15; }
+
+/* a raised cream card on the sand-free pages */
+.card{
+  background:var(--surface); border:1px solid var(--line-soft); border-radius:5px;
+  padding:30px 34px; box-shadow:0 8px 22px -18px rgba(38,32,25,.5);
+}
+.card .eyebrow{ display:block; margin-bottom:11px; }
+.card h3{ font-family:var(--serif); font-weight:500; font-size:23pt; line-height:1.12; color:var(--ink); margin-bottom:14px; letter-spacing:-.01em; }
+.card h3 em{ font-style:italic; }
+.card .note{ margin-top:14px; font-family:var(--serif); font-style:italic; font-size:14pt; line-height:1.42; color:var(--clay-deep); }
+
+/* ================= PAGE 1 · COVER ================= */
+/* Flat sand shapes, not gradients — print renderers handle solid fills predictably,
+   and a soft wash is the first thing to go muddy on an office printer. */
+.cover::before{
+  content:""; position:absolute; top:0; right:0; z-index:0;
+  width:3.7in; height:3.2in; background:var(--sand);
+  border-radius:0 0 0 3.7in;
+}
+.cover::after{
+  content:""; position:absolute; left:0; bottom:0; z-index:0;
+  width:2.1in; height:1.5in; background:var(--sand-2);
+  border-radius:0 2.1in 0 0; opacity:.55;
+}
+.cover>*{ position:relative; z-index:1; }
+.cover h1{
+  font-family:var(--serif); font-weight:400; font-size:38pt; line-height:1.02;
+  letter-spacing:-.025em; color:var(--ink);
+}
+.cover h1 em{ font-style:italic; font-weight:500; color:var(--clay); }
+/* Page 1 carries the most furniture, so it runs on a slightly tighter scale. */
+.cover .opener{ margin-bottom:14px; }
+.cover .rule{ margin:14px 0; }
+.cover .card{ padding:24px 30px; }
+.cover .card h3{ font-size:20pt; margin-bottom:12px; }
+.cover .card .note{ font-size:13pt; margin-top:12px; }
+
+/* ================= QUICK CHECK · the two roles ================= */
+.roles{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:14px; }
+.role{ border-radius:5px; padding:18px 20px 20px; }
+.role.a{ background:var(--sand); }
+.role.b{ background:#F6EAE4; border:1px solid #E2C3B5; }
+.role h4{ font-family:var(--serif); font-weight:500; font-size:17pt; line-height:1.1; color:var(--ink); margin-bottom:8px; letter-spacing:-.01em; }
+.role.b h4{ color:var(--clay-deep); }
+.role p{ font-size:10pt; line-height:1.55; color:var(--ink-2); }
+
+/* ================= PAGE 2 · THE THREE STEPS ================= */
+.steps{ margin:2px 0 0; }
+.step{ display:grid; grid-template-columns:auto 1fr; gap:18px; align-items:start;
+  padding:15px 0; border-bottom:1px solid var(--line-soft); }
+.step:first-child{ padding-top:2px; }
+.step:last-child{ border-bottom:0; }
+.step .num{
+  font-family:var(--serif); font-style:italic; font-weight:500; font-size:23pt; line-height:1;
+  color:var(--clay); width:1.1em; text-align:center; padding-top:2px;
+}
+.step h3{ font-size:9pt; letter-spacing:.2em; text-transform:uppercase; font-weight:700; color:var(--ink); margin-bottom:8px; }
+.step .say{ font-family:var(--serif); font-style:italic; font-size:13pt; line-height:1.45; color:var(--ink); }
+.step .cue{ margin-top:7px; font-size:10.5pt; line-height:1.55; color:var(--ink-2); }
+
+/* inline fill-in blank */
+.blank{ display:inline-block; min-width:1.15in; border-bottom:1px solid var(--stone); font-style:normal; }
+.blank.sm{ min-width:.75in; }
+
+/* ================= INSTEAD OF / TRY ================= */
+.swap{ display:grid; grid-template-columns:auto 1fr; gap:12px 22px; align-items:baseline; margin-top:2px; }
+.swap .lab{ font-size:7.5pt; letter-spacing:.2em; text-transform:uppercase; font-weight:700; color:var(--ink-3); white-space:nowrap; padding-top:5px; }
+.swap .lab.try{ color:var(--clay-deep); }
+.swap .l{ font-family:var(--serif); font-style:italic; font-size:13pt; line-height:1.45; color:var(--ink-3); }
+.swap .l.try{ color:var(--ink); font-style:italic; }
+.swap .l.try .blank{ border-bottom-color:var(--clay); }
+
+/* ================= INK PANEL (time-out rule / closing CTA) ================= */
+.inkpanel{
+  background:var(--ink); color:var(--cream); border-radius:5px;
+  padding:22px 28px; position:relative; overflow:hidden;
+}
+/* A single clay hairline instead of a glow — one accent, flat, printer-proof. */
+.inkpanel::after{ content:""; position:absolute; top:0; left:0; right:0; height:3px;
+  background:var(--clay); z-index:0; }
+.inkpanel>*{ position:relative; z-index:1; }
+.inkpanel .eyebrow{ display:block; color:#D9A386; margin-bottom:12px; }
+.inkpanel .script{
+  font-family:var(--serif); font-weight:400; font-size:17pt; line-height:1.32;
+  color:var(--cream); letter-spacing:-.01em;
+}
+.inkpanel .script .blank{ border-bottom-color:#D9A386; }
+.inkpanel .after{ margin-top:12px; font-size:10.5pt; line-height:1.6; color:#C9C0B2; }
+.inkpanel .after em{ font-style:italic; }
+.inkpanel .bodylight{ font-size:11pt; line-height:1.66; color:#D5CCBE; }
+.inkpanel .bodylight p{ margin-bottom:10px; }
+.inkpanel .bodylight p:last-child{ margin-bottom:0; }
+.inkpanel .bodylight strong{ color:var(--cream); font-weight:600; }
+.inkpanel .liftline{
+  font-family:var(--serif); font-style:italic; font-weight:500; font-size:16pt; line-height:1.32;
+  color:#E0A188; margin:12px 0;
+}
+
+/* ================= PAGE 3 · WORKSHEET ================= */
+.worksheet{ margin-top:2px; }
+.wq{ margin-bottom:20px; }
+.wq:last-child{ margin-bottom:0; }
+.wq .q{ font-size:10pt; letter-spacing:.11em; text-transform:uppercase; font-weight:700; color:var(--ink); margin-bottom:7px; }
+.wq .ln{ border-bottom:1px solid var(--stone); height:20px; }
+.wq .ln + .ln{ margin-top:6px; }
+.wq .ln.short{ width:2.6in; }
+
+/* the booking call-to-action line */
+.booking{
+  margin-top:12px; display:flex; align-items:baseline; gap:12px; flex-wrap:wrap;
+  border-top:1px solid var(--line); padding-top:12px;
+}
+.booking .lab{ font-size:8.5pt; letter-spacing:.24em; text-transform:uppercase; font-weight:700; color:var(--clay-deep); }
+.booking .lnk{ font-family:var(--serif); font-style:italic; font-size:14pt; color:var(--ink); }
+
+/* ---- Two-route CTA. The decision the reader has to make is "where do I
+   live", so the two options sit side by side at equal weight, and the thing
+   they act on (a number, a URL) is the largest text in each card. ---- */
+.routes{ margin-top:11px; display:grid; grid-template-columns:1fr 1fr; gap:11px; }
+.route{
+  background:var(--surface); border:1px solid var(--line);
+  border-top:3px solid var(--clay); border-radius:5px;
+  padding:13px 15px 12px; display:flex; flex-direction:column;
+}
+.route .rlab{
+  font-size:7.5pt; letter-spacing:.22em; text-transform:uppercase;
+  font-weight:700; color:var(--clay-deep); display:block; margin-bottom:7px;
+}
+.route .rtitle{
+  font-family:var(--serif); font-size:13pt; line-height:1.14;
+  color:var(--ink); font-weight:500; letter-spacing:-.01em; margin-bottom:7px;
+}
+.route .rbody{
+  font-size:9pt; line-height:1.45; color:var(--ink-2); margin-bottom:9px;
+}
+.route .raction{
+  margin-top:auto; font-family:var(--serif); font-size:13.5pt; line-height:1.12;
+  color:var(--clay-deep); font-weight:500; letter-spacing:-.01em;
+  word-break:break-word;
+}
+.route .rmeta{
+  margin-top:4px; font-size:8pt; letter-spacing:.04em; color:var(--ink-3);
+}
+
+.safety{ margin-top:10px; font-size:8.5pt; line-height:1.55; color:var(--ink-3); max-width:66ch; }
+</style>
+</head>
+<body>
+
+<!-- ===================== PAGE 1 ===================== -->
+<section class="sheet cover">
+  <div class="opener">
+    <span class="eyebrow">A 3-page tool for tired couples</span>
+    <h1>The 5-Minute Script<br>to stop any marriage argument<br><em>before it starts</em></h1>
+  </div>
+  <div class="rule"></div>
+  <div class="body" style="font-size:12pt;max-width:56ch">
+    <p>Fighting is normal. Replaying the same fight until both of you feel misunderstood is exhausting.</p>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <span class="eyebrow">The real enemy</span>
+    <h3>The cycle,<br>not <em>your spouse</em></h3>
+    <div class="body" style="font-size:11pt">
+      <p>One person pushes for an answer. The other pulls away to find space. The more one pushes, the more the other retreats. Then the retreat feels like rejection, so the pressure gets louder.</p>
+    </div>
+    <p class="note">You are not fighting each other. You are getting caught in a pattern that feeds itself.</p>
+  </div>
+
+  <div style="margin-top:18px">
+    <span class="eyebrow" style="display:block;margin-bottom:8px">Quick check</span>
+    <p style="font-family:var(--serif);font-size:15pt;line-height:1.25;color:var(--ink);font-weight:500">When tension rises, I usually become the:</p>
+    <div class="roles">
+      <div class="role a">
+        <h4>Steamroller</h4>
+        <p>I press, explain, repeat, follow, or get louder because I need resolution now.</p>
+      </div>
+      <div class="role b">
+        <h4>Turtle</h4>
+        <p>I shut down, go quiet, leave, or avoid because I need safety and space.</p>
+      </div>
+    </div>
+    <p class="body" style="font-size:10pt;margin-top:12px">Neither role makes you the villain. Both reactions make sense. Left unchecked, they keep the argument alive.</p>
+  </div>
+
+  <div class="foot"><span class="run js-brand-run">Aaron Delay Counseling · A practical tool adapted from SIDE</span><span class="pg"></span></div>
+</section>
+
+<!-- ===================== PAGE 2 ===================== -->
+<section class="sheet">
+  <div class="opener">
+    <span class="eyebrow">Use this tonight</span>
+    <h2>The <em>Circuit</em><br>Breaker</h2>
+    <p class="subtitle">Five minutes to stop the spiral and protect the connection.</p>
+  </div>
+  <div class="rule" style="margin:12px 0 4px"></div>
+
+  <div class="steps">
+    <div class="step">
+      <span class="num">1</span>
+      <div>
+        <h3>Name the pattern</h3>
+        <p class="say">“We are in the Steamroller-Turtle cycle right now. I do not want to fight you. I want us to slow this down.”</p>
+      </div>
+    </div>
+    <div class="step">
+      <span class="num">2</span>
+      <div>
+        <h3>Say what is underneath</h3>
+        <p class="say">“I am feeling <span class="blank"></span> because <span class="blank"></span>. What I need right now is <span class="blank"></span>.”</p>
+      </div>
+    </div>
+    <div class="step">
+      <span class="num">3</span>
+      <div>
+        <h3>Make one clear request</h3>
+        <p class="say">“Would you be willing to <span class="blank"></span>?”</p>
+        <p class="cue">Keep it specific, small, and possible tonight.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" style="margin-top:18px">
+    <span class="eyebrow">Replace blame with clarity</span>
+    <div class="swap">
+      <span class="lab">Instead of</span>
+      <p class="l">“You always ignore me and never help.”</p>
+      <span class="lab try">Try</span>
+      <p class="l try">“I am feeling overwhelmed right now. I need support with <span class="blank"></span>. Can you help by <span class="blank"></span>?”</p>
+    </div>
+  </div>
+
+  <div class="inkpanel" style="margin-top:16px">
+    <span class="eyebrow">The time-out rule</span>
+    <p class="script">“I care about this, and I am too activated to talk well. I need 20 minutes. I will come back at <span class="blank sm"></span>:<span class="blank sm"></span> so we can finish this together.”</p>
+    <p class="after">A pause without a return time feels like abandonment. <em>Set the time, then honor it.</em></p>
+  </div>
+
+  <div class="foot"><span class="run js-brand-run">Aaron Delay Counseling · A practical tool adapted from SIDE</span><span class="pg"></span></div>
+</section>
+
+<!-- ===================== PAGE 3 ===================== -->
+<section class="sheet">
+  <div class="opener">
+    <span class="eyebrow">Your five-minute reset</span>
+    <h2>Write it <em>before</em><br>you say it</h2>
+    <p class="subtitle">A calmer sentence is easier to find on paper than in the middle of a fight.</p>
+  </div>
+  <div class="rule" style="margin:12px 0 16px"></div>
+
+  <div class="worksheet">
+    <div class="wq">
+      <div class="q">What happened, without always or never?</div>
+      <div class="ln"></div>
+      <div class="ln"></div>
+    </div>
+    <div class="wq">
+      <div class="q">What am I feeling beneath the anger?</div>
+      <div class="ln"></div>
+    </div>
+    <div class="wq">
+      <div class="q">What do I need, in one clear sentence?</div>
+      <div class="ln"></div>
+    </div>
+    <div class="wq">
+      <div class="q">What small action am I asking for?</div>
+      <div class="ln"></div>
+    </div>
+    <div class="wq">
+      <div class="q">If we pause, what exact time will we return?</div>
+      <div class="ln short"></div>
+    </div>
+  </div>
+
+  <div class="inkpanel" style="margin-top:18px">
+    <span class="eyebrow">When the same fight keeps coming back</span>
+    <div class="bodylight">
+      <p>A script can interrupt a moment. It cannot undo years of hurt, rebuild broken trust, or teach two nervous systems a new pattern overnight.</p>
+    </div>
+    <p class="liftline">You do not have to keep guessing your way through it.</p>
+    <div class="bodylight">
+      <p>There are two ways to work with Aaron. Which one depends on where you live.</p>
+    </div>
+  </div>
+
+  <!-- Two routes, given equal visual weight and made the largest thing on the
+       page. In Memphis it is the licensed practice; anywhere else it is
+       coaching, which is not therapy and is not state-limited. -->
+  <div class="routes">
+    <div class="route">
+      <span class="rlab">In the Memphis area</span>
+      <div class="rtitle">Counseling at the practice</div>
+      <p class="rbody">Aaron sees couples through Life Wellness Clinic in Bartlett. Call the office to ask about availability.</p>
+      <div class="raction">901&#8209;878&#8209;9355</div>
+      <div class="rmeta">Life Wellness Clinic &middot; Bartlett, TN</div>
+    </div>
+
+    <div class="route">
+      <span class="rlab">Outside Memphis</span>
+      <div class="rtitle">Coaching with Aaron</div>
+      <p class="rbody">For couples out of state or out of the country. Structured help with a marriage that is workable but stuck.</p>
+      <div class="raction">aarondelaycounseling.com</div>
+      <div class="rmeta">/counseling &middot; tell him why you're reaching out</div>
+    </div>
+  </div>
+
+  <p class="safety">If conflict includes fear, threats, coercion, or physical harm, prioritize safety and contact a qualified local professional or emergency service.</p>
+
+  <div class="foot"><span class="run js-brand-run">Aaron Delay Counseling · A practical tool adapted from SIDE</span><span class="pg"></span></div>
+</section>
+
+<script>
+// Live-swap the practice name from the URL (?name=). The booking swap was
+// removed once real contact details replaced the placeholder.
+(function(){
+  var params=new URLSearchParams(location.search);
+  var name=params.get('name');
+  if(name){
+    document.querySelectorAll('.js-brand-run').forEach(function(el){
+      el.textContent=name+' · A practical tool adapted from SIDE';
+    });
+  }
+})();
+</script>
+</body>
+</html>

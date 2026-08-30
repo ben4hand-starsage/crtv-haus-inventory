@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>You Didn't Marry the Wrong Person · A Marriage Playbook</title>
+<link rel="stylesheet" href="./playbook.fonts.css">
+<style>
+:root{
+  --ink:#262019; --ink-2:#574c40; --ink-3:#8a7d6b;
+  --cream:#F7F2EA; --surface:#FDFBF6;
+  --sand:#E7DECF; --sand-2:#DBCFB4;
+  --clay:#B4694E; --clay-deep:#9A5238; --stone:#A2937E;
+  --line:rgba(38,32,25,.16); --line-soft:rgba(38,32,25,.10);
+  --serif:"Fraunces",Georgia,serif;
+  --sans:"Montserrat",-apple-system,Segoe UI,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+
+@page{ size:8.5in 11in; margin:0; }
+
+html{ -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; }
+body{ font-family:var(--sans); color:var(--ink); background:#7c766c; counter-reset:pg; }
+
+/* ---------------- SHEET ---------------- */
+.sheet{
+  width:8.5in; height:11in; background:var(--cream);
+  position:relative; overflow:hidden;
+  display:flex; flex-direction:column;
+  padding:0.82in 0.9in 0.62in;
+  counter-increment:pg;
+  page-break-after:always; break-after:page;
+}
+.sheet:last-child{ page-break-after:auto; break-after:auto; }
+@media screen{
+  body{ padding:28px 0; }
+  .sheet{ margin:0 auto 26px; box-shadow:0 6px 34px rgba(0,0,0,.34); }
+}
+
+/* running footer */
+.foot{
+  margin-top:auto; padding-top:14px; border-top:1px solid var(--line);
+  display:flex; justify-content:space-between; align-items:baseline;
+}
+.foot .run{ font-size:8.5pt; letter-spacing:.22em; text-transform:uppercase; font-weight:600; color:var(--stone); }
+.foot .pg{ font-family:var(--serif); font-size:14pt; color:var(--ink); font-weight:500; }
+.foot .pg::after{ content:counter(pg); }
+.nofoot .foot{ display:none; }
+
+/* ---------------- SHARED TYPE ---------------- */
+.eyebrow{ font-size:9pt; letter-spacing:.28em; text-transform:uppercase; font-weight:600; color:var(--clay-deep); }
+.opener{ margin-bottom:26px; }
+.opener .eyebrow{ display:block; margin-bottom:14px; }
+.opener h2{ font-family:var(--serif); font-weight:400; font-size:40pt; line-height:1.0; letter-spacing:-.02em; color:var(--ink); }
+.opener h2 em{ font-style:italic; font-weight:500; }
+.opener.sm h2{ font-size:33pt; }
+
+.body{ font-size:12pt; line-height:1.72; color:var(--ink-2); }
+.body p{ margin-bottom:14px; }
+.body p:last-child{ margin-bottom:0; }
+.body strong{ color:var(--ink); font-weight:600; }
+.body em{ font-style:italic; }
+.lead{ font-size:13pt; }
+
+.pull{
+  font-family:var(--serif); font-weight:400; font-size:23pt; line-height:1.22;
+  letter-spacing:-.01em; color:var(--ink); margin:22px 0;
+}
+.pull .mk{ color:var(--clay); }
+.pull em{ font-style:italic; }
+
+.panel{ background:var(--sand); border-radius:5px; padding:34px 38px; }
+.panel .eyebrow{ display:block; margin-bottom:12px; }
+.panel h3{ font-family:var(--serif); font-style:italic; font-weight:500; font-size:22pt; color:var(--ink); margin-bottom:14px; }
+.panel .body{ color:var(--ink-2); }
+
+.divider-rule{ height:1px; background:var(--line); margin:20px 0; border:0; }
+
+/* ================= COVER ================= */
+.cover{ justify-content:space-between; padding:0.95in 0.9in 0.8in; }
+.cover::before{
+  content:""; position:absolute; inset:0; z-index:0;
+  background:
+    radial-gradient(120% 80% at 90% -8%, var(--sand) 0%, transparent 52%),
+    radial-gradient(95% 70% at -12% 112%, var(--sand-2) 0%, transparent 46%);
+  opacity:.85;
+}
+.cover>*{ position:relative; z-index:1; }
+.cover-top{ display:flex; justify-content:space-between; align-items:baseline; }
+.cover-brand{ font-family:var(--serif); font-weight:600; font-size:13pt; letter-spacing:-.01em; }
+.cover-brand span{ color:var(--clay); }
+.cover-kind{ font-size:8.5pt; letter-spacing:.28em; text-transform:uppercase; font-weight:600; color:var(--stone); }
+.cover-mid{}
+.cover .cover-eyebrow{ display:block; margin-bottom:26px; }
+.cover h1{
+  font-family:var(--serif); font-weight:400; font-size:62pt; line-height:.96;
+  letter-spacing:-.025em; color:var(--ink);
+}
+.cover h1 em{ font-style:italic; font-weight:500; }
+.cover .subtitle{
+  margin-top:30px; font-size:10.5pt; letter-spacing:.13em; text-transform:uppercase;
+  font-weight:600; color:var(--ink-2); line-height:1.7; max-width:30ch;
+}
+.cover-foot{ display:flex; justify-content:space-between; align-items:flex-end; }
+.cover-foot .tag{ font-size:8.5pt; letter-spacing:.26em; text-transform:uppercase; font-weight:600; color:var(--stone); }
+.cover-foot .mark{ font-family:var(--serif); font-style:italic; font-size:12pt; color:var(--ink-3); }
+.cover-line{ width:64px; height:2px; background:var(--clay); margin:0 0 24px; }
+
+/* ================= CONTENTS ================= */
+.toc-list{ margin-top:8px; }
+.toc-row{ display:grid; grid-template-columns:auto 1fr auto; gap:22px; align-items:baseline;
+  padding:16px 0; border-bottom:1px solid var(--line-soft); }
+.toc-row:last-child{ border-bottom:0; }
+.toc-row .n{ font-family:var(--serif); font-size:15pt; color:var(--clay); font-weight:500; width:1.4em; }
+.toc-row .t{ }
+.toc-row .t .ti{ font-size:10.5pt; letter-spacing:.12em; text-transform:uppercase; font-weight:600; color:var(--ink); }
+.toc-row .t .ds{ font-size:10pt; color:var(--ink-3); margin-top:2px; }
+.toc-row .pp{ font-family:var(--serif); font-size:15pt; color:var(--ink); font-variant-numeric:tabular-nums; }
+
+/* ================= COUNSELING QUOTES ================= */
+.q-list{ display:flex; flex-direction:column; gap:12px; }
+.q-list .q{ font-family:var(--serif); font-style:italic; font-size:14.5pt; line-height:1.4; color:var(--ink); padding-left:20px; border-left:2px solid var(--clay); }
+
+/* ================= MILK DIALOGUE ================= */
+.dialogue{ background:var(--surface); border:1px solid var(--line-soft); border-radius:5px; padding:24px 28px; margin:18px 0; }
+.dialogue p{ font-family:var(--serif); font-style:italic; font-size:12.5pt; line-height:1.5; color:var(--ink); margin-bottom:6px; }
+.dialogue p:last-child{ margin-bottom:0; }
+
+/* ================= SURFACE/DEEPER LIST ================= */
+.becomes{ display:flex; flex-direction:column; gap:11px; margin:16px 0; }
+.becomes .row{ font-size:11.5pt; line-height:1.5; color:var(--ink-2); }
+.becomes .row b{ color:var(--ink); font-weight:600; }
+.becomes .row .to{ color:var(--clay-deep); font-style:italic; }
+
+/* ================= ICEBERG ================= */
+.iceberg-wrap{ display:flex; justify-content:center; margin:6px 0 4px; }
+.iceberg-wrap svg{ width:4.1in; height:auto; }
+
+/* ================= LENS CARDS ================= */
+.lens-flow{ flex:1; display:flex; flex-direction:column; gap:20px; padding:6px 0 4px; }
+.lens-flow.spread{ justify-content:space-between; }
+.lens-flow > .lens-card{ margin:0; }
+.lens-flow .pin-bottom{ margin-top:auto; }
+.reflect{ border:1px dashed var(--stone); border-radius:5px; padding:22px 28px 24px; }
+.reflect .lab{ display:block; font-size:8pt; letter-spacing:.2em; text-transform:uppercase; font-weight:700; color:var(--clay-deep); margin-bottom:9px; }
+.reflect .q{ font-family:var(--serif); font-style:italic; font-weight:500; font-size:17pt; color:var(--ink); line-height:1.28; margin-bottom:10px; }
+.reflect .cue{ font-size:10.5pt; line-height:1.55; color:var(--ink-2); margin-bottom:4px; }
+.reflect .writeline{ display:flex; align-items:flex-end; gap:12px; margin-top:15px; }
+.reflect .writeline .tag{ font-size:8pt; letter-spacing:.14em; text-transform:uppercase; font-weight:700; color:var(--stone); white-space:nowrap; padding-bottom:2px; }
+.reflect .writeline .ln{ flex:1; border-bottom:1px solid var(--stone); height:16px; }
+.lens-card{ background:var(--surface); border:1px solid var(--line-soft); border-radius:5px; padding:26px 28px; margin-bottom:16px; box-shadow:0 8px 22px -18px rgba(38,32,25,.5); }
+.lens-card:last-child{ margin-bottom:0; }
+.lens-card .surf{ display:flex; gap:12px; align-items:baseline; margin-bottom:12px; }
+.lens-card .lab{ font-size:7pt; letter-spacing:.12em; text-transform:uppercase; font-weight:700; color:var(--stone); flex-shrink:0; width:88px; padding-top:3px; white-space:nowrap; }
+.lens-card .surf .txt{ font-family:var(--serif); font-size:14pt; font-style:italic; color:var(--ink); line-height:1.3; }
+.lens-card .deep{ display:flex; gap:12px; align-items:baseline; padding-top:12px; border-top:1px solid var(--line-soft); }
+.lens-card .deep .lab{ color:var(--clay-deep); }
+.lens-card .deep .txt{ font-size:11pt; line-height:1.55; color:var(--ink-2); }
+.lens-card .deep .txt b{ color:var(--ink); font-weight:600; }
+
+/* ================= CONTRAST (observation vs interpretation) ================= */
+.vs{ display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:18px 0; }
+.vs .box{ border-radius:5px; padding:22px 24px; }
+.vs .a{ background:var(--sand); }
+.vs .b{ background:color-mix(in srgb,var(--clay) 10%, var(--surface)); border:1px solid color-mix(in srgb,var(--clay) 25%, transparent); }
+.vs .box .h{ font-size:7.5pt; letter-spacing:.2em; text-transform:uppercase; font-weight:700; margin-bottom:10px; }
+.vs .a .h{ color:var(--ink-3); }
+.vs .b .h{ color:var(--clay-deep); }
+.vs .box .l{ font-family:var(--serif); font-style:italic; font-size:13pt; line-height:1.4; color:var(--ink); }
+
+/* ================= SHIFTS ================= */
+.shift-divider .center{ flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; }
+.shift-divider .eyebrow{ display:block; margin-bottom:20px; }
+.shift-divider h2{ font-family:var(--serif); font-weight:400; font-size:52pt; line-height:1.02; letter-spacing:-.02em; }
+.shift-divider h2 em{ font-style:italic; font-weight:500; color:var(--clay); }
+.shift-divider p{ margin-top:26px; font-size:12pt; color:var(--ink-2); max-width:44ch; line-height:1.7; }
+
+.shift{ margin-bottom:30px; }
+.shift:last-of-type{ margin-bottom:0; }
+.shift .head{ display:flex; gap:20px; align-items:baseline; margin-bottom:12px; }
+.shift .num{ font-family:var(--serif); font-style:italic; font-size:30pt; color:var(--clay); line-height:.9; flex-shrink:0; }
+.shift .head h3{ font-family:var(--serif); font-weight:500; font-size:19pt; line-height:1.15; color:var(--ink); letter-spacing:-.01em; }
+.shift .body{ font-size:11pt; line-height:1.66; padding-left:0; }
+.thisweek{ background:color-mix(in srgb, var(--clay) 9%, var(--surface)); border-left:3px solid var(--clay); border-radius:0 4px 4px 0; padding:13px 20px 14px; margin-top:15px; }
+.thisweek .lab{ display:flex; align-items:center; gap:8px; font-size:7.5pt; letter-spacing:.18em; text-transform:uppercase; font-weight:700; color:var(--clay-deep); margin-bottom:6px; }
+.thisweek .lab::before{ content:""; width:5px; height:5px; border-radius:50%; background:var(--clay); }
+.thisweek p{ font-size:10.5pt; line-height:1.55; color:var(--ink); margin:0; }
+.thisweek p em{ font-style:italic; }
+
+/* ================= CLOSING ================= */
+.closing{ background:var(--ink); color:var(--cream); }
+.closing::after{ content:""; position:absolute; inset:0;
+  background:radial-gradient(90% 60% at 80% 0%, rgba(180,105,78,.28), transparent 60%); z-index:0; }
+.closing>*{ position:relative; z-index:1; }
+.closing .eyebrow{ color:#D9A386; }
+.closing .opener h2{ color:var(--cream); }
+.closing .opener h2 em{ color:#E0A188; }
+.closing .body{ color:rgba(247,242,234,.82); }
+.closing .body strong{ color:var(--cream); }
+.closing .foot{ border-top-color:rgba(247,242,234,.2); }
+.closing .foot .run{ color:rgba(247,242,234,.55); }
+.closing .foot .pg{ color:var(--cream); }
+.sign{ margin-top:26px; }
+.sign .cheer{ font-family:var(--serif); font-style:italic; font-size:17pt; line-height:1.35; color:var(--cream); max-width:30ch; }
+.sign .by{ margin-top:20px; font-size:9pt; letter-spacing:.24em; text-transform:uppercase; font-weight:600; color:#D9A386; }
+.sign .by em{ font-family:var(--serif); font-style:italic; letter-spacing:0; text-transform:none; font-size:14pt; color:var(--cream); display:block; margin-top:4px; }
+</style>
+</head>
+<body>
+
+<!-- ===================== 1 · COVER ===================== -->
+<section class="sheet cover nofoot">
+  <div class="cover-top">
+    <div class="cover-brand js-brand">Aaron Delay Counseling<span>.</span></div>
+    <div class="cover-kind">A Marriage Playbook</div>
+  </div>
+  <div class="cover-mid">
+    <span class="eyebrow cover-eyebrow">For couples who love each other and still feel stuck</span>
+    <div class="cover-line"></div>
+    <h1>You Didn't Marry<br><em>the Wrong Person</em></h1>
+    <p class="subtitle">Why good couples struggle, and the skills no one taught you</p>
+  </div>
+  <div class="cover-foot">
+    <span class="tag">Guide 01 · Understanding the Pattern</span>
+    <span class="mark js-brand-italic">Aaron Delay Counseling</span>
+  </div>
+</section>
+
+<!-- ===================== 2 · BEFORE YOU BEGIN ===================== -->
+<section class="sheet">
+  <div class="opener sm">
+    <span class="eyebrow">Before you begin</span>
+    <h2>A few gentle<br><em>reminders</em></h2>
+  </div>
+  <div class="panel" style="margin-bottom:26px">
+    <div class="body">
+      <p>This isn't a test, and it isn't a report card. <strong>There's no perfect score here,</strong> only a chance to see your marriage a little more clearly. So go at your own pace. Read it together, or read it apart. Both work. Skip what doesn't fit, and sit longer where something lands.</p>
+    </div>
+  </div>
+  <div class="body lead">
+    <p>And one more thing before we start: <strong>nothing here assumes something is wrong with you.</strong> Good, loving couples end up in hard patterns all the time. That isn't a sign of failure. It's a sign that you're two real people doing something genuinely difficult, and that you care enough to keep going.</p>
+    <p>We're so glad you're here.</p>
+  </div>
+  <div class="foot"><span class="run js-brand-run">Aaron Delay Counseling · A Marriage Playbook</span><span class="pg"></span></div>
+</section>
+
+<!-- ===================== 3 · CONTENTS ===================== -->
+<section class="sheet">
+  <div class="opener">
+    <span class="eyebrow">What's inside</span>
+    <h2>Contents</h2>
+  </div>
+  <div class="toc-list">
+    <div class="toc-row"><span class="n">01</span><div class="t"><div class="ti">Welcome</div><div class="ds">Love, and everything it doesn't teach us</div></div><span class="pp">04</span></div>
+    <div class="toc-row"><span class="n">02</span><div class="t"><div class="ti">The Myth</div><div class="ds">"I thought love was enough"</div></div><span class="pp">06</span></div>
+    <div class="toc-row"><span class="n">03</span><div class="t"><div class="ti">In the Counseling Room</div><div class="ds">The question we actually start with</div></div><span class="pp">07</span></div>
+    <div class="toc-row"><span class="n">04</span><div class="t"><div class="ti">What's Really Happening</div><div class="ds">The fight beneath the fight</div></div><span class="pp">08</span></div>
+    <div class="toc-row"><span class="n">05</span><div class="t"><div class="ti">The Therapist's Lens™</div><div class="ds">Every conflict has two stories</div></div><span class="pp">10</span></div>
+    <div class="toc-row"><span class="n">06</span><div class="t"><div class="ti">Why We Misread Each Other</div><div class="ds">Observation vs. interpretation</div></div><span class="pp">13</span></div>
+    <div class="toc-row"><span class="n">07</span><div class="t"><div class="ti">A Different Way to Picture Marriage</div><div class="ds">From same page to safe place</div></div><span class="pp">14</span></div>
+    <div class="toc-row"><span class="n">08</span><div class="t"><div class="ti">The Five Shifts</div><div class="ds">Small choices that change the pattern</div></div><span class="pp">15</span></div>
+  </div>
+  <div class="foot"><span class="run js-brand-run">Aaron Delay Counseling · A Marriage Playbook</span><span class="pg"></span></div>
+</section>
+
+<!-- ===================== 4 · WELCOME (1) ===================== -->
+<section class="sheet">
+  <div class="opener">
+    <span class="eyebrow">Welcome</span>
+    <h2>Love, and everything<br>it <em>doesn't</em> teach us</h2>
+  </div>
+  <div class="body">
+    <p>If someone had asked you on your wedding day whether you loved the person beside you, you wouldn't have hesitated. <em>Of course</em> you did. You don't promise your whole life to someone you don't deeply love.</p>
+    <p>But picture a different question. <em>"Do you actually know how to build a healthy marriage?"</em> You might have answered that one with the same easy confidence, and not because anyone ever taught you. Like most of us, <strong>you quietly assumed love would teach you everything else.</strong></p>
+    <p>We believe love will help us communicate. Solve conflict. Understand each other. Carry us through disappointment, and somehow bridge every difference between two very different people.</p>
+    <p>Then ordinary life begins. The honeymoon ends. Bills arrive, jobs get stressful, kids enter the picture, and the calendar fills up. One of you wants to talk while the other wants space. One of you needs reassurance while the other is busy trying to fix the problem. And without either of you noticing, two people who genuinely love each other start asking questions they never expected to ask.</p>
+  </div>
+  <div class="foot"><span class="run js-brand-run">Aaron Delay Counseling · A Marriage Playbook</span><span class="pg"></span></div>
+</section>
+
+<!-- ===================== 5 · WELCOME (2) ===================== -->
+<section class="sheet">
+  <div class="body" style="margin-top:6px">
+    <p style="font-family:var(--serif);font-style:italic;font-size:14pt;line-height:1.5;color:var(--ink);margin-bottom:18px">Why don't they understand me? Why do we keep having the same fight? How did something this small become such a big deal? Did we miss something everyone else seems to know?</p>
+    <p>Those questions can feel discouraging. They can even make a good couple wonder whether something is fundamentally broken between them. So let us offer a kinder possibility:</p>
+  </div>
+  <blockquote class="pull"><span class="mk">“</span>Maybe you didn't marry the wrong person. Maybe <em>no one ever taught you</em> how to build a marriage.</blockquote>
+  <div class="body">
+    <p>That's the whole premise of this guide. Not that love doesn't matter. Love matters more than almost anything. But <strong>love is the reason we choose marriage; it isn't the full set of skills required to sustain one.</strong> Healthy marriages are built when two people move past their assumptions and get intentional about how they communicate, respond, forgive, and connect. Those are <em>learned</em> skills. And the hopeful part is simple: <strong>anything that can be learned can keep being learned.</strong></p>
+    <p>The strongest marriages usually aren't built in one extraordinary moment. They're built in thousands of ordinary choices that slowly shape the emotional climate of a home. And the good news sits right underneath that: <strong>patterns can change.</strong> That rarely starts by trying to fix your spouse. It starts by learning to see your marriage differently.</p>
+  </div>
+  <div class="foot"><span class="run js-brand-run">Aaron Delay Counseling · A Marriage Playbook</span><span class="pg"></span></div>
+</section>
+
+<!-- ===================== 6 · THE MYTH ===================== -->
+<section class="sheet">
+  <div class="opener sm">
+    <span class="eyebrow">The myth</span>
+    <h2><em>"I thought love</em><br>was enough."</h2>
+  </div>
+  <div class="body">
+    <p>It's one of the most understandable assumptions a couple can make. Nearly every love story we've ever been handed points to the same conclusion. The movie ends when the couple finally gets together. We celebrate the engagement, the wedding, the honeymoon. Then the story stops. Almost no attention is given to what comes <em>after</em> the celebration.</p>
+    <p>No one applauds the couple who learns to apologize well. No one throws a party because two people figured out how to disagree respectfully. <strong>Yet those ordinary moments shape a marriage far more than the wedding day ever could.</strong></p>
+    <p>Love is powerful. It moves us to sacrifice, inspires commitment, and pulls two people together. But love, all on its own, doesn't teach emotional regulation. It doesn't create healthy communication, erase the things we absorbed in childhood, or keep quiet resentment from growing when disappointments go unspoken.</p>
+  </div>
+  <blockquote class="pull" style="font-size:20pt;margin-bottom:0"><span class="mk">“</span>Love is the invitation. Building a marriage is the <em>lifelong response</em> to it.</blockquote>
+  <div class="foot"><span class="run js-brand-run">Aaron Delay Counseling · A Marriage Playbook</span><span class="pg"></span></div>
+</section>
+
+<!-- ===================== 7 · IN THE COUNSELING ROOM ===================== -->
+<section class="sheet">
+  <div class="opener sm">
+    <span class="eyebrow">In the counseling room</span>
+    <h2>The question we<br><em>actually</em> start with</h2>
+  </div>
+  <div class="body">
+    <p>If you and your spouse sat down with us today, we probably wouldn't open by asking about your worst argument. We'd ask something gentler: <em>"When you imagined marriage before you got married, what did you think it would feel like?"</em></p>
+    <p>Almost every couple pauses. Some smile. Some glance at each other. And eventually someone says a version of:</p>
+  </div>
+  <div class="q-list" style="margin:16px 0">
+    <div class="q">"I thought we'd just understand each other better."</div>
+    <div class="q">"I thought we'd naturally become a team."</div>
+    <div class="q">"I thought because we loved each other so much, the hard parts would work themselves out."</div>
+  </div>
+  <div class="body">
+    <p>Those answers are never foolish. <strong>They're human.</strong> We all walk into marriage carrying expectations we've rarely stopped to examine, and each of us holds an invisible blueprint for how it's supposed to go. So does your spouse. <strong>That's the part most couples miss.</strong> The work of marriage isn't deciding whose blueprint is right. It's learning to draw a new one together.</p>
+  </div>
+  <div class="foot"><span class="run js-brand-run">Aaron Delay Counseling · A Marriage Playbook</span><span class="pg"></span></div>
+</section>
+
+<!-- ===================== 8 · WHAT'S REALLY HAPPENING (1) ===================== -->
+<section class="sheet">
+  <div class="opener sm">
+    <span class="eyebrow">What's really happening</span>
+    <h2>The fight beneath<br>the <em>fight</em></h2>
+  </div>
+  <div class="body">
+    <p>One of the most freeing shifts a couple can make is learning the difference between <em>what they're arguing about</em> and <em>what they're actually experiencing.</em> At first those sound identical. They usually aren't.</p>
+    <p>A husband forgets the milk on the way home. His wife gets frustrated. Within minutes it sounds like this:</p>
+  </div>
+  <div class="dialogue">
+    <p>"You never listen."</p>
+    <p>"I said I was sorry."</p>
+    <p>"You always have an excuse."</p>
+    <p>"Nothing I do is ever enough."</p>
+  </div>
+  <div class="body">
+    <p>By the end, nobody's thinking about the milk. One spouse feels unseen; the other feels defeated. <strong>The problem was never the forgotten errand. It was what the errand came to represent.</strong></p>
+  </div>
+  <div class="foot"><span class="run js-brand-run">Aaron Delay Counseling · A Marriage Playbook</span><span class="pg"></span></div>
+</section>
+
+<!-- ===================== 9 · WHAT'S REALLY HAPPENING (2) ===================== -->
+<section class="sheet">
+  <div class="body" style="margin-top:6px">
+    <p>This happens in marriages every single day. The visible issue is just where the deeper one finally surfaced:</p>
+  </div>
+  <div class="becomes">
+    <div class="row">A fight about <b>dishes</b> becomes a conversation about <span class="to">partnership.</span></div>
+    <hr class="divider-rule" style="margin:6px 0">
+    <div class="row">A fight about <b>money</b> becomes a conversation about <span class="to">security.</span></div>
+    <hr class="divider-rule" style="margin:6px 0">
+    <div class="row">A fight about <b>intimacy</b> becomes a conversation about <span class="to">acceptance.</span></div>
+    <hr class="divider-rule" style="margin:6px 0">
+    <div class="row">A fight about <b>time together</b> becomes a conversation about <span class="to">whether you still matter to each other.</span></div>
+  </div>
+  <div class="body" style="margin-top:16px">
+    <p>Most couples get very good at arguing about the visible issue and never reach the one underneath. So they solve the wrong problem. And when the deeper need goes unmet, <strong>the same conflict comes back wearing different clothes.</strong> New circumstances, same pattern.</p>
+    <p>Healthy marriages aren't built by becoming experts at surface problems. They're built by becoming students of each other's inner world. And that takes something a lot of couples have quietly stopped practicing: <strong>curiosity.</strong></p>
+  </div>
+  <div class="foot"><span class="run js-brand-run">Aaron Delay Counseling · A Marriage Playbook</span><span class="pg"></span></div>
+</section>
+
+<!-- ===================== 10 · THE THERAPIST'S LENS · ICEBERG ===================== -->
+<section class="sheet">
+  <div class="opener sm">
+    <span class="eyebrow">The Therapist's Lens™</span>
+    <h2>Every conflict has<br><em>two stories</em></h2>
+  </div>
+  <div class="body">
+    <p>Picture an iceberg. Only a small piece shows above the water; the far larger part stays hidden beneath the surface. <strong>Relationships work the same way.</strong> What you can see is the behavior. What you can't immediately see are the emotions, fears, hopes, and old experiences driving it.</p>
+  </div>
+  <div class="iceberg-wrap">
+    <svg viewBox="-52 0 352 260" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Iceberg diagram">
+      <!-- tip -->
+      <path d="M150 40 L182 118 L118 118 Z" fill="#E7DECF" stroke="#262019" stroke-width="1.6" stroke-linejoin="round"/>
+      <!-- waterline -->
+      <line x1="20" y1="118" x2="280" y2="118" stroke="#B4694E" stroke-width="1.6" stroke-dasharray="5 5"/>
+      <!-- submerged -->
+      <path d="M118 118 L182 118 L214 176 Q222 210 178 226 L150 236 L110 224 Q80 210 88 172 Z"
+            fill="#DBCFB4" stroke="#262019" stroke-width="1.6" stroke-linejoin="round" opacity="0.92"/>
+      <text x="196" y="86" font-family="Montserrat" font-size="9" letter-spacing="1.5" fill="#8a7d6b" font-weight="600">WHAT YOU SEE</text>
+      <text x="196" y="99" font-family="Fraunces" font-size="12" font-style="italic" fill="#262019">the behavior</text>
+      <text x="60" y="150" text-anchor="end" font-family="Montserrat" font-size="9" letter-spacing="1.5" fill="#9A5238" font-weight="600">WHAT'S REALLY</text>
+      <text x="60" y="163" text-anchor="end" font-family="Montserrat" font-size="9" letter-spacing="1.5" fill="#9A5238" font-weight="600">HAPPENING</text>
+      <text x="60" y="180" text-anchor="end" font-family="Fraunces" font-size="12" font-style="italic" fill="#262019">the feeling</text>
+    </svg>
+  </div>
+  <div class="body">
+    <p>When couples respond only to what's visible, they keep missing the thing that actually needs care. Here's what that looks like in real life.</p>
+  </div>
+  <div class="foot"><span class="run js-brand-run">Aaron Delay Counseling · A Marriage Playbook</span><span class="pg"></span></div>
+</section>
+
+<!-- ===================== 11 · LENS CARDS (1 & 2) ===================== -->
+<section class="sheet">
+  <div class="opener sm" style="margin-bottom:20px">
+    <span class="eyebrow">The Therapist's Lens™ · examples</span>
+    <h2 style="font-size:26pt">Above &amp; below<br>the <em>surface</em></h2>
+  </div>
+  <div class="lens-flow spread">
+  <div class="lens-card">
+    <div class="surf"><span class="lab">Surface</span><span class="txt">"You're always on your phone."</span></div>
+    <div class="deep"><span class="lab">Underneath</span><span class="txt">"I miss feeling like I have your attention. I miss being important to you. I miss us." The phone was never the real problem. The missing <b>connection</b> is.</span></div>
+  </div>
+  <div class="lens-card">
+    <div class="surf"><span class="lab">Surface</span><span class="txt">"We're just not connecting physically anymore."</span></div>
+    <div class="deep"><span class="lab">Underneath</span><span class="txt">Beneath the distance is a tender question: <i>"Do you still want me? Am I still someone you desire?"</i> When this fades, one spouse often feels quietly rejected. This is rarely about frequency. Underneath it sits the fear of no longer being <b>wanted.</b></span></div>
+  </div>
+  <div class="lens-card">
+    <div class="surf"><span class="lab">Surface</span><span class="txt">"We're always fighting about money."</span></div>
+    <div class="deep"><span class="lab">Underneath</span><span class="txt">One of you is quietly asking <i>"Are we going to be okay?"</i> while the other asks <i>"Will we ever get to enjoy the life we're working so hard for?"</i> Underneath the budget sit two different needs: <b>safety</b> for one of you, <b>freedom</b> for the other.</span></div>
+  </div>
+  </div>
+  <div class="foot"><span class="run js-brand-run">Aaron Delay Counseling · A Marriage Playbook</span><span class="pg"></span></div>
+</section>
+
+<!-- ===================== 12 · LENS CARDS (3 & 4) ===================== -->
+<section class="sheet">
+  <div class="lens-flow spread">
+  <div class="lens-card" style="margin-top:6px">
+    <div class="surf"><span class="lab">Surface</span><span class="txt">"We can't get on the same page with the kids."</span></div>
+    <div class="deep"><span class="lab">Underneath</span><span class="txt">One of you feels alone in the hard work; the other feels second-guessed, sometimes right in front of the kids. Under the disagreement is one longing you both share: to feel like <b>teammates</b> instead of opponents.</span></div>
+  </div>
+  <div class="lens-card">
+    <div class="surf"><span class="lab">Surface</span><span class="txt">"You never help around the house."</span></div>
+    <div class="deep"><span class="lab">Underneath</span><span class="txt">One spouse feels overwhelmed and alone. The other genuinely believes they're contributing in ways that go unnoticed. Neither feels seen. The chores were never the real issue. <b>Feeling unseen</b> is.</span></div>
+  </div>
+  <div class="reflect">
+    <span class="lab">Your turn</span>
+    <div class="q">Which of these feels most like your marriage right now?</div>
+    <p class="cue">The one that stings a little is often the one worth getting curious about. Name the surface fight first. Then name the need that might be hiding underneath it.</p>
+    <div class="writeline"><span class="tag">The surface fight</span><span class="ln"></span></div>
+    <div class="writeline"><span class="tag">What might be underneath</span><span class="ln"></span></div>
+  </div>
+  <div class="panel" style="background:color-mix(in srgb,var(--clay) 12%, var(--sand))">
+    <div class="body" style="color:var(--ink)"><p style="margin:0"><strong>If any of those land a little too close to home, that's okay.</strong> Recognizing the pattern is the first, bravest step toward changing it.</p></div>
+  </div>
+  </div>
+  <div class="foot"><span class="run js-brand-run">Aaron Delay Counseling · A Marriage Playbook</span><span class="pg"></span></div>
+</section>
+
+<!-- ===================== 13 · WHY WE MISREAD EACH OTHER ===================== -->
+<section class="sheet">
+  <div class="opener sm">
+    <span class="eyebrow">Why we misread each other</span>
+    <h2>The story we tell<br><em>ourselves</em></h2>
+  </div>
+  <div class="body">
+    <p>When emotions run high, our brains rush to fill in the blanks. We assume motives, read into tone, and assign meaning to things that were never said. Without meaning to, we start telling ourselves stories: <em>He doesn't care. She always thinks I'm wrong. I'll never be enough.</em></p>
+    <p>Those stories feel true because they're wrapped in real emotion. But feelings, as important as they are, don't always tell the whole story. So healthy couples learn to separate <strong>what they observed</strong> from <strong>what they interpreted.</strong></p>
+  </div>
+  <div class="vs">
+    <div class="box a"><div class="h">Assumes a motive</div><div class="l">"You don't care about me."</div></div>
+    <div class="box b"><div class="h">Shares an experience</div><div class="l">"When we don't spend time together, I start to feel disconnected from you."</div></div>
+  </div>
+  <div class="body">
+    <p>One invites defensiveness; the other invites understanding. <strong>That small shift can change the entire direction of a conversation.</strong> And it's a skill, not a personality trait, so you can start building it today.</p>
+  </div>
+  <div class="foot"><span class="run js-brand-run">Aaron Delay Counseling · A Marriage Playbook</span><span class="pg"></span></div>
+</section>
+
+<!-- ===================== 14 · A DIFFERENT WAY TO PICTURE MARRIAGE ===================== -->
+<section class="sheet">
+  <div class="opener sm">
+    <span class="eyebrow">A different way to picture marriage</span>
+    <h2>From same page<br>to <em>safe place</em></h2>
+  </div>
+  <div class="body">
+    <p>A lot of couples quietly assume the goal is <em>agreement.</em> If we could just agree more… think alike… want the same things… <em>then</em> we'd finally have a healthy marriage. But lasting marriages are rarely built on total agreement. <strong>They're built on growing understanding.</strong></p>
+    <p>Your spouse doesn't have to experience life exactly the way you do in order to love you well, and you don't have to erase every difference between you. You just get better and better at understanding those differences.</p>
+  </div>
+  <blockquote class="pull" style="font-size:21pt"><span class="mk">“</span>Healthy marriage isn't two people becoming the same person. It's two people becoming <em>the safest person in the world</em> for each other.</blockquote>
+  <div class="body">
+    <p>When the pattern becomes the problem instead of the person, something quietly shifts. Blame softens into partnership, and reaction slows into intention. That's often the first real step toward lasting change.</p>
+  </div>
+  <div class="foot"><span class="run js-brand-run">Aaron Delay Counseling · A Marriage Playbook</span><span class="pg"></span></div>
+</section>
+
+<!-- ===================== 15 · SHIFTS DIVIDER ===================== -->
+<section class="sheet shift-divider">
+  <div class="center">
+    <span class="eyebrow">Building a different kind of marriage</span>
+    <h2>The Five<br><em>Shifts</em></h2>
+    <p>Marriages are shaped by thousands of ordinary choices. If unhealthy patterns were learned, healthier ones can be learned too. You don't need all five this week. You just need to start with one.</p>
+  </div>
+  <div class="foot"><span class="run js-brand-run">Aaron Delay Counseling · A Marriage Playbook</span><span class="pg"></span></div>
+</section>
+
+<!-- ===================== 16 · SHIFTS 1 & 2 ===================== -->
+<section class="sheet">
+  <div class="shift" style="margin-top:6px">
+    <div class="head"><span class="num">One</span><h3>Stop trying to win.<br>Start trying to understand.</h3></div>
+    <div class="body">
+      <p>One of the easiest traps in marriage is believing that if you can just explain yourself <em>well enough,</em> your spouse will finally see it your way. Sometimes they will. Often they won't, and it isn't stubbornness. They're living the same moment through a completely different lens. <strong>Understanding tends to produce better solutions than winning ever could.</strong> When people feel understood, they get less defensive, and that's where real conversation finally becomes possible.</p>
+    </div>
+    <div class="thisweek">
+      <span class="lab">What this looks like this week</span>
+      <p>In your next disagreement, before you respond, ask one real question you don't already know the answer to, like <em>"What was that like for you?"</em> Then listen to the whole answer before you say anything back.</p>
+    </div>
+  </div>
+  <hr class="divider-rule" style="margin:28px 0">
+  <div class="shift">
+    <div class="head"><span class="num">Two</span><h3>Replace assumptions<br>with questions.</h3></div>
+    <div class="body">
+      <p>We assume we know why our spouse said what they said, what they meant, what they were thinking. Then we respond to our <em>interpretation</em> instead of their actual intention. Healthy couples become skilled question-askers. Instead of <em>"You don't care,"</em> they try, <em>"Help me understand what was going on for you."</em> <strong>Questions communicate respect; assumptions communicate conclusions.</strong> One honest question can head off an hour-long argument.</p>
+    </div>
+    <div class="thisweek">
+      <span class="lab">What this looks like this week</span>
+      <p>Catch yourself in one assumption. The next time you're <em>sure</em> you know what your spouse meant, pause and say, <em>"Can I check something with you?"</em> Then ask instead of assume.</p>
+    </div>
+  </div>
+  <div class="foot"><span class="run js-brand-run">Aaron Delay Counseling · A Marriage Playbook</span><span class="pg"></span></div>
+</section>
+
+<!-- ===================== 17 · SHIFTS 3 & 4 ===================== -->
+<section class="sheet">
+  <div class="shift" style="margin-top:6px">
+    <div class="head"><span class="num">Three</span><h3>Focus on what you<br>can actually influence.</h3></div>
+    <div class="body">
+      <p>One of the more frustrating truths of marriage is this: <strong>you cannot make your spouse change.</strong> You can encourage them, invite them, model something better, but you can't force another person to grow. The healthier question is quieter: <em>"What kind of spouse do I want to be, regardless of how my spouse responds today?"</em> That isn't giving up. It's recognizing that real change almost always starts with taking ownership of the part that's actually yours.</p>
+    </div>
+    <div class="thisweek">
+      <span class="lab">What this looks like this week</span>
+      <p>Pick one recurring frustration and ask, <em>"What's the one part of this that's actually mine?"</em> Take that single step, and set the rest down for now.</p>
+    </div>
+  </div>
+  <hr class="divider-rule" style="margin:28px 0">
+  <div class="shift">
+    <div class="head"><span class="num">Four</span><h3>Say more about what<br>you <em>want</em> than what you don't.</h3></div>
+    <div class="body">
+      <p>A lot of us get fluent in what's wrong: <em>"You never help." "I wish you'd stop doing that."</em> Those communicate frustration, but rarely direction. Your spouse needs more than criticism; they need <strong>clarity.</strong> Instead of <em>"You never spend time with me,"</em> try, <em>"I'd love one evening this week where it's just us, fully present."</em> Healthy requests give your spouse a direction to move toward. Criticism just leaves them wondering how they'll ever get it right.</p>
+    </div>
+    <div class="thisweek">
+      <span class="lab">What this looks like this week</span>
+      <p>Turn one complaint into one clear request. Instead of naming what's wrong, tell your spouse exactly what <em>good</em> would look like. Keep it small and doable this week.</p>
+    </div>
+  </div>
+  <div class="foot"><span class="run js-brand-run">Aaron Delay Counseling · A Marriage Playbook</span><span class="pg"></span></div>
+</section>
+
+<!-- ===================== 18 · SHIFT 5 ===================== -->
+<section class="sheet">
+  <div class="shift" style="margin-top:6px">
+    <div class="head"><span class="num">Five</span><h3>Protect the relationship<br>more than your position.</h3></div>
+    <div class="body">
+      <p>Every disagreement offers a choice: <em>Will protecting my pride matter more than protecting us?</em> Sometimes the healthiest sentence in a marriage isn't <em>"I'm right."</em> It's <em>"Help me understand what I missed,"</em> or <em>"I can see how that affected you,"</em> or simply, <em>"I'm sorry."</em></p>
+      <p>Apologies don't erase hurt, but they make room for healing. And grace doesn't mean ignoring problems. <strong>Grace means believing your spouse is more than their worst moment.</strong> Healthy marriages hold two things at once: they tell the truth about the hurt, <em>and</em> they stay committed to each other while working through it.</p>
+    </div>
+    <div class="thisweek">
+      <span class="lab">What this looks like this week</span>
+      <p>The next time you're certain you're right, try one repair sentence anyway. Something like <em>"I can see how that landed on you,"</em> or a simple <em>"I'm sorry."</em> Then notice what it does to the temperature of the room.</p>
+    </div>
+  </div>
+  <blockquote class="pull" style="font-size:20pt;margin-top:30px"><span class="mk">“</span>Grace means believing your spouse is <em>more than their worst moment.</em></blockquote>
+  <div class="foot"><span class="run js-brand-run">Aaron Delay Counseling · A Marriage Playbook</span><span class="pg"></span></div>
+</section>
+
+<!-- ===================== 19 · CLOSING ===================== -->
+<section class="sheet closing">
+  <div class="opener sm">
+    <span class="eyebrow">Bringing it all together</span>
+    <h2>Start with<br><em>one</em></h2>
+  </div>
+  <div class="body">
+    <p>Read those five shifts one more time and you'll notice something they share: <strong>not one of them requires your spouse to change first.</strong> Every one begins with a decision that's already yours to make today. You can choose curiosity. You can ask a better question. You can name what you hope for instead of only what frustrates you.</p>
+    <p>None of these guarantee an overnight transformation, and that's okay. Healthy marriages aren't built in one extraordinary conversation. They're strengthened in repeated moments of intention. So don't try to master all five this week. <strong>Choose one. Practice it. Then come back and choose another.</strong></p>
+    <p>Over time, these small decisions quietly become new patterns. And those patterns slowly become a different kind of marriage. Life didn't get easier; the two of you just learned to walk through it differently.</p>
+  </div>
+  <div class="sign">
+    <p class="cheer">You're already doing the brave thing by opening this at all. We're cheering you on.</p>
+    <p class="by">With you in it,<em class="js-brand-sign">Aaron Delay Counseling</em></p>
+  </div>
+  <div class="foot"><span class="run js-brand-run">Aaron Delay Counseling · A Marriage Playbook</span><span class="pg"></span></div>
+</section>
+
+<script>
+// Live-swap the placeholder practice name from ?name= in the URL, so a final render is one flag away.
+(function(){
+  var params=new URLSearchParams(location.search);
+  var name=params.get('name');
+  if(!name) return;
+  document.querySelectorAll('.js-brand').forEach(function(el){ el.innerHTML=name.replace(/&/g,'&amp;').replace(/</g,'&lt;')+'<span>.</span>'; });
+  document.querySelectorAll('.js-brand-italic,.js-brand-sign').forEach(function(el){ el.textContent=name; });
+  document.querySelectorAll('.js-brand-run').forEach(function(el){ el.textContent=name+' · A Marriage Playbook'; });
+})();
+</script>
+</body>
+</html>

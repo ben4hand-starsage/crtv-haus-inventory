@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brand Field Guide</title>
+<meta name="description" content="The visual and verbal identity system for a warm, faith-friendly counseling practice.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500;1,9..144,600&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   TOKENS — Light (bare :root defines the complete palette)
+   ============================================================ */
+:root{
+  --ink:#262019;
+  --ink-2:#574c40;
+  --ink-3:#8a7d6b;
+  --bg:#F7F2EA;
+  --surface:#FDFBF6;
+  --sand:#E7DECF;
+  --sand-2:#DBCFB4;
+  --clay:#B4694E;
+  --clay-deep:#9A5238;
+  --stone:#A2937E;
+  --line:rgba(38,32,25,.14);
+  --line-2:rgba(38,32,25,.30);
+  --shadow:0 24px 60px -32px rgba(38,32,25,.40);
+  --shadow-sm:0 10px 30px -20px rgba(38,32,25,.55);
+
+  --serif:"Fraunces",Georgia,"Times New Roman",serif;
+  --sans:"Montserrat",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --maxw:1120px;
+}
+/* Dark via OS preference — only wins when no explicit light choice */
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ink:#ECE4D6;
+    --ink-2:#C4B8A6;
+    --ink-3:#94897A;
+    --bg:#1E1912;
+    --surface:#272117;
+    --sand:#322A1E;
+    --sand-2:#3E3425;
+    --clay:#CE8163;
+    --clay-deep:#E0A188;
+    --stone:#94897A;
+    --line:rgba(236,228,214,.14);
+    --line-2:rgba(236,228,214,.28);
+    --shadow:0 24px 60px -30px rgba(0,0,0,.65);
+    --shadow-sm:0 10px 30px -18px rgba(0,0,0,.7);
+  }
+}
+/* Explicit dark choice wins in the other direction */
+:root[data-theme="dark"]{
+  --ink:#ECE4D6;
+  --ink-2:#C4B8A6;
+  --ink-3:#94897A;
+  --bg:#1E1912;
+  --surface:#272117;
+  --sand:#322A1E;
+  --sand-2:#3E3425;
+  --clay:#CE8163;
+  --clay-deep:#E0A188;
+  --stone:#94897A;
+  --line:rgba(236,228,214,.14);
+  --line-2:rgba(236,228,214,.28);
+  --shadow:0 24px 60px -30px rgba(0,0,0,.65);
+  --shadow-sm:0 10px 30px -18px rgba(0,0,0,.7);
+}
+
+/* ============================================================
+   RESET / BASE
+   ============================================================ */
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:88px;-webkit-font-smoothing:antialiased}
+body{
+  font-family:var(--sans);
+  color:var(--ink);
+  background:var(--bg);
+  line-height:1.68;
+  font-weight:400;
+  font-size:16px;
+  transition:background .5s ease,color .5s ease;
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  html{scroll-behavior:auto}
+}
+img{max-width:100%;display:block}
+a{color:inherit}
+
+/* ---- shared type helpers ---- */
+.eyebrow{
+  font-family:var(--sans);
+  font-weight:600;
+  font-size:.72rem;
+  letter-spacing:.28em;
+  text-transform:uppercase;
+  color:var(--clay-deep);
+}
+.serif{font-family:var(--serif)}
+.italic{font-style:italic}
+h1,h2,h3,h4{font-family:var(--serif);font-weight:500;line-height:1.08;letter-spacing:-.01em;text-wrap:balance;color:var(--ink)}
+
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 32px}
+.section{padding:120px 0;border-top:1px solid var(--line)}
+.section:first-of-type{border-top:0}
+
+.sec-head{max-width:640px;margin-bottom:56px}
+.sec-head .eyebrow{display:block;margin-bottom:20px}
+.sec-head h2{font-size:clamp(2.4rem,6vw,4rem)}
+.sec-head p{margin-top:22px;color:var(--ink-2);font-size:1.06rem;max-width:56ch}
+
+/* ============================================================
+   TOP NAV
+   ============================================================ */
+.nav{
+  position:sticky;top:0;z-index:60;
+  background:color-mix(in srgb,var(--bg) 82%,transparent);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line);
+}
+.nav-in{max-width:var(--maxw);margin:0 auto;padding:14px 32px;display:flex;align-items:center;gap:28px}
+.nav-brand{font-family:var(--serif);font-weight:600;font-size:1.15rem;letter-spacing:-.02em;white-space:nowrap}
+.nav-brand span{color:var(--clay)}
+.nav-links{display:flex;gap:6px;margin-left:auto;flex-wrap:wrap}
+.nav-links a{
+  text-decoration:none;font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;font-weight:500;
+  color:var(--ink-2);padding:8px 12px;border-radius:100px;transition:color .2s,background .2s;
+}
+.nav-links a:hover{color:var(--ink)}
+.nav-links a.active{color:var(--clay-deep);background:var(--sand)}
+.theme-btn{
+  border:1px solid var(--line-2);background:transparent;color:var(--ink);
+  width:40px;height:40px;border-radius:100px;cursor:pointer;font-size:1rem;
+  display:grid;place-items:center;transition:background .2s,border-color .2s;flex-shrink:0;
+}
+.theme-btn:hover{background:var(--sand)}
+@media(max-width:860px){
+  .nav-links{display:none}
+}
+
+/* ============================================================
+   COVER / HERO
+   ============================================================ */
+.cover{position:relative;padding:120px 0 130px;overflow:hidden}
+.cover::before{
+  content:"";position:absolute;inset:0;z-index:0;
+  background:
+    radial-gradient(120% 90% at 85% -10%,var(--sand) 0%,transparent 55%),
+    radial-gradient(90% 80% at -10% 110%,var(--sand) 0%,transparent 50%);
+  opacity:.7;
+}
+.cover-in{position:relative;z-index:1;max-width:var(--maxw);margin:0 auto;padding:0 32px}
+.cover .kicker{display:inline-block;padding:9px 18px;background:var(--sand);border-radius:100px;margin-bottom:34px}
+.cover h1{
+  font-size:clamp(3rem,9vw,6.6rem);
+  line-height:.98;
+  font-weight:400;
+  letter-spacing:-.025em;
+  max-width:16ch;
+}
+.cover h1 em{font-style:italic;font-weight:500}
+.cover .lede{
+  margin-top:34px;max-width:52ch;font-size:1.16rem;color:var(--ink-2);line-height:1.7;
+}
+.cover .subline{
+  margin-top:40px;font-size:.72rem;letter-spacing:.26em;text-transform:uppercase;
+  color:var(--stone);font-weight:600;
+}
+.cover-meta{display:flex;gap:36px;flex-wrap:wrap;margin-top:56px;padding-top:32px;border-top:1px solid var(--line)}
+.cover-meta div{min-width:120px}
+.cover-meta dt{font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--stone);font-weight:600;margin-bottom:8px}
+.cover-meta dd{font-family:var(--serif);font-size:1.05rem;color:var(--ink)}
+
+/* ============================================================
+   GENERIC CARD / GRID
+   ============================================================ */
+.card{
+  background:var(--surface);border:1px solid var(--line);border-radius:4px;
+  padding:36px;box-shadow:var(--shadow-sm);
+}
+.grid{display:grid;gap:24px}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:860px){.g2,.g3,.g4{grid-template-columns:1fr}}
+
+/* ============================================================
+   POSITIONING
+   ============================================================ */
+.statement{
+  font-family:var(--serif);font-weight:400;font-size:clamp(1.7rem,4.2vw,2.9rem);
+  line-height:1.25;letter-spacing:-.01em;max-width:22ch;
+}
+.statement em{font-style:italic;color:var(--clay)}
+.pillars{margin-top:64px}
+.pillar .num{font-family:var(--serif);font-size:2rem;color:var(--clay);line-height:1;display:block;margin-bottom:16px}
+.pillar h3{font-size:1.35rem;margin-bottom:10px;font-weight:600}
+.pillar p{color:var(--ink-2);font-size:.98rem}
+
+/* ============================================================
+   LOGO / WORDMARK
+   ============================================================ */
+.namebar{
+  display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+  background:var(--sand);border:1px solid var(--line);border-radius:100px;
+  padding:10px 12px 10px 24px;margin-bottom:44px;
+}
+.namebar label{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;font-weight:600;color:var(--ink-2)}
+.namebar input{
+  flex:1;min-width:180px;border:0;background:var(--surface);border-radius:100px;
+  padding:12px 20px;font-family:var(--serif);font-size:1.05rem;color:var(--ink);
+  border:1px solid var(--line);outline:none;
+}
+.namebar input:focus{border-color:var(--clay)}
+.namebar .hint{font-size:.8rem;color:var(--stone)}
+
+.lockups{display:grid;grid-template-columns:1.4fr 1fr;gap:24px}
+@media(max-width:860px){.lockups{grid-template-columns:1fr}}
+.lockup{
+  background:var(--surface);border:1px solid var(--line);border-radius:4px;
+  display:grid;place-items:center;text-align:center;padding:64px 32px;min-height:220px;position:relative;
+}
+.lockup .tag{position:absolute;top:16px;left:20px;font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:var(--stone);font-weight:600}
+/* Primary wordmark */
+.wm-primary{font-family:var(--serif);font-weight:500;font-size:clamp(1.8rem,4vw,2.8rem);letter-spacing:-.02em;line-height:1.05}
+.wm-primary .amp{color:var(--clay)}
+.wm-sub{margin-top:14px;font-size:.66rem;letter-spacing:.34em;text-transform:uppercase;color:var(--stone);font-weight:600}
+/* Stacked */
+.wm-stack .top{font-size:.62rem;letter-spacing:.34em;text-transform:uppercase;color:var(--stone);font-weight:600;margin-bottom:10px}
+.wm-stack .mid{font-family:var(--serif);font-style:italic;font-weight:500;font-size:clamp(1.6rem,3.5vw,2.2rem)}
+/* Monogram */
+.monogram{
+  width:104px;height:104px;border:1.5px solid var(--ink);border-radius:50%;
+  display:grid;place-items:center;font-family:var(--serif);font-weight:500;
+  font-size:2.2rem;letter-spacing:.02em;color:var(--ink);
+}
+.mono-clay{border-color:var(--clay);color:var(--clay);background:transparent}
+.mono-fill{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.mono-row{display:flex;gap:22px;flex-wrap:wrap;align-items:center;justify-content:center}
+
+.dos{margin-top:24px}
+.do-item{display:flex;gap:14px;align-items:flex-start;padding:16px 0;border-bottom:1px solid var(--line)}
+.do-item:last-child{border-bottom:0}
+.do-mark{flex-shrink:0;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:.85rem;font-weight:700;margin-top:2px}
+.do .do-mark{background:color-mix(in srgb,var(--clay) 18%,transparent);color:var(--clay-deep)}
+.dont .do-mark{background:color-mix(in srgb,var(--stone) 22%,transparent);color:var(--ink-2)}
+.do-item p{font-size:.95rem;color:var(--ink-2)}
+.do-item strong{color:var(--ink);font-weight:600}
+
+/* ============================================================
+   COLOR
+   ============================================================ */
+.swatches{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+@media(max-width:860px){.swatches{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.swatches{grid-template-columns:1fr}}
+.swatch{
+  border:1px solid var(--line);border-radius:6px;overflow:hidden;cursor:pointer;
+  background:var(--surface);transition:transform .18s ease,box-shadow .18s ease;
+}
+.swatch:hover{transform:translateY(-4px);box-shadow:var(--shadow-sm)}
+.swatch .chip{height:130px;display:flex;align-items:flex-end;padding:14px}
+.swatch .chip span{font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600;background:rgba(0,0,0,.18);color:#fff;padding:4px 8px;border-radius:100px;backdrop-filter:blur(2px)}
+.swatch .meta{padding:16px 18px}
+.swatch .meta .nm{font-family:var(--serif);font-size:1.15rem;font-weight:600}
+.swatch .meta .hx{font-size:.82rem;color:var(--ink-3);letter-spacing:.04em;margin-top:3px;font-variant-numeric:tabular-nums}
+.swatch .meta .role{font-size:.78rem;color:var(--ink-2);margin-top:10px}
+.copyhint{font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--stone);margin-top:10px;font-weight:600;opacity:.7}
+
+.ratios{display:flex;height:56px;border-radius:6px;overflow:hidden;margin-top:44px;border:1px solid var(--line)}
+.ratios div{display:flex;align-items:center;justify-content:center;font-size:.7rem;letter-spacing:.1em;font-weight:600;text-transform:uppercase}
+.ratio-note{margin-top:14px;font-size:.85rem;color:var(--ink-2)}
+
+/* ============================================================
+   TYPOGRAPHY
+   ============================================================ */
+.type-specimen{padding:44px;background:var(--surface);border:1px solid var(--line);border-radius:4px}
+.type-specimen .big{font-family:var(--serif);font-size:clamp(3.4rem,11vw,7rem);line-height:.92;font-weight:400;letter-spacing:-.02em}
+.type-specimen .big em{font-style:italic;font-weight:500}
+.type-specimen .glyphs{margin-top:20px;font-family:var(--serif);color:var(--ink-2);font-size:1.1rem;letter-spacing:.02em;word-spacing:.1em}
+.type-meta{display:flex;gap:40px;flex-wrap:wrap;margin-top:28px;padding-top:24px;border-top:1px solid var(--line)}
+.type-meta div{font-size:.85rem;color:var(--ink-2)}
+.type-meta b{display:block;font-family:var(--serif);font-size:1.05rem;color:var(--ink);font-weight:600;margin-bottom:3px}
+
+.scale-row{display:flex;align-items:baseline;gap:24px;padding:18px 0;border-bottom:1px solid var(--line)}
+.scale-row:last-child{border-bottom:0}
+.scale-row .lab{flex-shrink:0;width:130px;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--stone);font-weight:600}
+.scale-row .spec{font-size:.72rem;color:var(--ink-3);width:96px;flex-shrink:0;font-variant-numeric:tabular-nums}
+.scale-row .demo{font-family:var(--serif);color:var(--ink);line-height:1.1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.scale-row.sans .demo{font-family:var(--sans)}
+@media(max-width:640px){.scale-row .spec{display:none}}
+
+.pairing-note{background:var(--sand);border-radius:4px;padding:28px 32px;margin-top:12px}
+.pairing-note h4{font-family:var(--serif);font-size:1.2rem;margin-bottom:8px}
+.pairing-note p{color:var(--ink-2);font-size:.95rem}
+.pairing-note em{font-style:italic;color:var(--clay-deep)}
+
+/* ============================================================
+   VOICE
+   ============================================================ */
+.voice-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin-bottom:48px}
+@media(max-width:860px){.voice-grid{grid-template-columns:1fr}}
+.voice-card{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:30px}
+.voice-card .k{font-family:var(--serif);font-style:italic;font-size:1.4rem;color:var(--clay);margin-bottom:6px}
+.voice-card .v{font-size:.95rem;color:var(--ink-2)}
+.voice-card .v b{color:var(--ink);font-weight:600}
+
+.dd-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+@media(max-width:720px){.dd-grid{grid-template-columns:1fr}}
+.dd{border-radius:4px;padding:28px 30px;border:1px solid var(--line)}
+.dd.say{background:color-mix(in srgb,var(--clay) 8%,var(--surface))}
+.dd h4{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;font-family:var(--sans);font-weight:700;margin-bottom:18px}
+.dd.say h4{color:var(--clay-deep)}
+.dd.avoid h4{color:var(--ink-3)}
+.dd ul{list-style:none;display:flex;flex-direction:column;gap:14px}
+.dd li{font-size:.98rem;padding-left:22px;position:relative;color:var(--ink-2);line-height:1.5}
+.dd.say li::before{content:"“";position:absolute;left:0;top:-2px;font-family:var(--serif);color:var(--clay);font-size:1.3rem}
+.dd.avoid li{color:var(--ink-3);text-decoration:line-through;text-decoration-color:var(--line-2)}
+
+.samples{margin-top:48px}
+.sample-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+.sample-tab{
+  border:1px solid var(--line-2);background:transparent;border-radius:100px;padding:9px 20px;
+  font-family:var(--sans);font-size:.78rem;letter-spacing:.08em;font-weight:600;color:var(--ink-2);cursor:pointer;
+  transition:all .2s;text-transform:uppercase;
+}
+.sample-tab.active{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.sample-body{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:40px}
+.sample-panel{display:none}
+.sample-panel.active{display:block;animation:fade .4s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.sample-panel .eyebrow{display:block;margin-bottom:14px}
+.sample-panel .headline{font-family:var(--serif);font-size:clamp(1.6rem,3.5vw,2.3rem);line-height:1.15;margin-bottom:16px}
+.sample-panel .headline em{font-style:italic;color:var(--clay)}
+.sample-panel p{color:var(--ink-2);max-width:60ch}
+
+/* ============================================================
+   COMPONENTS (editorial demos)
+   ============================================================ */
+.demo{background:var(--surface);border:1px solid var(--line);border-radius:4px;overflow:hidden}
+.demo-label{padding:12px 20px;border-bottom:1px solid var(--line);font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--stone);font-weight:600;display:flex;justify-content:space-between}
+.demo-body{padding:44px}
+
+/* eyebrow+headline opener */
+.op .eyebrow{display:block;margin-bottom:16px}
+.op h3{font-size:clamp(2rem,5vw,3.4rem);font-weight:400;letter-spacing:-.02em}
+.op h3 em{font-style:italic;font-weight:500}
+
+/* two column justified */
+.twocol{columns:2;column-gap:44px;color:var(--ink-2);font-size:.95rem;text-align:justify;hyphens:auto}
+.twocol strong{color:var(--ink);font-weight:600}
+@media(max-width:640px){.twocol{columns:1}}
+
+/* cream panel */
+.creampanel{background:var(--sand);border-radius:4px;padding:44px 48px}
+.creampanel .eyebrow{display:block;margin-bottom:12px}
+.creampanel h4{font-family:var(--serif);font-style:italic;font-weight:500;font-size:1.9rem;margin-bottom:16px}
+.creampanel p{color:var(--ink-2);max-width:54ch}
+
+/* pull quote */
+.pullquote{font-family:var(--serif);font-weight:400;font-size:clamp(1.8rem,4.5vw,3rem);line-height:1.18;letter-spacing:-.01em;max-width:20ch}
+.pullquote .mk{color:var(--clay)}
+
+/* toc */
+.toc-item{display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:baseline;padding:18px 0;border-bottom:1px solid var(--line)}
+.toc-item:last-child{border-bottom:0}
+.toc-num{font-family:var(--serif);font-size:1.9rem;color:var(--ink);line-height:1;font-variant-numeric:tabular-nums}
+.toc-t .t{font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;font-weight:600;color:var(--ink)}
+.toc-t .d{font-size:.9rem;color:var(--ink-3);margin-top:3px}
+
+/* buttons */
+.btns{display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+.btn{
+  font-family:var(--sans);font-weight:600;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;
+  padding:15px 30px;border-radius:100px;text-decoration:none;cursor:pointer;border:1.5px solid transparent;
+  transition:all .2s;display:inline-block;
+}
+.btn-primary{background:var(--clay);color:#fff;border-color:var(--clay)}
+.btn-primary:hover{background:var(--clay-deep);border-color:var(--clay-deep)}
+.btn-ghost{background:transparent;color:var(--ink);border-color:var(--ink)}
+.btn-ghost:hover{background:var(--ink);color:var(--bg)}
+.btn-text{background:transparent;color:var(--clay-deep);border:0;padding:15px 6px}
+.btn-text::after{content:" →"}
+
+/* page footer number */
+.pagefoot{display:flex;justify-content:space-between;align-items:center;padding:18px 44px;border-top:1px solid var(--line);color:var(--stone)}
+.pagefoot .brandline{font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;font-weight:600}
+.pagefoot .pgno{font-family:var(--serif);font-size:1.3rem;color:var(--ink)}
+
+/* ============================================================
+   PHOTOGRAPHY
+   ============================================================ */
+.photo-do{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+@media(max-width:720px){.photo-do{grid-template-columns:1fr}}
+.photo-swatch{border-radius:4px;overflow:hidden;border:1px solid var(--line)}
+.photo-swatch .band{height:150px;position:relative;display:grid;place-items:center}
+.photo-swatch .band span{font-family:var(--serif);font-style:italic;font-size:1.2rem;color:#fff;text-shadow:0 2px 20px rgba(0,0,0,.5);z-index:1;padding:0 20px;text-align:center}
+.photo-swatch .cap{padding:16px 20px;font-size:.9rem;color:var(--ink-2)}
+.moodwords{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.moodword{font-family:var(--serif);font-style:italic;font-size:1.05rem;color:var(--ink);background:var(--sand);padding:7px 18px;border-radius:100px}
+
+/* ============================================================
+   STARTER KIT
+   ============================================================ */
+.code{
+  background:var(--ink);color:#ECE4D6;border-radius:6px;padding:0;overflow:hidden;position:relative;
+  font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+:root[data-theme="dark"] .code,
+:root:not([data-theme="light"]) .code{background:#15110B}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .code{background:#15110B}}
+.code-top{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-bottom:1px solid rgba(236,228,214,.14)}
+.code-top .fn{font-size:.72rem;letter-spacing:.1em;color:#94897A}
+.code-copy{background:rgba(236,228,214,.1);border:0;color:#ECE4D6;font-family:var(--sans);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;font-weight:600;padding:7px 14px;border-radius:100px;cursor:pointer;transition:background .2s}
+.code-copy:hover{background:rgba(236,228,214,.22)}
+.code pre{padding:24px 22px;overflow-x:auto;font-size:.8rem;line-height:1.75}
+.code .c{color:#94897A}
+.code .p{color:#CE8163}
+.code .v{color:#ECE4D6}
+
+.checklist{list-style:none;counter-reset:step;margin-top:8px}
+.checklist li{counter-increment:step;padding:18px 0 18px 54px;position:relative;border-bottom:1px solid var(--line);color:var(--ink-2)}
+.checklist li:last-child{border-bottom:0}
+.checklist li::before{content:counter(step);position:absolute;left:0;top:14px;width:34px;height:34px;border-radius:50%;border:1.5px solid var(--clay);color:var(--clay-deep);font-family:var(--serif);display:grid;place-items:center;font-size:1rem}
+.checklist li b{color:var(--ink);font-weight:600}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.foot{background:var(--ink);color:var(--bg);padding:80px 0 60px;text-align:center}
+:root:not([data-theme="dark"]) .foot{--ink-local:#F7F2EA}
+.foot h3{color:var(--bg);font-size:clamp(2rem,5vw,3rem);font-weight:400;font-style:italic;margin-bottom:20px}
+.foot p{color:color-mix(in srgb,var(--bg) 65%,transparent);max-width:44ch;margin:0 auto;font-size:.98rem}
+.foot .fmark{font-family:var(--serif);font-weight:600;font-size:1.3rem;margin-bottom:34px;letter-spacing:-.02em}
+.foot .fmark span{color:var(--clay)}
+
+/* toast */
+.toast{
+  position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:var(--ink);color:var(--bg);padding:13px 26px;border-radius:100px;
+  font-size:.82rem;letter-spacing:.04em;font-weight:500;box-shadow:var(--shadow);
+  opacity:0;pointer-events:none;transition:all .3s ease;z-index:100;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast b{font-family:var(--serif);font-weight:600}
+
+/* reveal on scroll */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s ease}
+.reveal.in{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<!-- ===================== NAV ===================== -->
+<nav class="nav">
+  <div class="nav-in">
+    <div class="nav-brand js-brand-mark">Your&nbsp;Practice<span>.</span></div>
+    <div class="nav-links">
+      <a href="#overview">Overview</a>
+      <a href="#logo">Logo</a>
+      <a href="#color">Color</a>
+      <a href="#type">Type</a>
+      <a href="#voice">Voice</a>
+      <a href="#components">Components</a>
+      <a href="#photo">Imagery</a>
+      <a href="#starter">Starter Kit</a>
+    </div>
+    <button class="theme-btn" id="themeBtn" aria-label="Toggle light and dark theme" title="Toggle theme">☾</button>
+  </div>
+</nav>
+
+<!-- ===================== COVER ===================== -->
+<header class="cover">
+  <div class="cover-in">
+    <span class="kicker eyebrow">Brand Field Guide · v1.0</span>
+    <h1>The identity behind <em>steady,</em> shame-free care.</h1>
+    <p class="lede">A complete visual and verbal system for your counseling practice — warm, grounded, and gender-neutral. Use it to make every playbook, worksheet, and handout feel unmistakably yours.</p>
+    <p class="subline">For individuals · couples · parents &nbsp;/&nbsp; Faith-friendly</p>
+    <dl class="cover-meta">
+      <div><dt>Feeling</dt><dd>Calm · Warm · Trustworthy</dd></div>
+      <div><dt>Display</dt><dd>Fraunces</dd></div>
+      <div><dt>Text</dt><dd>Montserrat</dd></div>
+      <div><dt>Signature</dt><dd>Clay on Cream</dd></div>
+    </dl>
+  </div>
+</header>
+
+<!-- ===================== OVERVIEW ===================== -->
+<section class="section" id="overview">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">01 — The idea</span>
+      <h2>What the brand is for</h2>
+      <p>Before colors and fonts, a north star. Every design decision in this guide serves one job: making people feel <em>safe enough to keep reading.</em></p>
+    </div>
+
+    <p class="statement reveal">Care that feels like a <em>steady hand</em> — plain-spoken, unhurried, and free of shame — designed so the resource itself lowers a person's guard.</p>
+
+    <div class="grid g3 pillars">
+      <div class="pillar card reveal">
+        <span class="num">01</span>
+        <h3>Steady, not clinical</h3>
+        <p>Editorial calm over medical sterility. Generous whitespace and warm neutrals signal “you can slow down here.”</p>
+      </div>
+      <div class="pillar card reveal">
+        <span class="num">02</span>
+        <h3>Warm, not soft-focus</h3>
+        <p>Grounded and credible. The clay accent and confident serif keep it from tipping into precious or overly delicate.</p>
+      </div>
+      <div class="pillar card reveal">
+        <span class="num">03</span>
+        <h3>For everyone at the table</h3>
+        <p>Neutral by design — a single man, a married couple, or a set of parents should all feel this was made for them.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== LOGO ===================== -->
+<section class="section" id="logo">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">02 — Wordmark</span>
+      <h2>Logo &amp; wordmark</h2>
+      <p>No custom logo yet — and you may not need one to launch. A confident type-set wordmark carries the brand today and gives a future designer a clear brief. Type your practice name below to preview the lockups live.</p>
+    </div>
+
+    <div class="namebar reveal">
+      <label for="brandInput">Your name</label>
+      <input id="brandInput" type="text" value="Your Practice" spellcheck="false" aria-label="Preview your practice name">
+      <span class="hint">Updates every lockup on this page ↑↓</span>
+    </div>
+
+    <div class="lockups reveal">
+      <div class="lockup">
+        <span class="tag">Primary lockup</span>
+        <div>
+          <div class="wm-primary js-brand-wm">Your Practice</div>
+          <div class="wm-sub">Counseling &amp; Care</div>
+        </div>
+      </div>
+      <div class="lockup">
+        <span class="tag">Stacked / alt</span>
+        <div class="wm-stack">
+          <div class="top">Est. · Faith-friendly care</div>
+          <div class="mid js-brand-italic">Your Practice</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lockup reveal" style="margin-top:24px;min-height:auto;padding:44px">
+      <span class="tag">Monogram — from your initials</span>
+      <div class="mono-row">
+        <div class="monogram js-mono">YP</div>
+        <div class="monogram mono-clay js-mono">YP</div>
+        <div class="monogram mono-fill js-mono">YP</div>
+      </div>
+    </div>
+
+    <div class="grid g2" style="margin-top:44px">
+      <div class="card do reveal">
+        <span class="eyebrow" style="display:block;margin-bottom:20px">Do</span>
+        <div class="dos">
+          <div class="do-item"><span class="do-mark">✓</span><p><strong>Give it air.</strong> Keep clear space equal to the cap-height on all sides.</p></div>
+          <div class="do-item"><span class="do-mark">✓</span><p><strong>Use one accent.</strong> The period / ampersand in clay is the only color the mark needs.</p></div>
+          <div class="do-item"><span class="do-mark">✓</span><p><strong>Set it in Fraunces</strong> at medium weight (500) for the primary lockup.</p></div>
+          <div class="do-item"><span class="do-mark">✓</span><p><strong>Go monochrome</strong> — ink on cream, or cream on ink — whenever color would compete.</p></div>
+        </div>
+      </div>
+      <div class="card dont reveal">
+        <span class="eyebrow" style="display:block;margin-bottom:20px">Don't</span>
+        <div class="dos">
+          <div class="do-item"><span class="do-mark">✕</span><p><strong>Don't stretch, skew,</strong> or add drop shadows and outlines.</p></div>
+          <div class="do-item"><span class="do-mark">✕</span><p><strong>Don't recolor</strong> the wordmark in anything outside the palette.</p></div>
+          <div class="do-item"><span class="do-mark">✕</span><p><strong>Don't swap the font</strong> — the serif is doing the identity work.</p></div>
+          <div class="do-item"><span class="do-mark">✕</span><p><strong>Don't crowd it</strong> against photos or busy edges without a panel behind it.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== COLOR ===================== -->
+<section class="section" id="color">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">03 — Palette</span>
+      <h2>Color</h2>
+      <p>A warm-neutral base does 90% of the work; clay is the single voice of emphasis. Click any swatch to copy its hex.</p>
+    </div>
+
+    <div class="swatches reveal">
+      <div class="swatch" data-copy="#262019">
+        <div class="chip" style="background:#262019"><span>Ink</span></div>
+        <div class="meta"><div class="nm">Ink</div><div class="hx">#262019</div><div class="role">Body text, headlines, the dark ground.</div></div>
+      </div>
+      <div class="swatch" data-copy="#F7F2EA">
+        <div class="chip" style="background:#F7F2EA;border-bottom:1px solid var(--line)"><span style="background:rgba(38,32,25,.5)">Cream</span></div>
+        <div class="meta"><div class="nm">Cream</div><div class="hx">#F7F2EA</div><div class="role">The default page background. Warmth starts here.</div></div>
+      </div>
+      <div class="swatch" data-copy="#E7DECF">
+        <div class="chip" style="background:#E7DECF"><span style="background:rgba(38,32,25,.45)">Sand</span></div>
+        <div class="meta"><div class="nm">Sand</div><div class="hx">#E7DECF</div><div class="role">Blocked panels, pull-quote fields, cards.</div></div>
+      </div>
+      <div class="swatch" data-copy="#B4694E">
+        <div class="chip" style="background:#B4694E"><span>Clay</span></div>
+        <div class="meta"><div class="nm">Clay</div><div class="hx">#B4694E</div><div class="role">The accent. Buttons, marks, single emphasis.</div></div>
+      </div>
+      <div class="swatch" data-copy="#9A5238">
+        <div class="chip" style="background:#9A5238"><span>Deep Clay</span></div>
+        <div class="meta"><div class="nm">Deep Clay</div><div class="hx">#9A5238</div><div class="role">Hover states and clay text on light grounds.</div></div>
+      </div>
+      <div class="swatch" data-copy="#A2937E">
+        <div class="chip" style="background:#A2937E"><span>Stone</span></div>
+        <div class="meta"><div class="nm">Stone</div><div class="hx">#A2937E</div><div class="role">Captions, eyebrows, quiet dividers.</div></div>
+      </div>
+    </div>
+    <p class="copyhint reveal">↑ Click a swatch to copy · works in light &amp; dark</p>
+
+    <div class="ratios reveal">
+      <div style="background:#F7F2EA;color:#262019;flex:62">Cream 60%</div>
+      <div style="background:#E7DECF;color:#262019;flex:22">Sand 25%</div>
+      <div style="background:#262019;color:#F7F2EA;flex:10">Ink 10%</div>
+      <div style="background:#B4694E;color:#fff;flex:6">Clay 5%</div>
+    </div>
+    <p class="ratio-note reveal">Rough usage ratio. Clay earns its power by being rare — treat it as punctuation, never wallpaper.</p>
+  </div>
+</section>
+
+<!-- ===================== TYPE ===================== -->
+<section class="section" id="type">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">04 — Typography</span>
+      <h2>Type system</h2>
+      <p>Two families, clear jobs. A characterful serif for voice, a quiet geometric sans for everything you actually read and click.</p>
+    </div>
+
+    <div class="grid g2" style="margin-bottom:24px">
+      <div class="type-specimen reveal">
+        <div class="big">Aa <em>Bb</em></div>
+        <div class="glyphs">Fraunces · ABCDEFG abcdefg 0123456789 &amp; ?</div>
+        <div class="type-meta">
+          <div><b>Fraunces</b>Display serif</div>
+          <div><b>400 / 500 / 600</b>Roman &amp; italic</div>
+          <div><b>Headlines, numbers, quotes</b>The brand's personality</div>
+        </div>
+      </div>
+      <div class="type-specimen reveal">
+        <div class="big" style="font-family:var(--sans);font-weight:500">Aa Bb</div>
+        <div class="glyphs" style="font-family:var(--sans)">Montserrat · ABCDEFG abcdefg 0123456789 &amp; ?</div>
+        <div class="type-meta">
+          <div><b style="font-family:var(--sans)">Montserrat</b>Geometric sans</div>
+          <div><b style="font-family:var(--sans)">300 / 400 / 600</b>Light to semibold</div>
+          <div><b style="font-family:var(--sans)">Body, eyebrows, buttons</b>Calm &amp; legible</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card reveal" style="margin-bottom:24px">
+      <span class="eyebrow" style="display:block;margin-bottom:24px">The scale</span>
+      <div class="scale-row"><span class="lab">Display</span><span class="spec">64 / 0.98</span><span class="demo">Teaching kids about consent</span></div>
+      <div class="scale-row"><span class="lab">H2 · Section</span><span class="spec">40 / 1.08</span><span class="demo">Guiding principles</span></div>
+      <div class="scale-row"><span class="lab">H3 · Subhead</span><span class="spec">24 / 1.2</span><span class="demo">When to start the conversation</span></div>
+      <div class="scale-row sans"><span class="lab">Eyebrow</span><span class="spec">12 · .28em</span><span class="demo" style="text-transform:uppercase;letter-spacing:.28em;font-weight:600;color:var(--clay-deep)">Before you begin</span></div>
+      <div class="scale-row sans"><span class="lab">Body</span><span class="spec">16 / 1.68</span><span class="demo" style="font-weight:400;white-space:normal">Warm, unhurried paragraphs with room to breathe.</span></div>
+      <div class="scale-row sans"><span class="lab">Caption</span><span class="spec">13 / 1.5</span><span class="demo" style="font-weight:400;color:var(--ink-3)">Small print, sources, and gentle asides.</span></div>
+    </div>
+
+    <div class="pairing-note reveal">
+      <h4>The signature move: <em>italic + roman</em></h4>
+      <p>The reference guide gets its editorial feel from mixing Fraunces italic with roman inside one headline — <em>“Teaching Kids</em> about Sex.” Use it on covers and section openers to add lift. Italicize the emotional word, set the rest roman. One mix per headline; never a whole paragraph.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== VOICE ===================== -->
+<section class="section" id="voice">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">05 — Voice &amp; tone</span>
+      <h2>How it sounds</h2>
+      <p>The words carry as much of the brand as the type. Faith-friendly means values-forward and welcoming — warmth first, scripture optional and never assumed.</p>
+    </div>
+
+    <div class="voice-grid reveal">
+      <div class="voice-card"><div class="k">Steady</div><div class="v">Calm and unhurried. <b>Short, sure sentences.</b> Never anxious or alarmist, even on hard topics.</div></div>
+      <div class="voice-card"><div class="k">Plain-spoken</div><div class="v">Everyday words over jargon. <b>Say “talk,” not “facilitate a dialogue.”</b> Clarity is kindness.</div></div>
+      <div class="voice-card"><div class="k">Shame-free</div><div class="v">Curiosity and questions are normal. <b>We name feelings without judging them.</b></div></div>
+      <div class="voice-card"><div class="k">On their side</div><div class="v">Cheering the reader on. <b>“You know your people best.”</b> Invitational, never prescriptive.</div></div>
+    </div>
+
+    <div class="dd-grid reveal">
+      <div class="dd say">
+        <h4>Say this</h4>
+        <ul>
+          <li>Let's slow down and take this one step at a time.</li>
+          <li>There's no perfect script — you're already doing the brave thing.</li>
+          <li>You know your family better than anyone.</li>
+          <li>This is normal, and you're not behind.</li>
+        </ul>
+      </div>
+      <div class="dd avoid">
+        <h4>Not this</h4>
+        <ul>
+          <li>Failure to address this will damage your child.</li>
+          <li>Experts agree you must follow these seven steps.</li>
+          <li>Utilize evidence-based modalities to facilitate outcomes.</li>
+          <li>If you were a good parent, you'd already know this.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="samples reveal">
+      <div class="sample-tabs">
+        <button class="sample-tab active" data-panel="ind">Individuals</button>
+        <button class="sample-tab" data-panel="cpl">Couples</button>
+        <button class="sample-tab" data-panel="par">Parents</button>
+      </div>
+      <div class="sample-body">
+        <div class="sample-panel active" id="ind">
+          <span class="eyebrow">A note before you begin</span>
+          <div class="headline"><em>You don't</em> have to have it all figured out.</div>
+          <p>This playbook isn't a test. It's a quiet place to notice what you're carrying and set some of it down. Go at your own pace — skip what doesn't fit, sit longer where it does. We'll take it one honest page at a time.</p>
+        </div>
+        <div class="sample-panel" id="cpl">
+          <span class="eyebrow">For the two of you</span>
+          <div class="headline">The goal isn't <em>winning.</em> It's understanding.</div>
+          <p>You're on the same team, even when it doesn't feel like it. These pages give you a shared language and a few gentle prompts — so the hard conversations have somewhere safe to land. Read them together, out loud if you can.</p>
+        </div>
+        <div class="sample-panel" id="par">
+          <span class="eyebrow">A little reminder for parents</span>
+          <div class="headline">You know your child <em>better than anyone.</em></div>
+          <p>Every child is different, and you get to decide what yours is ready for. This guide hands you the words and the timing — you bring the relationship. Trust yourself. We're cheering you on.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== COMPONENTS ===================== -->
+<section class="section" id="components">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">06 — Layout kit</span>
+      <h2>Signature components</h2>
+      <p>The repeatable moves that make a page look like it belongs to this brand. Copy these patterns into every playbook.</p>
+    </div>
+
+    <div class="grid" style="gap:28px">
+      <!-- opener -->
+      <div class="demo reveal">
+        <div class="demo-label"><span>Section opener</span><span>eyebrow + serif headline</span></div>
+        <div class="demo-body op">
+          <span class="eyebrow">Before you get started</span>
+          <h3><em>Introduction</em></h3>
+        </div>
+      </div>
+
+      <div class="grid g2" style="gap:28px">
+        <!-- cream panel -->
+        <div class="demo reveal">
+          <div class="demo-label"><span>Blocked panel</span><span>sand field</span></div>
+          <div class="demo-body" style="padding:28px">
+            <div class="creampanel">
+              <span class="eyebrow">A little reminder</span>
+              <h4>for parents</h4>
+              <p>While these guidelines help, remember that each child is unique. You know them better than anyone.</p>
+            </div>
+          </div>
+        </div>
+        <!-- pull quote -->
+        <div class="demo reveal">
+          <div class="demo-label"><span>Pull quote</span><span>full-serif statement</span></div>
+          <div class="demo-body" style="display:grid;align-items:center">
+            <blockquote class="pullquote"><span class="mk">“</span>You know your child better than anyone.</blockquote>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid g2" style="gap:28px">
+        <!-- two column -->
+        <div class="demo reveal">
+          <div class="demo-label"><span>Two-column body</span><span>justified</span></div>
+          <div class="demo-body">
+            <p class="twocol">It is vital that children develop a <strong>sense of safety</strong> around bodies, consent, and boundaries. Because beliefs are so personal, this guide focuses on the <strong>must-haves</strong> — the things every family benefits from naming out loud, in their own words, at their own pace.</p>
+          </div>
+        </div>
+        <!-- toc -->
+        <div class="demo reveal">
+          <div class="demo-label"><span>Contents index</span><span>serif numerals</span></div>
+          <div class="demo-body" style="padding:28px 44px">
+            <div class="toc-item"><span class="toc-num">06</span><div class="toc-t"><div class="t">Family values</div><div class="d">Naming what matters most</div></div></div>
+            <div class="toc-item"><span class="toc-num">11</span><div class="toc-t"><div class="t">Guiding principles</div><div class="d">Rules to help the talks go well</div></div></div>
+            <div class="toc-item"><span class="toc-num">18</span><div class="toc-t"><div class="t">Starting points</div><div class="d">How and where to begin</div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- buttons -->
+      <div class="demo reveal">
+        <div class="demo-label"><span>Buttons &amp; calls to action</span><span>pill · clay + ink</span></div>
+        <div class="demo-body">
+          <div class="btns">
+            <a class="btn btn-primary" href="#components" onclick="return false">Download the guide</a>
+            <a class="btn btn-ghost" href="#components" onclick="return false">Read a sample</a>
+            <a class="btn btn-text" href="#components" onclick="return false">Learn more</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- page footer -->
+      <div class="demo reveal">
+        <div class="demo-label"><span>Page footer</span><span>running foot + serif page number</span></div>
+        <div class="pagefoot">
+          <span class="brandline js-brand-foot">Your Practice · Counseling &amp; Care</span>
+          <span class="pgno">18</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PHOTO ===================== -->
+<section class="section" id="photo">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">07 — Imagery</span>
+      <h2>Photography direction</h2>
+      <p>Photos should feel like the palette: soft natural light, warm neutrals, real and unposed. When in doubt, choose calm over dramatic.</p>
+    </div>
+
+    <div class="photo-do reveal">
+      <div class="photo-swatch">
+        <div class="band" style="background:linear-gradient(135deg,#EAE1D2,#D3C4AC)"><span>Soft, diffused daylight</span></div>
+        <div class="cap"><strong>Do:</strong> window light, airy rooms, breathing space around the subject.</div>
+      </div>
+      <div class="photo-swatch">
+        <div class="band" style="background:linear-gradient(135deg,#C8B79E,#9A7E5C)"><span>Warm, muted tones</span></div>
+        <div class="cap"><strong>Do:</strong> earthy wardrobe, neutral backdrops, gentle contrast — nothing neon.</div>
+      </div>
+      <div class="photo-swatch">
+        <div class="band" style="background:linear-gradient(135deg,#B4694E,#7d3f2c)"><span>Real, candid moments</span></div>
+        <div class="cap"><strong>Do:</strong> genuine connection and quiet expressions over stiff, staged smiles.</div>
+      </div>
+      <div class="photo-swatch">
+        <div class="band" style="background:linear-gradient(135deg,#3a3a3a,#111)"><span>Avoid: harsh &amp; clinical</span></div>
+        <div class="cap"><strong>Don't:</strong> cold blue tones, hard flash, stocky corporate posing, busy backgrounds.</div>
+      </div>
+    </div>
+
+    <p class="ratio-note reveal" style="margin-top:28px">Mood words to search &amp; brief with:</p>
+    <div class="moodwords reveal">
+      <span class="moodword">quiet</span><span class="moodword">grounded</span><span class="moodword">natural light</span>
+      <span class="moodword">warm neutral</span><span class="moodword">unhurried</span><span class="moodword">tender</span>
+      <span class="moodword">honest</span><span class="moodword">safe</span><span class="moodword">everyday</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== STARTER KIT ===================== -->
+<section class="section" id="starter">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">08 — Starter kit</span>
+      <h2>Use it anywhere</h2>
+      <p>Drop these tokens into any new playbook, worksheet, or web page and you're on-brand from the first line. Copy and go.</p>
+    </div>
+
+    <div class="grid g2" style="align-items:start">
+      <div class="code reveal">
+        <div class="code-top"><span class="fn">brand-tokens.css</span><button class="code-copy" id="copyCss">Copy</button></div>
+        <pre id="cssBlock"><span class="c">/* ── Warm &amp; grounded · core tokens ── */</span>
+<span class="p">:root</span> {
+  <span class="c">/* neutrals */</span>
+  <span class="p">--ink</span>:        <span class="v">#262019</span>;
+  <span class="p">--cream</span>:      <span class="v">#F7F2EA</span>;
+  <span class="p">--sand</span>:       <span class="v">#E7DECF</span>;
+  <span class="p">--stone</span>:      <span class="v">#A2937E</span>;
+  <span class="c">/* accent */</span>
+  <span class="p">--clay</span>:       <span class="v">#B4694E</span>;
+  <span class="p">--clay-deep</span>:  <span class="v">#9A5238</span>;
+  <span class="c">/* type */</span>
+  <span class="p">--serif</span>: <span class="v">"Fraunces", Georgia, serif</span>;
+  <span class="p">--sans</span>:  <span class="v">"Montserrat", system-ui, sans-serif</span>;
+}</pre>
+      </div>
+
+      <div class="reveal">
+        <div class="card" style="margin-bottom:24px">
+          <span class="eyebrow" style="display:block;margin-bottom:16px">Free fonts</span>
+          <p style="color:var(--ink-2);font-size:.95rem;margin-bottom:16px">Both families are free on Google Fonts. Paste this in your document head:</p>
+          <div class="code" style="box-shadow:none">
+            <div class="code-top"><span class="fn">&lt;head&gt;</span><button class="code-copy" id="copyFont">Copy</button></div>
+            <pre id="fontBlock" style="font-size:.72rem"><span class="v">&lt;link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..600&amp;family=Montserrat:wght@300;400;600&amp;display=swap" rel="stylesheet"&gt;</span></pre>
+          </div>
+        </div>
+
+        <div class="card">
+          <span class="eyebrow" style="display:block;margin-bottom:16px">Applying it to a new playbook</span>
+          <ol class="checklist">
+            <li><b>Open on a cover</b> — eyebrow, italic/roman serif headline, tracked-caps subtitle.</li>
+            <li><b>One accent per page.</b> Reach for clay only where the eye must land.</li>
+            <li><b>Block it in sand</b> for reminders, quotes, and asides.</li>
+            <li><b>Close every page</b> with the running foot + serif page number.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="foot">
+  <div class="wrap">
+    <div class="fmark js-brand-mark">Your&nbsp;Practice<span>.</span></div>
+    <h3>Made to feel like a steady hand.</h3>
+    <p>This is a living document — update it as the practice grows. Every playbook that follows these pages will feel like it came from the same, trustworthy place.</p>
+  </div>
+</footer>
+
+<div class="toast" id="toast">Copied <b id="toastVal"></b></div>
+
+<script>
+(function(){
+  /* ---------- Theme toggle ---------- */
+  var root=document.documentElement, btn=document.getElementById('themeBtn');
+  function apply(t){root.setAttribute('data-theme',t);btn.textContent=(t==='dark'?'☀':'☾');}
+  var saved=null;try{saved=localStorage.getItem('bfg-theme');}catch(e){}
+  if(saved){apply(saved);}
+  else{apply(window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');}
+  btn.addEventListener('click',function(){
+    var t=root.getAttribute('data-theme')==='dark'?'light':'dark';
+    apply(t);try{localStorage.setItem('bfg-theme',t);}catch(e){}
+  });
+
+  /* ---------- Toast ---------- */
+  var toast=document.getElementById('toast'), toastVal=document.getElementById('toastVal'), tmr;
+  function ping(v){toastVal.textContent=v;toast.classList.add('show');clearTimeout(tmr);tmr=setTimeout(function(){toast.classList.remove('show');},1600);}
+  function copy(txt,label){
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(function(){ping(label||txt);});}
+    else{var ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');ping(label||txt);}catch(e){}document.body.removeChild(ta);}
+  }
+
+  /* ---------- Swatch copy ---------- */
+  document.querySelectorAll('.swatch').forEach(function(s){
+    s.addEventListener('click',function(){copy(s.getAttribute('data-copy'));});
+  });
+
+  /* ---------- Code copy ---------- */
+  function bindCode(btnId,preId,label){
+    var b=document.getElementById(btnId);if(!b)return;
+    b.addEventListener('click',function(){copy(document.getElementById(preId).innerText,label);b.textContent='Copied ✓';setTimeout(function(){b.textContent='Copy';},1500);});
+  }
+  bindCode('copyCss','cssBlock','CSS tokens');
+  bindCode('copyFont','fontBlock','Font link');
+
+  /* ---------- Live wordmark ---------- */
+  var input=document.getElementById('brandInput');
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+  function initials(name){
+    var parts=name.trim().split(/\s+/).filter(Boolean);
+    if(!parts.length)return '—';
+    if(parts.length===1)return parts[0].slice(0,2).toUpperCase();
+    return (parts[0][0]+parts[parts.length-1][0]).toUpperCase();
+  }
+  function updateName(){
+    var name=input.value.trim()||'Your Practice';
+    document.querySelectorAll('.js-brand-wm,.js-brand-italic,.js-brand-foot').forEach(function(el){
+      if(el.classList.contains('js-brand-foot')){el.innerHTML=esc(name)+' · Counseling &amp; Care';}
+      else{el.textContent=name;}
+    });
+    document.querySelectorAll('.js-brand-mark').forEach(function(el){
+      el.innerHTML=esc(name).replace(/ /g,'&nbsp;')+'<span>.</span>';
+    });
+    document.querySelectorAll('.js-mono').forEach(function(el){el.textContent=initials(name);});
+  }
+  input.addEventListener('input',updateName);
+  updateName();
+
+  /* ---------- Scrollspy ---------- */
+  var links=Array.prototype.slice.call(document.querySelectorAll('.nav-links a'));
+  var secs=links.map(function(l){return document.querySelector(l.getAttribute('href'));});
+  var spy=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        var id='#'+e.target.id;
+        links.forEach(function(l){l.classList.toggle('active',l.getAttribute('href')===id);});
+      }
+    });
+  },{rootMargin:'-45% 0px -50% 0px'});
+  secs.forEach(function(s){if(s)spy.observe(s);});
+
+  /* ---------- Sample tabs ---------- */
+  document.querySelectorAll('.sample-tab').forEach(function(t){
+    t.addEventListener('click',function(){
+      document.querySelectorAll('.sample-tab').forEach(function(x){x.classList.remove('active');});
+      document.querySelectorAll('.sample-panel').forEach(function(x){x.classList.remove('active');});
+      t.classList.add('active');
+      document.getElementById(t.getAttribute('data-panel')).classList.add('active');
+    });
+  });
+
+  /* ---------- Reveal on scroll ---------- */
+  var rev=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');rev.unobserve(e.target);}});
+  },{rootMargin:'0px 0px -8% 0px',threshold:.05});
+  document.querySelectorAll('.reveal').forEach(function(el){rev.observe(el);});
+})();
+</script>
+</body>
+</html>

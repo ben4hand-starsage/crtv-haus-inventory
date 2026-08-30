@@ -1,0 +1,404 @@
+/* ============================================================
+   Aaron Delay Counseling — site styles
+   Built on the Brand Field Guide v1.0 tokens.
+   Display: Fraunces  ·  Text: Montserrat  ·  Accent: Clay
+   ============================================================ */
+
+/* ---------- TOKENS (light is the complete palette) ---------- */
+:root{
+  --ink:#262019;
+  --ink-2:#574c40;
+  --ink-3:#8a7d6b;
+  --bg:#F7F2EA;
+  --surface:#FDFBF6;
+  --sand:#E7DECF;
+  --sand-2:#DBCFB4;
+  --clay:#B4694E;
+  --clay-deep:#9A5238;
+  --stone:#A2937E;
+  --line:rgba(38,32,25,.14);
+  --line-2:rgba(38,32,25,.30);
+  --shadow:0 24px 60px -32px rgba(38,32,25,.40);
+  --shadow-sm:0 10px 30px -20px rgba(38,32,25,.55);
+
+  --serif:"Fraunces",Georgia,"Times New Roman",serif;
+  --sans:"Montserrat",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --maxw:1080px;
+  --narrow:680px;
+}
+
+/* ---------- RESET / BASE ---------- */
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:88px;-webkit-font-smoothing:antialiased}
+body{
+  font-family:var(--sans);
+  color:var(--ink);
+  background:var(--bg);
+  line-height:1.68;
+  font-weight:400;
+  font-size:16px;
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  html{scroll-behavior:auto}
+}
+img{max-width:100%;display:block}
+a{color:inherit}
+h1,h2,h3,h4{font-family:var(--serif);font-weight:500;line-height:1.08;letter-spacing:-.01em;text-wrap:balance;color:var(--ink)}
+
+/* ---------- TYPE HELPERS ---------- */
+.eyebrow{
+  font-family:var(--sans);font-weight:600;font-size:.72rem;
+  letter-spacing:.28em;text-transform:uppercase;color:var(--clay-deep);
+}
+.serif{font-family:var(--serif)}
+em{font-style:italic}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
+.wrap-narrow{max-width:var(--narrow);margin:0 auto;padding:0 28px}
+.section{padding:100px 0;border-top:1px solid var(--line)}
+.section:first-of-type{border-top:0}
+.sec-head{max-width:640px;margin-bottom:48px}
+.sec-head .eyebrow{display:block;margin-bottom:18px}
+.sec-head h2{font-size:clamp(2.1rem,5.2vw,3.4rem)}
+.sec-head p{margin-top:20px;color:var(--ink-2);font-size:1.05rem;max-width:56ch}
+.lede{color:var(--ink-2);font-size:1.12rem;line-height:1.72;max-width:56ch}
+
+/* ---------- NAV ---------- */
+.nav{
+  position:sticky;top:0;z-index:60;
+  background:rgba(247,242,234,.86);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line);
+}
+.nav-in{max-width:var(--maxw);margin:0 auto;padding:14px 28px;display:flex;align-items:center;gap:24px}
+.nav-brand{font-family:var(--serif);font-weight:600;font-size:1.1rem;letter-spacing:-.02em;white-space:nowrap;text-decoration:none}
+.nav-brand .wm-word{color:var(--ink-2);font-weight:400}
+.nav-links{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap;align-items:center}
+.nav-links a{
+  text-decoration:none;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;font-weight:500;
+  color:var(--ink-2);padding:8px 12px;border-radius:100px;transition:color .2s,background .2s;
+}
+.nav-links a:hover{color:var(--ink);background:var(--sand)}
+.nav-links a.cta{background:var(--clay);color:#fff;font-weight:600}
+.nav-links a.cta:hover{background:var(--clay-deep);color:#fff}
+@media(max-width:760px){
+  .nav-links a:not(.cta){display:none}
+  .nav-in{padding:12px 20px}
+}
+
+/* ---------- BUTTONS ---------- */
+.btn{
+  font-family:var(--sans);font-weight:600;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;
+  padding:16px 32px;border-radius:100px;text-decoration:none;cursor:pointer;border:1.5px solid transparent;
+  transition:background .2s,color .2s,border-color .2s;display:inline-block;text-align:center;
+}
+.btn-primary{background:var(--clay);color:#fff;border-color:var(--clay)}
+.btn-primary:hover{background:var(--clay-deep);border-color:var(--clay-deep)}
+.btn-ghost{background:transparent;color:var(--ink);border-color:var(--ink)}
+.btn-ghost:hover{background:var(--ink);color:var(--bg)}
+.btn-text{background:transparent;color:var(--clay-deep);border:0;padding:14px 4px;font-weight:600;
+  font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;text-decoration:none}
+.btn-text::after{content:" →"}
+.btns{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+
+/* ---------- OPT-IN FORM ---------- */
+.optin{max-width:520px}
+.optin-row{display:flex;gap:10px;flex-wrap:wrap}
+.optin input[type=email],.optin input[type=text]{
+  flex:1;min-width:220px;border:1px solid var(--line-2);background:var(--surface);
+  border-radius:100px;padding:16px 24px;font-family:var(--sans);font-size:1rem;color:var(--ink);outline:none;
+  transition:border-color .2s;
+}
+.optin input::placeholder{color:var(--ink-3)}
+.optin input:focus{border-color:var(--clay)}
+.optin button{
+  border:0;background:var(--clay);color:#fff;border-radius:100px;padding:16px 32px;cursor:pointer;
+  font-family:var(--sans);font-weight:600;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;
+  transition:background .2s;
+}
+.optin button:hover{background:var(--clay-deep)}
+.optin .fineprint{margin-top:14px;font-size:.8rem;color:var(--ink-3);line-height:1.55}
+.form-note{
+  display:none;margin-top:16px;padding:14px 20px;border-radius:6px;
+  background:var(--sand);border:1px solid var(--line);font-size:.9rem;color:var(--ink-2);
+}
+.form-note.show{display:block}
+
+/* ---------- HERO ---------- */
+.hero{position:relative;padding:104px 0 96px;overflow:hidden}
+.hero::before{
+  content:"";position:absolute;inset:0;z-index:0;
+  background:
+    radial-gradient(120% 90% at 85% -10%,var(--sand) 0%,transparent 55%),
+    radial-gradient(90% 80% at -10% 110%,var(--sand) 0%,transparent 50%);
+  opacity:.75;
+}
+.hero-in{position:relative;z-index:1}
+.hero .kicker{display:inline-block;padding:9px 18px;background:var(--sand);border-radius:100px;margin-bottom:30px}
+.hero h1{font-size:clamp(2.6rem,7.4vw,5.2rem);line-height:1;font-weight:400;letter-spacing:-.025em;max-width:17ch}
+.hero h1 em{font-style:italic;font-weight:500}
+.hero .lede{margin-top:28px}
+.hero .optin{margin-top:36px}
+.hero-split{display:grid;grid-template-columns:1.25fr .85fr;gap:56px;align-items:center}
+@media(max-width:900px){.hero-split{grid-template-columns:1fr;gap:40px}}
+
+/* ---------- CARDS / GRID ---------- */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:32px;box-shadow:var(--shadow-sm)}
+.grid{display:grid;gap:22px}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+@media(max-width:860px){.g2,.g3{grid-template-columns:1fr}}
+
+/* ---------- CREDENTIAL STRIP ---------- */
+.creds{display:flex;gap:36px;flex-wrap:wrap;padding-top:28px;margin-top:44px;border-top:1px solid var(--line)}
+.creds div{min-width:130px}
+.creds dt{font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;color:var(--stone);font-weight:600;margin-bottom:6px}
+.creds dd{font-family:var(--serif);font-size:1.02rem;color:var(--ink);line-height:1.35}
+
+/* ---------- SAND PANEL / PULL QUOTE ---------- */
+.panel{background:var(--sand);border-radius:4px;padding:40px 44px}
+.panel .eyebrow{display:block;margin-bottom:12px}
+.panel h3{font-family:var(--serif);font-style:italic;font-weight:500;font-size:1.7rem;margin-bottom:14px}
+.panel p{color:var(--ink-2);max-width:56ch}
+.pullquote{font-family:var(--serif);font-weight:400;font-size:clamp(1.6rem,4vw,2.6rem);line-height:1.2;letter-spacing:-.01em;max-width:22ch;/* hang the opening mark so line one aligns with the lines beneath it */text-indent:-.4em}
+.pullquote .mk{color:var(--clay)}
+.attrib{margin-top:20px;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--stone);font-weight:600}
+
+/* ---------- NUMBERED LIST ---------- */
+.steps{list-style:none;counter-reset:step;margin-top:6px}
+.steps li{counter-increment:step;padding:18px 0 18px 56px;position:relative;border-bottom:1px solid var(--line);color:var(--ink-2)}
+.steps li:last-child{border-bottom:0}
+.steps li::before{
+  content:counter(step);position:absolute;left:0;top:14px;width:34px;height:34px;border-radius:50%;
+  border:1.5px solid var(--clay);color:var(--clay-deep);font-family:var(--serif);display:grid;place-items:center;font-size:1rem;
+}
+.steps li b{color:var(--ink);font-weight:600;display:block;font-family:var(--serif);font-size:1.08rem;margin-bottom:2px}
+
+/* ---------- PRODUCT ---------- */
+.product{display:grid;grid-template-columns:.9fr 1.1fr;gap:44px;align-items:center}
+@media(max-width:860px){.product{grid-template-columns:1fr;gap:30px}}
+.price{font-family:var(--serif);font-size:2.4rem;color:var(--ink);line-height:1;margin:6px 0 18px}
+.price small{font-size:.85rem;font-family:var(--sans);color:var(--ink-3);letter-spacing:.1em;text-transform:uppercase;margin-left:8px}
+.ticks{list-style:none;margin:20px 0 28px}
+.ticks li{position:relative;padding-left:28px;margin-bottom:11px;color:var(--ink-2);font-size:.97rem}
+.ticks li::before{content:"";position:absolute;left:0;top:.62em;width:9px;height:9px;border-radius:50%;background:var(--clay)}
+
+/* ---------- FAQ ---------- */
+.faq details{border-bottom:1px solid var(--line);padding:20px 0}
+.faq summary{cursor:pointer;font-family:var(--serif);font-size:1.14rem;font-weight:500;list-style:none;display:flex;justify-content:space-between;gap:20px;align-items:center}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";color:var(--clay);font-size:1.5rem;line-height:1;flex-shrink:0}
+.faq details[open] summary::after{content:"–"}
+.faq p{margin-top:14px;color:var(--ink-2);font-size:.98rem;max-width:64ch}
+
+/* ---------- BARE LANDING (no nav, no exits) ---------- */
+.bare{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:56px 0 40px;position:relative;overflow:hidden}
+.bare::before{
+  content:"";position:absolute;inset:0;z-index:0;
+  background:
+    radial-gradient(110% 80% at 88% -8%,var(--sand) 0%,transparent 56%),
+    radial-gradient(90% 70% at -8% 108%,var(--sand) 0%,transparent 52%);
+  opacity:.8;
+}
+.bare-in{position:relative;z-index:1}
+.bare .brandline{font-family:var(--serif);font-weight:600;font-size:1.05rem;letter-spacing:-.02em;margin-bottom:40px;color:var(--ink)}
+.bare .brandline .wm-word{color:var(--ink-2);font-weight:400}
+
+/* ---------- FOOTER ---------- */
+.foot{background:var(--ink);color:var(--bg);padding:70px 0 44px}
+.foot a{color:var(--bg)}
+.foot .fmark{font-family:var(--serif);font-weight:600;font-size:1.25rem;letter-spacing:-.02em;margin-bottom:10px}
+.foot .fmark .wm-word{color:var(--ink-2);font-weight:400}
+.foot p{color:rgba(247,242,234,.62);font-size:.92rem;max-width:52ch}
+.foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:36px;margin-bottom:44px}
+@media(max-width:760px){.foot-grid{grid-template-columns:1fr;gap:28px}}
+.foot h4{color:var(--bg);font-family:var(--sans);font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;font-weight:600;margin-bottom:14px;opacity:.6}
+.foot ul{list-style:none;display:flex;flex-direction:column;gap:9px}
+.foot ul a{text-decoration:none;font-size:.93rem;color:rgba(247,242,234,.8);transition:color .2s}
+.foot ul a:hover{color:var(--clay)}
+.foot-legal{border-top:1px solid rgba(247,242,234,.16);padding-top:24px;font-size:.78rem;color:rgba(247,242,234,.45);line-height:1.6;max-width:76ch}
+.foot-legal a{color:rgba(247,242,234,.7)}
+
+/* ---------- PORTRAIT / ABOUT ---------- */
+.portrait{
+  position:relative;border-radius:4px;overflow:hidden;border:1px solid var(--line);
+  box-shadow:var(--shadow);background:var(--sand);
+}
+.portrait img{width:100%;height:100%;object-fit:cover;display:block}
+.portrait-caption{
+  margin-top:14px;font-size:.78rem;color:var(--stone);letter-spacing:.02em;line-height:1.5;font-style:italic;
+  font-family:var(--serif);
+}
+.about{display:grid;grid-template-columns:.85fr 1.15fr;gap:56px;align-items:center}
+@media(max-width:860px){.about{grid-template-columns:1fr;gap:36px}}
+.signoff{
+  font-family:var(--serif);font-style:italic;font-size:1.35rem;color:var(--ink);margin-top:26px;
+}
+
+/* ---------- MISC ---------- */
+.center{text-align:center}
+.mt-s{margin-top:16px}.mt-m{margin-top:28px}.mt-l{margin-top:44px}
+.disclaimer{font-size:.82rem;color:var(--ink-3);line-height:1.6;max-width:70ch}
+
+/* ============================================================
+   CRO PASS — August 2026
+   Bridge line, product merchandising, compacted church block.
+   Mobile is the primary target here: roughly half of traffic
+   arrives from Instagram on a phone.
+   ============================================================ */
+
+/* ---------- BRIDGE ---------- */
+/* The "kitchen at ten at night" line, lifted out of the approach
+   section so the best sentence on the page sits near the top. */
+.bridge{background:var(--sand);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.bridge p{
+  font-family:var(--serif);font-weight:400;
+  font-size:clamp(1.35rem,3.6vw,2.15rem);line-height:1.28;letter-spacing:-.015em;
+  color:var(--ink);max-width:26ch;margin:0 auto;text-align:center;
+  padding:clamp(38px,7vw,64px) 0;text-wrap:balance;
+}
+.bridge p em{font-style:italic;color:var(--clay-deep)}
+
+/* ---------- CREDENTIAL STRIP ---------- */
+/* The author credit carries the Gary Chapman signal, so it gets
+   room to breathe rather than being squeezed into a 130px column. */
+.creds .cred-wide{flex:1 1 320px;min-width:260px}
+.creds .cred-wide dd em{font-style:italic}
+.creds .cred-wide dd strong{font-weight:600}
+
+/* ---------- PAID PRODUCT CARD ---------- */
+/* Distinguished from the free card so the ladder reads at a glance,
+   without out-shouting the free opt-in, which is still the primary goal. */
+.card-paid{background:var(--sand);border-color:var(--line-2)}
+.card-paid .ticks li{color:var(--ink-2)}
+.card-paid .ticks li::before{background:var(--clay-deep)}
+.learn-label{
+  margin-top:22px;font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;
+  font-weight:600;color:var(--clay-deep);
+}
+.card-paid .ticks{margin-top:12px;margin-bottom:20px}
+.spec{
+  font-size:.78rem;line-height:1.6;color:var(--ink-3);
+  padding-top:16px;margin-bottom:22px;border-top:1px solid var(--line);
+}
+
+/* ---------- COMPACTED CHURCH BLOCK ---------- */
+.section-tight{padding-top:0}
+.churches-bar{
+  display:flex;gap:28px;align-items:center;justify-content:space-between;flex-wrap:wrap;
+  background:var(--surface);border:1px solid var(--line);border-radius:4px;
+  padding:30px 34px;
+}
+.churches-bar > div{flex:1 1 420px;min-width:0}
+.churches-h{
+  font-family:var(--serif);font-weight:500;font-size:clamp(1.3rem,2.6vw,1.75rem);
+  line-height:1.2;letter-spacing:-.01em;margin:10px 0 8px;
+}
+.churches-bar p{color:var(--ink-2);font-size:.94rem;max-width:56ch;margin:0}
+.churches-bar .btn{flex-shrink:0}
+
+/* ---------- MOBILE ---------- */
+@media(max-width:640px){
+  /* The credential strip becomes a stacked list rather than a cramped row. */
+  .creds{gap:20px 28px;margin-top:34px;padding-top:22px}
+  .creds div{min-width:calc(50% - 14px)}
+  .creds .cred-wide{flex:1 1 100%;min-width:100%}
+
+  /* Cards lose the generous desktop padding, which eats the screen. */
+  .card{padding:26px 22px}
+  .card-paid .ticks li{font-size:.94rem;margin-bottom:9px}
+
+  .churches-bar{padding:26px 22px;gap:20px}
+  .churches-bar .btn{width:100%;text-align:center}
+}
+
+/* ---------- MOBILE HERO ---------- */
+/* 104px of top padding is a desktop luxury. On a phone it pushes the
+   headline and the opt-in below the fold, which is the one thing this
+   page exists to avoid. */
+@media(max-width:640px){
+  .hero{padding:40px 0 56px}
+  .hero .lede{margin-top:20px;font-size:1.02rem}
+  .hero .optin{margin-top:26px}
+  .hero-split{gap:32px}
+  .kicker{font-size:.6rem;letter-spacing:.18em}
+  .bridge p{padding:34px 0}
+}
+
+/* ---------- BOOK COVER SHOT ---------- */
+/* The mockup carries its own background and shadow, so it wants a clean
+   frame rather than a card around it. */
+.book-shot,.shot{margin:0}
+.book-shot img,.shot img{
+  display:block;width:100%;height:auto;border-radius:4px;
+  box-shadow:0 30px 70px -40px rgba(38,32,25,.55);
+}
+
+.book-split{display:grid;grid-template-columns:.85fr 1.15fr;gap:56px;align-items:center}
+.book-h{font-family:var(--serif);font-weight:500;font-size:clamp(2rem,5vw,3.2rem);line-height:1.08;letter-spacing:-.02em;margin-top:18px}
+.book-fw{
+  margin-top:18px;padding-top:16px;border-top:1px solid var(--line);
+  font-size:.97rem;color:var(--ink-2);
+}
+.book-fw strong{color:var(--ink);font-weight:600}
+.book-fw em{font-style:italic}
+
+@media(max-width:860px){
+  .book-split{grid-template-columns:1fr;gap:34px}
+  /* The cover would otherwise eat a whole phone screen before the copy. */
+  .book-shot{max-width:280px;margin:0 auto}
+}
+
+/* ---------- WORDMARK ---------- */
+/* "Aaron Delay" leads; "Counseling" sits back a weight so the lockup has
+   hierarchy rather than reading as one long undifferentiated string. */
+.nav-brand,.foot .fmark,.bare .brandline{white-space:nowrap}
+@media(max-width:420px){
+  /* The full lockup plus the CTA is tight on a small phone. */
+  .nav-brand{font-size:.98rem}
+  .nav-in{gap:12px}
+}
+
+/* ---------- COUNSELING / COACHING PATHS ---------- */
+.path-card{display:flex;flex-direction:column}
+.path-h{font-family:var(--serif);font-weight:500;font-size:clamp(1.7rem,3.4vw,2.3rem);line-height:1.1;letter-spacing:-.02em;margin:12px 0 14px}
+.path-lede{color:var(--ink-2);font-size:1rem;line-height:1.65}
+.path-note{
+  margin-top:auto;padding-top:18px;border-top:1px solid var(--line);
+  font-size:.92rem;line-height:1.6;color:var(--ink-2);margin-bottom:22px;
+}
+.path-note strong{color:var(--ink);font-weight:600}
+.path-card .ticks{margin:20px 0 22px}
+
+/* ---------- ENQUIRY FORM ---------- */
+.enquiry{margin-top:34px}
+.field{display:flex;flex-direction:column;margin-bottom:20px}
+.field label{
+  font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;font-weight:600;
+  color:var(--ink-2);margin-bottom:9px;
+}
+.field label .opt{
+  text-transform:none;letter-spacing:0;font-weight:400;color:var(--stone);
+  font-size:.82rem;margin-left:8px;
+}
+.field input,.field textarea{
+  font-family:var(--sans);font-size:1rem;color:var(--ink);
+  background:var(--surface);border:1px solid var(--line-2);border-radius:4px;
+  padding:14px 16px;width:100%;
+}
+.field textarea{resize:vertical;min-height:150px;line-height:1.6}
+.field input:focus,.field textarea:focus{
+  outline:2px solid var(--clay);outline-offset:1px;border-color:var(--clay);
+}
+.enquiry .fineprint{margin-top:18px}
+
+@media(max-width:640px){
+  .field input,.field textarea{font-size:16px} /* stops iOS zooming on focus */
+}
+
+/* ---------- PRODUCT MOCKUP ---------- */
+/* On a phone the mockup stacks under the copy, where a full-width image
+   would push everything else off the screen for no gain. */
+@media(max-width:860px){
+  .shot{max-width:330px;margin:0 auto}
+}

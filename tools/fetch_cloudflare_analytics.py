@@ -24,7 +24,10 @@ import urllib.request
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ENV = os.path.join(ROOT, ".env")
-OUT = os.path.join(ROOT, "DELAY", "site", "siteanalytics", "data.json")
+# The snapshot is generated, not authored, so it lives only in the deploy repo
+# - the same file the Actions workflow writes. Keeping a copy in DELAY/site
+# would be a second source of truth that sync_site.sh deliberately excludes.
+OUT = "/Users/benjaminforehand/Desktop/aarondelaycounseling-site/siteanalytics/data.json"
 
 ACCOUNT_TAG = "9452bc58f548c7b6593d7fd4945f2971"
 SITE_TAG = "99a9f55959984d91b395f573fabb3fe6"

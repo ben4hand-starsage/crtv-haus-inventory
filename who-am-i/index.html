@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Who Am I? — A Personal Reflection Using the RESPECTFUL Model</title>
+<meta name="author" content="Ben Forehand">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ---------- tokens ---------- */
+:root{
+  --bg:#EFE9DF;
+  --paper:#FBF8F2;
+  --ink:#232019;
+  --ink-2:#4B463D;
+  --ink-3:#7A7266;
+  --rule:#E1D8C9;
+  --rule-2:#EDE6D9;
+
+  --forest:#2E4739;
+  --brown:#8A563A;
+  --navy:#33475B;
+  --sage:#5E7460;
+
+  --accent:var(--forest);
+  --accent-tint:rgba(46,71,57,.075);
+
+  --serif:"Source Serif 4","Iowan Old Style",Georgia,"Times New Roman",serif;
+  --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  background:var(--bg);
+  font-family:var(--sans);
+  color:var(--ink);
+  overflow:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ---------- stage / scaling ---------- */
+#viewport{position:fixed;inset:0;overflow:hidden}
+#stage{
+  position:absolute;top:50%;left:50%;width:1280px;height:720px;
+  transform-origin:center center;
+  will-change:transform;
+}
+.slide{
+  position:absolute;inset:0;
+  background:var(--paper);
+  border-radius:3px;
+  box-shadow:0 18px 50px -18px rgba(35,32,25,.34), 0 1px 0 rgba(255,255,255,.7) inset;
+  overflow:hidden;
+  opacity:0;visibility:hidden;
+  transition:opacity .28s ease;
+}
+.slide.active{opacity:1;visibility:visible}
+.inner{position:relative;height:100%;display:flex;flex-direction:column;padding:52px 74px 40px}
+
+/* soft paper texture + accent hairline */
+.slide::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:5px;
+  background:var(--accent);opacity:.9;
+}
+.slide::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(120% 90% at 88% 6%, rgba(46,71,57,.045), transparent 58%);
+}
+
+/* entry motion (very subtle) */
+.slide.active .anim{animation:rise .42s cubic-bezier(.22,.7,.3,1) both}
+.slide.active .anim:nth-child(2){animation-delay:.05s}
+.slide.active .anim:nth-child(3){animation-delay:.09s}
+.slide.active .anim:nth-child(4){animation-delay:.13s}
+@keyframes rise{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.slide.active .anim{animation:none}}
+
+/* ---------- accents ---------- */
+.a-forest{--accent:var(--forest);--accent-tint:rgba(46,71,57,.075)}
+.a-brown{--accent:var(--brown);--accent-tint:rgba(138,86,58,.075)}
+.a-navy{--accent:var(--navy);--accent-tint:rgba(51,71,91,.075)}
+.a-sage{--accent:var(--sage);--accent-tint:rgba(94,116,96,.085)}
+
+/* ---------- shared type ---------- */
+.eyebrow{
+  font-family:var(--sans);font-size:10.5px;font-weight:600;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--accent);
+}
+h2{
+  font-family:var(--serif);font-weight:600;font-size:29px;
+  letter-spacing:.055em;text-transform:uppercase;color:var(--ink);
+  margin-top:7px;line-height:1.12;
+}
+.lede{
+  font-family:var(--serif);font-style:italic;font-size:19.5px;
+  color:var(--ink-2);margin-top:11px;line-height:1.4;max-width:74ch;
+}
+
+/* ---------- letter head ---------- */
+.head{display:flex;gap:30px;align-items:flex-start}
+.glyph{
+  font-family:var(--serif);font-weight:700;font-size:104px;line-height:.86;
+  color:var(--accent);flex:none;
+  display:grid;place-items:center;
+  width:132px;height:132px;
+}
+/* variant 1 — filled block */
+.hv1 .glyph{background:var(--accent);color:var(--paper);border-radius:4px;font-size:88px}
+/* variant 2 — outlined block */
+.hv2 .glyph{border:2px solid var(--accent);border-radius:4px;font-size:88px}
+/* variant 3 — bare letter with rule */
+.hv3 .glyph{width:112px;height:auto;padding-bottom:12px;border-bottom:3px solid var(--accent);justify-self:start}
+.head-txt{padding-top:4px}
+
+/* ---------- bullets ---------- */
+.points{list-style:none;margin-top:26px;display:flex;flex-direction:column;gap:13px}
+.points li{
+  position:relative;padding-left:24px;
+  font-size:16px;line-height:1.5;color:var(--ink-2);max-width:104ch;
+}
+.points li::before{
+  content:"";position:absolute;left:0;top:9px;
+  width:9px;height:2px;background:var(--accent);opacity:.85;
+}
+.dense .points{gap:10px}
+.dense .points li{font-size:15.2px;line-height:1.46}
+
+/* ---------- callout ---------- */
+.callout{margin-top:auto;padding-top:22px}
+.c-label{
+  font-family:var(--sans);font-size:10px;font-weight:600;letter-spacing:.17em;
+  text-transform:uppercase;color:var(--accent);display:block;margin-bottom:7px;
+}
+.c-text{font-family:var(--serif);font-weight:600;font-size:20px;line-height:1.34;color:var(--ink)}
+/* variant 1 — left bar + tint */
+.cv1 .callout-box{background:var(--accent-tint);border-left:3px solid var(--accent);padding:17px 22px;border-radius:0 3px 3px 0}
+/* variant 2 — tinted band */
+.cv2 .callout-box{background:var(--accent-tint);padding:18px 24px;border-radius:3px;text-align:center}
+.cv2 .c-label{text-align:center}
+/* variant 3 — hairlines */
+.cv3 .callout-box{border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:16px 0}
+.callout-box.split{display:flex;align-items:center;gap:26px}
+.callout-box.split .c-text{flex:1}
+
+/* ---------- footer ---------- */
+.foot{
+  margin-top:20px;padding-top:13px;border-top:1px solid var(--rule-2);
+  display:flex;align-items:flex-end;justify-content:space-between;gap:26px;
+}
+.track{display:flex;gap:5px}
+.track span{
+  font-family:var(--serif);font-size:11px;font-weight:600;letter-spacing:.04em;
+  width:17px;height:17px;display:grid;place-items:center;border-radius:2px;
+  color:var(--ink-3);background:rgba(0,0,0,.035);
+}
+.track span.on{background:var(--accent);color:var(--paper)}
+.cite{
+  font-size:10.5px;line-height:1.5;color:var(--ink-3);text-align:right;
+  font-style:italic;max-width:56ch;
+}
+
+/* ---------- slide 1 ---------- */
+.title-slide .inner{padding:0}
+.title-grid{display:grid;grid-template-columns:1fr 236px;height:100%}
+.title-main{padding:78px 0 56px 74px;display:flex;flex-direction:column;justify-content:center}
+.title-kicker{font-size:11px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--forest)}
+h1{
+  font-family:var(--serif);font-weight:700;font-size:82px;line-height:.98;
+  letter-spacing:.005em;color:var(--ink);margin-top:20px;
+}
+.title-sub{
+  font-family:var(--serif);font-style:italic;font-size:24px;color:var(--ink-2);
+  margin-top:20px;max-width:30ch;line-height:1.34;
+}
+.title-rule{width:82px;height:3px;background:var(--forest);margin:34px 0 28px}
+.meta{font-size:14.5px;line-height:1.85;color:var(--ink-2)}
+.meta .name{font-family:var(--serif);font-size:19px;font-weight:600;color:var(--ink);display:block;margin-bottom:5px}
+.meta .field{color:var(--ink-3)}
+.title-rail{
+  background:rgba(46,71,57,.055);border-left:1px solid var(--rule);
+  display:flex;flex-direction:column;justify-content:center;gap:2px;padding:0 30px;
+}
+.title-rail div{display:flex;align-items:baseline;gap:13px}
+.title-rail b{
+  font-family:var(--serif);font-size:26px;font-weight:700;color:var(--forest);
+  width:20px;opacity:.92;
+}
+.title-rail i{font-style:normal;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+
+/* ---------- slide 12 split ---------- */
+.split-body{display:grid;grid-template-columns:1.08fr .92fr;gap:44px;margin-top:26px;align-items:stretch;flex:1}
+.shift{
+  border-left:1px solid var(--rule);padding-left:34px;
+  display:flex;flex-direction:column;justify-content:center;
+}
+.shift-card{background:var(--accent-tint);border-radius:4px;padding:18px 20px}
+.shift-card.to{background:var(--forest);}
+.shift-card small{
+  font-size:9.5px;font-weight:600;letter-spacing:.17em;text-transform:uppercase;
+  color:var(--ink-3);display:block;margin-bottom:8px;
+}
+.shift-card.to small{color:rgba(251,248,242,.66)}
+.shift-card p{font-family:var(--serif);font-size:19px;line-height:1.3;color:var(--ink)}
+.shift-card.to p{color:var(--paper)}
+.shift-arrow{display:grid;place-items:center;padding:12px 0;color:var(--ink-3)}
+
+/* ---------- slide 13 ---------- */
+.final-band{
+  margin-top:20px;background:var(--forest);color:var(--paper);
+  padding:22px 28px;border-radius:4px;
+}
+.final-band small{font-size:10px;font-weight:600;letter-spacing:.17em;text-transform:uppercase;color:rgba(251,248,242,.62);display:block;margin-bottom:8px}
+.final-band p{font-family:var(--serif);font-size:22px;line-height:1.32}
+
+/* ---------- slide 14 ---------- */
+.refs{margin-top:34px;display:flex;flex-direction:column;gap:26px;max-width:96ch}
+.ref{
+  font-family:var(--serif);font-size:17px;line-height:1.62;color:var(--ink-2);
+  padding-left:36px;text-indent:-36px;
+}
+.ref-note{font-size:14px;color:var(--ink-3);font-style:italic}
+
+/* ---------- small diagrams ---------- */
+.diagram{flex:none;display:block;overflow:visible}
+.callout-box.split > div{flex:1;min-width:0}
+.dg-label{font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;fill:var(--ink-3);font-family:var(--sans)}
+.dg-node{fill:var(--accent-tint);stroke:var(--accent);stroke-width:1.2}
+.dg-txt{font-family:var(--sans);font-size:11px;font-weight:600;fill:var(--accent)}
+.dg-line{stroke:var(--accent);stroke-width:1.2;fill:none;opacity:.8}
+
+.lifespan{margin-top:22px;display:flex;gap:6px;align-items:stretch}
+.ls{
+  flex:1;padding:9px 12px;border-radius:3px;background:rgba(0,0,0,.028);
+  border:1px solid transparent;
+}
+.ls b{display:block;font-family:var(--serif);font-size:13px;font-weight:600;color:var(--ink-3)}
+.ls i{font-style:normal;font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);opacity:.7}
+.ls.now{background:var(--accent-tint);border-color:var(--accent)}
+.ls.now b{color:var(--accent)}
+.ls.now i{color:var(--accent);opacity:1}
+
+/* ---------- deck chrome ---------- */
+#chrome{
+  position:fixed;left:0;right:0;bottom:0;height:42px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 20px;font-size:11px;color:var(--ink-3);pointer-events:none;
+  letter-spacing:.05em;
+}
+#chrome .r{display:flex;align-items:center;gap:14px;pointer-events:auto}
+#chrome button{
+  font:inherit;font-size:14px;line-height:1;background:none;border:1px solid var(--rule);
+  color:var(--ink-3);width:26px;height:26px;border-radius:3px;cursor:pointer;
+  transition:.15s;
+}
+#chrome button:hover{border-color:var(--forest);color:var(--forest)}
+#chrome a{color:var(--ink-3);text-decoration:none;border-bottom:1px solid var(--rule);cursor:pointer}
+#chrome a:hover{color:var(--forest)}
+#counter{font-variant-numeric:tabular-nums;letter-spacing:.1em}
+#bar{position:fixed;top:0;left:0;height:2px;background:var(--forest);transition:width .3s ease;z-index:5}
+#hint{
+  position:fixed;bottom:52px;left:50%;transform:translateX(-50%);
+  font-size:11px;letter-spacing:.09em;color:var(--ink-3);
+  background:rgba(251,248,242,.9);padding:6px 14px;border-radius:20px;
+  border:1px solid var(--rule);transition:opacity .5s ease;
+}
+#hint.gone{opacity:0}
+
+/* ---------- print / PDF ---------- */
+@page{size:13.333in 7.5in;margin:0}
+@media print{
+  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  body{background:#fff;overflow:visible}
+  #viewport{position:static;overflow:visible}
+  #stage{position:static;transform:none!important;width:auto;height:auto}
+  #chrome,#bar,#hint{display:none}
+  .slide{
+    position:relative;width:1280px;height:720px;
+    opacity:1!important;visibility:visible!important;
+    box-shadow:none;border-radius:0;break-after:page;page-break-after:always;
+  }
+  .slide:last-child{break-after:auto;page-break-after:auto}
+  .slide.active .anim{animation:none}
+}
+</style>
+</head>
+<body>
+<div id="bar"></div>
+<div id="viewport"><div id="stage">
+
+<!-- ============ 1 · TITLE ============ -->
+<section class="slide title-slide a-forest">
+  <div class="inner">
+    <div class="title-grid">
+      <div class="title-main">
+        <p class="title-kicker anim">Graduate Counseling &middot; Self-Reflection</p>
+        <h1 class="anim">Who Am&nbsp;I?</h1>
+        <p class="title-sub anim">A Personal Reflection Using the RESPECTFUL Model</p>
+        <div class="anim">
+          <div class="title-rule"></div>
+          <p class="meta">
+            <span class="name">Ben Forehand</span>
+            <span class="field">[Course Number and Course Name]</span><br>
+            <span class="field">[Professor Name]</span><br>
+            <span class="field">[University Name]</span><br>
+            September 2026
+          </p>
+        </div>
+      </div>
+      <aside class="title-rail">
+        <div><b>R</b><i>Religion</i></div>
+        <div><b>E</b><i>Economic Class</i></div>
+        <div><b>S</b><i>Sexual Identity</i></div>
+        <div><b>P</b><i>Personal Style</i></div>
+        <div><b>E</b><i>Ethnic Identity</i></div>
+        <div><b>C</b><i>Chronological</i></div>
+        <div><b>T</b><i>Trauma</i></div>
+        <div><b>F</b><i>Family</i></div>
+        <div><b>U</b><i>Unique Physical</i></div>
+        <div><b>L</b><i>Location &amp; Language</i></div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 2 · R ============ -->
+<section class="slide a-forest hv1 cv1">
+  <div class="inner">
+    <header class="head anim">
+      <div class="glyph">R</div>
+      <div class="head-txt">
+        <p class="eyebrow">RESPECTFUL Model &middot; Element 1 of 10</p>
+        <h2>Religion &amp; Spirituality</h2>
+        <p class="lede">My faith is foundational to how I understand people, thoughts, and behavior.</p>
+      </div>
+    </header>
+    <ul class="points anim">
+      <li>I am a Christian and work at a nondenominational church.</li>
+      <li>I view the Bible as the ultimate authority and a &ldquo;North Star&rdquo; for how I seek to live my life.</li>
+      <li>Scripture teaches me to pay attention to the thoughts I entertain and where those thoughts eventually lead.</li>
+      <li>I see a strong relationship between thoughts, feelings, and behaviors.</li>
+      <li>As a counselor, my faith will shape who I am, but I also have a responsibility to understand the client&rsquo;s values rather than impose my own.</li>
+    </ul>
+    <div class="callout anim">
+      <div class="callout-box split">
+        <div class="c-text-wrap">
+          <span class="c-label">Key Idea</span>
+          <p class="c-text">Our thoughts influence our feelings, and our feelings can influence our actions.</p>
+        </div>
+        <svg class="diagram" width="330" height="62" viewBox="0 0 330 62" aria-label="Thoughts lead to feelings, which lead to behaviors">
+          <rect class="dg-node" x="1" y="17" width="90" height="28" rx="14"/>
+          <text class="dg-txt" x="46" y="35.5" text-anchor="middle">Thoughts</text>
+          <path class="dg-line" d="M95 31h28"/><path class="dg-line" d="M118 27l6 4-6 4"/>
+          <rect class="dg-node" x="127" y="17" width="82" height="28" rx="14"/>
+          <text class="dg-txt" x="168" y="35.5" text-anchor="middle">Feelings</text>
+          <path class="dg-line" d="M213 31h28"/><path class="dg-line" d="M236 27l6 4-6 4"/>
+          <rect class="dg-node" x="245" y="17" width="84" height="28" rx="14"/>
+          <text class="dg-txt" x="287" y="35.5" text-anchor="middle">Behaviors</text>
+        </svg>
+      </div>
+    </div>
+    <footer class="foot">
+      <div class="track"><span class="on">R</span><span>E</span><span>S</span><span>P</span><span>E</span><span>C</span><span>T</span><span>F</span><span>U</span><span>L</span></div>
+      <p class="cite">(Ivey et al., 2023)<br>(English Standard Version Bible, 2001/2016, 2 Cor. 10:5; Mark 7:21&ndash;23; James 1:14&ndash;15)</p>
+    </footer>
+  </div>
+</section>
+
+<!-- ============ 3 · E ============ -->
+<section class="slide a-brown hv2 cv3">
+  <div class="inner">
+    <header class="head anim">
+      <div class="glyph">E</div>
+      <div class="head-txt">
+        <p class="eyebrow">RESPECTFUL Model &middot; Element 2 of 10</p>
+        <h2>Economic Class &amp; Background</h2>
+        <p class="lede">Economic status is part of a person&rsquo;s context, not a measure of their value.</p>
+      </div>
+    </header>
+    <ul class="points anim">
+      <li>I have spent much of my career in large church environments with people from very different socioeconomic backgrounds.</li>
+      <li>I have interacted with people who have far greater financial resources than I do, as well as people with far fewer.</li>
+      <li>Earlier in ministry, I sometimes felt intimidated around people with significant wealth or influence.</li>
+      <li>Those experiences helped me become more comfortable relating to people regardless of their financial status.</li>
+      <li>As a counselor, I want to understand how finances affect stress, opportunities, relationships, and access to resources without making assumptions about the client.</li>
+    </ul>
+    <div class="callout anim">
+      <div class="callout-box">
+        <span class="c-label">My Responsibility</span>
+        <p class="c-text">Meet the person in front of me, not the socioeconomic category I could place them in.</p>
+      </div>
+    </div>
+    <footer class="foot">
+      <div class="track"><span>R</span><span class="on">E</span><span>S</span><span>P</span><span>E</span><span>C</span><span>T</span><span>F</span><span>U</span><span>L</span></div>
+      <p class="cite">(Ivey et al., 2023)</p>
+    </footer>
+  </div>
+</section>
+
+<!-- ============ 4 · S ============ -->
+<section class="slide a-navy hv3 cv2">
+  <div class="inner">
+    <header class="head anim">
+      <div class="glyph">S</div>
+      <div class="head-txt">
+        <p class="eyebrow">RESPECTFUL Model &middot; Element 3 of 10</p>
+        <h2>Sexual Orientation &amp; Gender Identity</h2>
+        <p class="lede">My role is to help clients pursue the goals that brought them to counseling.</p>
+      </div>
+    </header>
+    <ul class="points anim">
+      <li>I believe I can work effectively with people whose sexual orientation or gender identity differs from mine.</li>
+      <li>Effective counseling requires me to begin with the client&rsquo;s goals rather than my assumptions about them.</li>
+      <li>Dysfunctional cycles, relational patterns, emotional needs, and personal growth are human experiences that cross demographic boundaries.</li>
+      <li>My responsibility is to respect the client&rsquo;s dignity and listen carefully to their lived experience.</li>
+      <li>I also need to remain aware of my own values and biases and seek supervision when they could interfere with effective care.</li>
+    </ul>
+    <div class="callout anim">
+      <div class="callout-box">
+        <span class="c-label">My Goal</span>
+        <p class="c-text">Create a counseling relationship in which people feel respected, understood, and able to work toward meaningful change.</p>
+      </div>
+    </div>
+    <footer class="foot">
+      <div class="track"><span>R</span><span>E</span><span class="on">S</span><span>P</span><span>E</span><span>C</span><span>T</span><span>F</span><span>U</span><span>L</span></div>
+      <p class="cite">(Ivey et al., 2023)</p>
+    </footer>
+  </div>
+</section>
+
+<!-- ============ 5 · P ============ -->
+<section class="slide a-sage hv1 cv3">
+  <div class="inner">
+    <header class="head anim">
+      <div class="glyph">P</div>
+      <div class="head-txt">
+        <p class="eyebrow">RESPECTFUL Model &middot; Element 4 of 10</p>
+        <h2>Personal Style &amp; Education</h2>
+        <p class="lede">Who I am as a counselor matters almost as much as what I know.</p>
+      </div>
+    </header>
+    <ul class="points anim">
+      <li>A counselor&rsquo;s personality, communication style, preferences, and biases inevitably enter the counseling room.</li>
+      <li>Self-awareness is therefore an ethical responsibility.</li>
+      <li>My personal style should be something I offer in service of the client, not something the client has to adapt to.</li>
+      <li>If my style or preferences interfere with a client&rsquo;s progress, I need to seek supervision, consultation, and continued growth.</li>
+      <li>Education gives me greater knowledge and additional tools, but knowledge should improve the care I provide rather than create distance between me and the client.</li>
+    </ul>
+    <div class="callout anim">
+      <div class="callout-box">
+        <span class="c-label">What I Want to Practice</span>
+        <p class="c-text">Competence with humility.</p>
+      </div>
+    </div>
+    <footer class="foot">
+      <div class="track"><span>R</span><span>E</span><span>S</span><span class="on">P</span><span>E</span><span>C</span><span>T</span><span>F</span><span>U</span><span>L</span></div>
+      <p class="cite">(Ivey et al., 2023)<br>(English Standard Version Bible, 2001/2016, Hos. 4:6)</p>
+    </footer>
+  </div>
+</section>
+
+<!-- ============ 6 · E ============ -->
+<section class="slide a-forest hv2 cv1">
+  <div class="inner">
+    <header class="head anim">
+      <div class="glyph">E</div>
+      <div class="head-txt">
+        <p class="eyebrow">RESPECTFUL Model &middot; Element 5 of 10</p>
+        <h2>Ethnic &amp; Racial Identity</h2>
+        <p class="lede">Difference gives me an opportunity to learn.</p>
+      </div>
+    </header>
+    <ul class="points anim">
+      <li>I have spent much of my adult life in large, racially and ethnically diverse church communities.</li>
+      <li>Relationships and vulnerable conversations with people who do not look like me have challenged prejudices and assumptions I previously held.</li>
+      <li>Receiving friendship, care, and support across racial differences has also shaped how I see other people.</li>
+      <li>I do not want to assume that familiarity with diversity means I have nothing left to learn.</li>
+      <li>Every client whose experience differs from mine gives me an opportunity to understand both them and myself more deeply.</li>
+    </ul>
+    <div class="callout anim">
+      <div class="callout-box">
+        <span class="c-label">Core Belief</span>
+        <p class="c-text">Every person has inherent value and deserves to be treated with dignity.</p>
+      </div>
+    </div>
+    <footer class="foot">
+      <div class="track"><span>R</span><span>E</span><span>S</span><span>P</span><span class="on">E</span><span>C</span><span>T</span><span>F</span><span>U</span><span>L</span></div>
+      <p class="cite">(Ivey et al., 2023)</p>
+    </footer>
+  </div>
+</section>
+
+<!-- ============ 7 · C ============ -->
+<section class="slide a-brown hv3 cv1 dense">
+  <div class="inner">
+    <header class="head anim">
+      <div class="glyph">C</div>
+      <div class="head-txt">
+        <p class="eyebrow">RESPECTFUL Model &middot; Element 6 of 10</p>
+        <h2>Chronological &amp; Lifespan Challenges</h2>
+        <p class="lede">People cannot be understood apart from the stage of life they are living in.</p>
+      </div>
+    </header>
+    <div class="lifespan anim">
+      <div class="ls"><b>Childhood</b><i>Early tasks</i></div>
+      <div class="ls"><b>Adolescence</b><i>Identity</i></div>
+      <div class="ls"><b>Young Adulthood</b><i>Intimacy</i></div>
+      <div class="ls now"><b>Middle Adulthood</b><i>Generativity vs. Stagnation</i></div>
+      <div class="ls"><b>Later Adulthood</b><i>Integrity</i></div>
+    </div>
+    <ul class="points anim">
+      <li>I currently identify with middle adulthood and Erikson&rsquo;s stage of generativity versus stagnation.</li>
+      <li>Questions about contribution, purpose, caring for others, and what I will do with my life feel especially relevant to me.</li>
+      <li>Development does not stop when someone becomes an adult.</li>
+      <li>Every stage of life introduces new pressures, responsibilities, relationships, and developmental tasks.</li>
+      <li>Someone can function well for years and then become destabilized when a new life stage introduces challenges they have never faced before.</li>
+    </ul>
+    <div class="callout anim">
+      <div class="callout-box">
+        <span class="c-label">As a Counselor</span>
+        <p class="c-text">I need to ask not only, &ldquo;What is happening?&rdquo; but also, &ldquo;Where is this person in their life?&rdquo;</p>
+      </div>
+    </div>
+    <footer class="foot">
+      <div class="track"><span>R</span><span>E</span><span>S</span><span>P</span><span>E</span><span class="on">C</span><span>T</span><span>F</span><span>U</span><span>L</span></div>
+      <p class="cite">(Ivey et al., 2023)</p>
+    </footer>
+  </div>
+</section>
+
+<!-- ============ 8 · T ============ -->
+<section class="slide a-navy hv1 cv3 dense">
+  <div class="inner">
+    <header class="head anim">
+      <div class="glyph">T</div>
+      <div class="head-txt">
+        <p class="eyebrow">RESPECTFUL Model &middot; Element 7 of 10</p>
+        <h2>Trauma</h2>
+        <p class="lede">My own experience has changed how I understand emotional pain.</p>
+      </div>
+    </header>
+    <ul class="points anim">
+      <li>I have not experienced much of what I would consider &ldquo;big T&rdquo; trauma.</li>
+      <li>I was raised in an emotionally distant environment where I sometimes experienced acceptance as conditional.</li>
+      <li>Those experiences contributed to anxious attachment patterns that affected relationships into adulthood.</li>
+      <li>Later, I began experiencing significant anxiety and panic attacks, including one in a very public setting while I was on stage.</li>
+      <li>Not understanding what was happening made that experience particularly frightening.</li>
+      <li>That journey became one of the reasons counseling and mental health became so important to me.</li>
+    </ul>
+    <div class="callout anim">
+      <div class="callout-box">
+        <span class="c-label">What I Carry into Counseling</span>
+        <p class="c-text">My experience gives me empathy, but it does not mean another person&rsquo;s trauma will look or feel like mine.</p>
+      </div>
+    </div>
+    <footer class="foot">
+      <div class="track"><span>R</span><span>E</span><span>S</span><span>P</span><span>E</span><span>C</span><span class="on">T</span><span>F</span><span>U</span><span>L</span></div>
+      <p class="cite">(Ivey et al., 2023)</p>
+    </footer>
+  </div>
+</section>
+
+<!-- ============ 9 · F ============ -->
+<section class="slide a-sage hv2 cv2 dense">
+  <div class="inner">
+    <header class="head anim">
+      <div class="glyph">F</div>
+      <div class="head-txt">
+        <p class="eyebrow">RESPECTFUL Model &middot; Element 8 of 10</p>
+        <h2>Family Background</h2>
+        <p class="lede">My family gave me one experience of family, not the definition of family.</p>
+      </div>
+    </header>
+    <ul class="points anim">
+      <li>I grew up in a traditional two-parent household with an older brother and an older sister.</li>
+      <li>My parents are still married, and our family was actively involved in church.</li>
+      <li>I was raised with clear moral values and consider my childhood comparatively stable.</li>
+      <li>Many clients will come from family structures and experiences that are very different from mine.</li>
+      <li>Family structure alone does not explain someone&rsquo;s functioning.</li>
+      <li>I want to understand the culture of the family, attachment patterns, expectations, roles, relationships, and systems of care that shaped the client.</li>
+    </ul>
+    <div class="callout anim">
+      <div class="callout-box">
+        <span class="c-label">Important Question</span>
+        <p class="c-text">What did this person&rsquo;s family teach them to expect from themselves and from other people?</p>
+      </div>
+    </div>
+    <footer class="foot">
+      <div class="track"><span>R</span><span>E</span><span>S</span><span>P</span><span>E</span><span>C</span><span>T</span><span class="on">F</span><span>U</span><span>L</span></div>
+      <p class="cite">(Ivey et al., 2023)</p>
+    </footer>
+  </div>
+</section>
+
+<!-- ============ 10 · U ============ -->
+<section class="slide a-forest hv3 cv1">
+  <div class="inner">
+    <header class="head anim">
+      <div class="glyph">U</div>
+      <div class="head-txt">
+        <p class="eyebrow">RESPECTFUL Model &middot; Element 9 of 10</p>
+        <h2>Unique Physical Characteristics</h2>
+        <p class="lede">Mental health and physical health cannot be completely separated.</p>
+      </div>
+    </header>
+    <ul class="points anim">
+      <li>Counseling must consider the whole person, including physical health, abilities, limitations, and body-related experiences.</li>
+      <li>Sleep, movement, nutrition, breathing, exercise, and other physical practices can play meaningful roles in overall well-being.</li>
+      <li>I want my recommendations to be grounded in evidence rather than simply my preferences.</li>
+      <li>I also need to recognize cultural standards surrounding appearance, beauty, physical ability, and health.</li>
+      <li>I cannot assume that what works for my body, lifestyle, or abilities will work for someone else&rsquo;s.</li>
+    </ul>
+    <div class="callout anim">
+      <div class="callout-box split">
+        <div>
+          <span class="c-label">My Approach</span>
+          <p class="c-text">Use evidence-based care while adapting recommendations to the individual person.</p>
+        </div>
+        <svg class="diagram" width="236" height="96" viewBox="0 0 236 96" aria-label="Mind and body overlap in whole-person care">
+          <circle class="dg-node" cx="86" cy="40" r="34"/>
+          <circle class="dg-node" cx="150" cy="40" r="34"/>
+          <text class="dg-txt" x="68" y="44" text-anchor="middle">Mind</text>
+          <text class="dg-txt" x="168" y="44" text-anchor="middle">Body</text>
+          <text class="dg-label" x="118" y="90" text-anchor="middle">Whole Person</text>
+        </svg>
+      </div>
+    </div>
+    <footer class="foot">
+      <div class="track"><span>R</span><span>E</span><span>S</span><span>P</span><span>E</span><span>C</span><span>T</span><span>F</span><span class="on">U</span><span>L</span></div>
+      <p class="cite">(Ivey et al., 2023)</p>
+    </footer>
+  </div>
+</section>
+
+<!-- ============ 11 · L ============ -->
+<section class="slide a-brown hv1 cv3 dense">
+  <div class="inner">
+    <header class="head anim">
+      <div class="glyph">L</div>
+      <div class="head-txt">
+        <p class="eyebrow">RESPECTFUL Model &middot; Element 10 of 10</p>
+        <h2>Location &amp; Language Differences</h2>
+        <p class="lede">Language and culture are resources, not deficits.</p>
+      </div>
+    </header>
+    <ul class="points anim">
+      <li>English is my primary language.</li>
+      <li>I view bilingualism and multilingualism as strengths.</li>
+      <li>Someone who has learned to navigate multiple languages or cultures has developed skills that should be recognized rather than treated as limitations.</li>
+      <li>Geography also shapes experience. Rural, urban, regional, national, and cultural environments can create very different expectations and ways of understanding life.</li>
+      <li>As a counselor, I need curiosity when someone&rsquo;s language, culture, or location differs from mine.</li>
+      <li>Rather than assuming difference is a problem, I want to discover the strengths and resources that have developed through it.</li>
+    </ul>
+    <div class="callout anim">
+      <div class="callout-box">
+        <span class="c-label">My Attitude</span>
+        <p class="c-text">Difference gives me something to learn, not something to correct.</p>
+      </div>
+    </div>
+    <footer class="foot">
+      <div class="track"><span>R</span><span>E</span><span>S</span><span>P</span><span>E</span><span>C</span><span>T</span><span>F</span><span>U</span><span class="on">L</span></div>
+      <p class="cite">(Ivey et al., 2023)</p>
+    </footer>
+  </div>
+</section>
+
+<!-- ============ 12 · REFLECTION ============ -->
+<section class="slide a-forest dense">
+  <div class="inner">
+    <header class="anim">
+      <p class="eyebrow">Reflection</p>
+      <h2>What I Learned About Myself</h2>
+      <p class="lede">This exercise showed me that effective counseling requires both self-awareness and humility.</p>
+    </header>
+    <div class="split-body anim">
+      <ul class="points" style="margin-top:0">
+        <li>I bring my faith, family history, culture, education, experiences, assumptions, and personal style into every counseling relationship.</li>
+        <li>Those parts of me can become resources, but they can also become blind spots.</li>
+        <li>I need to continually recognize when my own preferences are influencing how I see another person.</li>
+        <li>My experience is one human experience. It is not the standard by which another person&rsquo;s life should be measured.</li>
+        <li>Understanding myself more clearly gives me a better chance of truly understanding someone else.</li>
+      </ul>
+      <div class="shift">
+        <div class="shift-card">
+          <small>The question shifts from</small>
+          <p>&ldquo;How is this person different from me?&rdquo;</p>
+        </div>
+        <div class="shift-arrow">
+          <svg width="18" height="34" viewBox="0 0 18 34" aria-hidden="true">
+            <path d="M9 0v27" stroke="currentColor" stroke-width="1.4" fill="none"/>
+            <path d="M3.5 22.5L9 29l5.5-6.5" stroke="currentColor" stroke-width="1.4" fill="none"/>
+          </svg>
+        </div>
+        <div class="shift-card to">
+          <small>To</small>
+          <p>&ldquo;What do I need to understand about this person?&rdquo;</p>
+        </div>
+      </div>
+    </div>
+    <footer class="foot">
+      <div class="track"><span>R</span><span>E</span><span>S</span><span>P</span><span>E</span><span>C</span><span>T</span><span>F</span><span>U</span><span>L</span></div>
+      <p class="cite">Who Am I? &middot; A Personal Reflection Using the RESPECTFUL Model</p>
+    </footer>
+  </div>
+</section>
+
+<!-- ============ 13 · CLOSING ============ -->
+<section class="slide a-forest dense">
+  <div class="inner">
+    <header class="anim">
+      <p class="eyebrow">Closing Reflection</p>
+      <h2>Who I Want to Be as a Counselor</h2>
+      <p class="lede">The biggest lesson from the RESPECTFUL model is that I need to see the person before I see the category.</p>
+    </header>
+    <p class="anim" style="margin-top:22px;font-size:13px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-3)">When I enter the counseling room, I want to:</p>
+    <ul class="points anim" style="margin-top:14px">
+      <li>Surrender assumptions about who someone should be.</li>
+      <li>Remain curious about experiences I have not personally lived.</li>
+      <li>Recognize the dignity and inherent value of every client.</li>
+      <li>Use evidence, education, supervision, and self-awareness to provide responsible care.</li>
+      <li>Help clients understand themselves, recognize unhealthy patterns, discover their strengths, and move toward the goals and values that matter to them.</li>
+    </ul>
+    <div class="callout anim">
+      <div class="final-band">
+        <small>Final Thought</small>
+        <p>I want to see people clearly, value them deeply, and offer the best care I am capable of providing.</p>
+      </div>
+    </div>
+    <footer class="foot">
+      <div class="track"><span>R</span><span>E</span><span>S</span><span>P</span><span>E</span><span>C</span><span>T</span><span>F</span><span>U</span><span>L</span></div>
+      <p class="cite">(Ivey et al., 2023)</p>
+    </footer>
+  </div>
+</section>
+
+<!-- ============ 14 · REFERENCES ============ -->
+<section class="slide a-forest">
+  <div class="inner">
+    <header class="anim">
+      <p class="eyebrow">APA 7th Edition</p>
+      <h2>References</h2>
+    </header>
+    <div class="refs anim">
+      <p class="ref">Ivey, A. E., Ivey, M. B., &amp; Zalaquett, C. P. (2023). <i>Intentional interviewing and counseling: Facilitating client development in a multicultural society</i> (10th ed.). Cengage Learning.</p>
+      <p class="ref-note">For the Bible passages used throughout the presentation:</p>
+      <p class="ref"><i>English Standard Version Bible</i>. (2016). Crossway. (Original work published 2001)</p>
+    </div>
+    <footer class="foot" style="margin-top:auto">
+      <div class="track"><span>R</span><span>E</span><span>S</span><span>P</span><span>E</span><span>C</span><span>T</span><span>F</span><span>U</span><span>L</span></div>
+      <p class="cite">Ben Forehand &middot; Who Am I? &middot; September 2026</p>
+    </footer>
+  </div>
+</section>
+
+</div></div>
+
+<div id="chrome">
+  <span>Ben Forehand &middot; Who Am I? &middot; The RESPECTFUL Model</span>
+  <span class="r">
+    <a id="printBtn">Print / Save as PDF</a>
+    <button id="prev" aria-label="Previous slide">&lsaquo;</button>
+    <span id="counter">01 / 14</span>
+    <button id="next" aria-label="Next slide">&rsaquo;</button>
+  </span>
+</div>
+<div id="hint">Use &larr; &rarr; or click to navigate</div>
+
+<script>
+(function(){
+  var stage    = document.getElementById('stage');
+  var slides   = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var counter  = document.getElementById('counter');
+  var bar      = document.getElementById('bar');
+  var hint     = document.getElementById('hint');
+  var i = 0;
+
+  function pad(n){ return (n < 10 ? '0' : '') + n; }
+
+  function render(){
+    slides.forEach(function(s, k){ s.classList.toggle('active', k === i); });
+    counter.textContent = pad(i + 1) + ' / ' + pad(slides.length);
+    bar.style.width = ((i + 1) / slides.length * 100) + '%';
+    if (history.replaceState) history.replaceState(null, '', '#' + (i + 1));
+  }
+
+  function go(n){
+    var t = Math.max(0, Math.min(slides.length - 1, n));
+    if (t === i) return;
+    i = t;
+    render();
+  }
+
+  function fit(){
+    var pad = 24;
+    var s = Math.min((window.innerWidth - pad) / 1280, (window.innerHeight - 46 - pad) / 720);
+    stage.style.transform = 'translate(-50%,-50%) scale(' + s + ')';
+  }
+
+  document.addEventListener('keydown', function(e){
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    switch(e.key){
+      case 'ArrowRight': case 'PageDown': case ' ': case 'Enter':
+        e.preventDefault(); go(i + 1); break;
+      case 'ArrowLeft': case 'PageUp': case 'Backspace':
+        e.preventDefault(); go(i - 1); break;
+      case 'Home': e.preventDefault(); go(0); break;
+      case 'End':  e.preventDefault(); go(slides.length - 1); break;
+      case 'f': case 'F':
+        if (document.fullscreenElement) document.exitFullscreen();
+        else if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
+        break;
+    }
+    hideHint();
+  });
+
+  document.getElementById('next').addEventListener('click', function(){ go(i + 1); });
+  document.getElementById('prev').addEventListener('click', function(){ go(i - 1); });
+  document.getElementById('printBtn').addEventListener('click', function(){ window.print(); });
+
+  document.getElementById('viewport').addEventListener('click', function(e){
+    go(e.clientX < window.innerWidth * 0.28 ? i - 1 : i + 1);
+    hideHint();
+  });
+
+  var x0 = null;
+  document.addEventListener('touchstart', function(e){ x0 = e.touches[0].clientX; }, {passive:true});
+  document.addEventListener('touchend', function(e){
+    if (x0 === null) return;
+    var dx = e.changedTouches[0].clientX - x0;
+    if (Math.abs(dx) > 46) go(dx < 0 ? i + 1 : i - 1);
+    x0 = null;
+  });
+
+  var hintTimer = setTimeout(hideHint, 5200);
+  function hideHint(){ clearTimeout(hintTimer); hint.classList.add('gone'); }
+
+  window.addEventListener('resize', fit);
+  window.addEventListener('hashchange', function(){
+    var n = parseInt(location.hash.slice(1), 10);
+    if (n) go(n - 1);
+  });
+
+  var start = parseInt(location.hash.slice(1), 10);
+  if (start && start >= 1 && start <= slides.length) i = start - 1;
+
+  fit();
+  render();
+})();
+</script>
+</body>
+</html>

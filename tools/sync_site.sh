@@ -6,7 +6,7 @@
 # would silently destroy:
 #
 #   .github/                 the workflow that refreshes the analytics snapshot
-#   pulse-8f3ac2/data.json   written by that workflow, not by us
+#   siteanalytics/data.json  written by that workflow, not by us
 #
 # Usage:  tools/sync_site.sh "commit message"
 set -euo pipefail
@@ -23,7 +23,7 @@ rsync -a --delete \
   --exclude '.git' \
   --exclude '.github' \
   --exclude '.DS_Store' \
-  --exclude 'pulse-8f3ac2/data.json' \
+  --exclude 'siteanalytics/data.json' \
   "$SRC"/ "$DST"/
 
 # The workflow's copy of the fetcher is generated from the canonical tool, so

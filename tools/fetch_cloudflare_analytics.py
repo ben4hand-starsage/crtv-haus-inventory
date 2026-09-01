@@ -24,7 +24,7 @@ import urllib.request
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ENV = os.path.join(ROOT, ".env")
-OUT = os.path.join(ROOT, "DELAY", "site", "pulse-8f3ac2", "data.json")
+OUT = os.path.join(ROOT, "DELAY", "site", "siteanalytics", "data.json")
 
 ACCOUNT_TAG = "9452bc58f548c7b6593d7fd4945f2971"
 SITE_TAG = "99a9f55959984d91b395f573fabb3fe6"

@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pulse · Aaron Delay Counseling</title>
+<!-- Kept out of search. Deliberately NOT listed in robots.txt: a Disallow line
+     would publish the very path it is meant to keep quiet. -->
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#262019; --ink-2:#574c40; --ink-3:#8a7d6b;
+  --bg:#F7F2EA; --surface:#FDFBF6; --sand:#E7DECF; --sand-2:#DBCFB4;
+  --clay:#B4694E; --clay-deep:#9A5238; --stone:#A2937E;
+  --line:rgba(38,32,25,.14); --line-2:rgba(38,32,25,.30);
+  /* Chart hues. Validated for CVD separation, chroma and contrast against
+     the #FDFBF6 surface before use - not eyeballed. */
+  --s1:#B4694E;   /* page views  */
+  --s2:#0E7A9C;   /* visits      */
+  --grid:rgba(38,32,25,.09);
+  --serif:"Fraunces",Georgia,"Times New Roman",serif;
+  --sans:"Montserrat",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+  font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto;padding:34px 22px 80px}
+
+.top{display:flex;flex-wrap:wrap;gap:14px 20px;align-items:baseline;
+  justify-content:space-between;padding-bottom:20px;border-bottom:1px solid var(--line)}
+.mark{font-family:var(--serif);font-size:1.5rem;font-weight:400;letter-spacing:-.02em}
+.mark em{font-style:italic;color:var(--clay)}
+.meta{font-size:.76rem;color:var(--ink-3);letter-spacing:.03em;text-align:right}
+.meta b{color:var(--ink-2);font-weight:600}
+
+.eyebrow{display:inline-block;font-size:.68rem;font-weight:600;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--clay)}
+h2{font-family:var(--serif);font-weight:400;font-size:1.5rem;letter-spacing:-.02em;
+  margin:10px 0 2px}
+.sub{color:var(--ink-3);font-size:.86rem;margin:0 0 18px;max-width:62ch}
+
+section{margin-top:44px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:22px}
+
+/* ---- KPI row ---- */
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:26px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px 18px 16px}
+.kpi .lab{font-size:.7rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-3)}
+.kpi .val{font-size:2.5rem;font-weight:300;letter-spacing:-.03em;line-height:1.05;
+  margin-top:10px;font-variant-numeric:tabular-nums}
+.kpi .val.sm{font-size:1.35rem;font-weight:400;letter-spacing:-.01em;padding-top:9px;overflow-wrap:anywhere;line-height:1.25}
+.kpi .foot{font-size:.76rem;color:var(--ink-3);margin-top:7px;
+  font-variant-numeric:tabular-nums}
+.delta{font-weight:600}
+.delta.up{color:#3F7A55} .delta.down{color:#A6402F} .delta.flat{color:var(--ink-3)}
+
+/* ---- charts ---- */
+figure{margin:0}
+svg{display:block;width:100%;height:auto;overflow:visible}
+.scroller{overflow-x:auto}
+.legend{display:flex;gap:18px;flex-wrap:wrap;margin:0 0 14px;font-size:.8rem;color:var(--ink-2)}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.swatch{width:11px;height:11px;border-radius:3px;flex:none}
+.axis{font-size:11px;fill:var(--ink-3);font-family:var(--sans)}
+.vlab{font-size:11px;fill:var(--ink-2);font-family:var(--sans);
+  font-variant-numeric:tabular-nums}
+
+/* ---- bar lists ---- */
+.bars{display:flex;flex-direction:column;gap:11px}
+.bar{display:grid;grid-template-columns:minmax(96px,180px) 1fr auto;gap:14px;align-items:center}
+.bar .nm{font-size:.87rem;color:var(--ink-2);overflow:hidden;text-overflow:ellipsis;
+  white-space:nowrap}
+.bar .nm i{font-style:normal;color:var(--ink-3);font-size:.78rem}
+.track{background:var(--sand);border-radius:4px;height:19px;position:relative;overflow:hidden}
+.fill{height:100%;border-radius:4px;background:var(--s1);
+  transition:width .5s cubic-bezier(.2,.7,.3,1)}
+.bar .n{font-size:.87rem;font-variant-numeric:tabular-nums;color:var(--ink);min-width:44px;
+  text-align:right;font-weight:500}
+
+/* ---- funnel ---- */
+.funnel{display:grid;grid-template-columns:1fr auto 1fr;gap:22px;align-items:center}
+.fstep .k{font-size:2.1rem;font-weight:300;letter-spacing:-.03em;
+  font-variant-numeric:tabular-nums}
+.fstep .l{font-size:.76rem;color:var(--ink-3);letter-spacing:.04em}
+.farrow{font-size:1.5rem;color:var(--sand-2)}
+.meter{margin-top:18px;background:var(--sand);border-radius:5px;height:11px;overflow:hidden}
+.meter i{display:block;height:100%;background:var(--s1);border-radius:5px}
+
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+
+/* ---- states ---- */
+.state{text-align:center;padding:60px 24px;color:var(--ink-3)}
+.state h3{font-family:var(--serif);font-weight:400;font-size:1.35rem;color:var(--ink);
+  margin:0 0 10px}
+.state code{background:var(--bg);border:1px solid var(--line);border-radius:4px;
+  padding:3px 8px;font-size:.84em;color:var(--ink-2);display:inline-block;margin-top:4px}
+.note{margin-top:46px;padding-top:20px;border-top:1px solid var(--line);
+  font-size:.8rem;color:var(--ink-3);line-height:1.65;max-width:70ch}
+.note code{background:var(--surface);border:1px solid var(--line);border-radius:4px;
+  padding:2px 6px;font-size:.94em}
+
+.tip{position:fixed;pointer-events:none;opacity:0;transition:opacity .12s;
+  background:var(--ink);color:#F7F2EA;border-radius:7px;padding:9px 12px;font-size:.78rem;
+  line-height:1.45;z-index:40;box-shadow:0 10px 30px -12px rgba(38,32,25,.6);
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+.tip b{color:#fff;font-weight:600}
+.hot{fill:transparent;cursor:crosshair}
+.crosshair{stroke:var(--line-2);stroke-width:1;stroke-dasharray:3 3;opacity:0}
+
+table{width:100%;border-collapse:collapse;font-size:.86rem}
+th{text-align:left;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-3);font-weight:600;padding:0 10px 9px 0;border-bottom:1px solid var(--line)}
+td{padding:9px 10px 9px 0;border-bottom:1px solid var(--line);color:var(--ink-2);
+  font-variant-numeric:tabular-nums}
+td:last-child,th:last-child{text-align:right;padding-right:0}
+details{margin-top:14px}
+summary{cursor:pointer;font-size:.78rem;color:var(--ink-3)}
+summary:hover{color:var(--clay)}
+
+@media(max-width:860px){
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .two{grid-template-columns:1fr}
+  .funnel{grid-template-columns:1fr;gap:12px;text-align:left}
+  .farrow{transform:rotate(90deg);width:1.5rem}
+}
+/* Squeezing a 920-wide chart into 330px renders 11px axis text at ~4px.
+   Hold a legible minimum and let .scroller scroll it instead. */
+@media(max-width:720px){
+  #trend svg{min-width:660px}
+  .scroller{margin:0 -6px;padding:0 6px}
+}
+@media(max-width:520px){
+  .wrap{padding:26px 16px 60px}
+  .meta{text-align:left}
+  .top{gap:8px}
+  .kpi .val{font-size:2.05rem}
+  .bar{grid-template-columns:minmax(80px,120px) 1fr auto;gap:10px}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="top">
+    <div class="mark">Pulse <em>&middot;</em> Aaron Delay Counseling</div>
+    <div class="meta" id="meta">loading&hellip;</div>
+  </div>
+
+  <div id="app"></div>
+
+  <p class="note">
+    These numbers come from Cloudflare Web Analytics, which is cookieless and counts page
+    loads rather than people, so there is no consent banner and nothing here identifies
+    anyone. <b>Visits</b> are arrivals from outside the site; <b>page views</b> counts every
+    page load including someone moving between pages.
+    <br><br>
+    The page reads a snapshot file rather than calling Cloudflare directly, because this site
+    is public and any key the page could read, anyone could read. Refresh the snapshot with
+    <code>python3 tools/fetch_cloudflare_analytics.py</code>, then commit and push.
+  </p>
+</div>
+
+<div class="tip" id="tip"></div>
+
+<script>
+const F = n => (n ?? 0).toLocaleString('en-US');
+const PCT = r => (r * 100).toFixed(r < 0.1 ? 1 : 0) + '%';
+const tip = document.getElementById('tip');
+
+function showTip(html, x, y){
+  tip.innerHTML = html; tip.style.opacity = 1;
+  const r = tip.getBoundingClientRect();
+  let left = x + 14, top = y - r.height - 12;
+  if (left + r.width > innerWidth - 10) left = x - r.width - 14;
+  if (top < 8) top = y + 18;
+  tip.style.left = left + 'px'; tip.style.top = top + 'px';
+}
+const hideTip = () => tip.style.opacity = 0;
+
+function delta(cur, prev){
+  if (!prev) return {cls:'flat', txt:'no prior period'};
+  const d = (cur - prev) / prev;
+  if (Math.abs(d) < 0.005) return {cls:'flat', txt:'level with prior'};
+  return {cls: d > 0 ? 'up' : 'down',
+          txt: (d > 0 ? '↑ ' : '↓ ') + PCT(Math.abs(d)) + ' vs prior'};
+}
+
+/* ---------- trend: two series, one shared axis ---------- */
+function trend(rows){
+  const W = 920, H = 260, P = {t:16, r:58, b:28, l:44};
+  const iw = W - P.l - P.r, ih = H - P.t - P.b;
+  const max = Math.max(1, ...rows.map(d => d.pageviews));
+  const X = i => P.l + (rows.length === 1 ? iw/2 : i * iw / (rows.length - 1));
+  const Y = v => P.t + ih - (v / max) * ih;
+  const path = k => rows.map((d,i) => (i ? 'L' : 'M') + X(i).toFixed(1) + ' ' + Y(d[k]).toFixed(1)).join(' ');
+
+  // ~5 gridlines on rounded values
+  const step = Math.max(1, Math.ceil(max / 4 / 5) * 5);
+  let ticks = []; for (let v = 0; v <= max; v += step) ticks.push(v);
+
+  const every = Math.ceil(rows.length / 7);
+  const dfmt = s => { const [,m,d] = s.split('-'); return +d + ' ' +
+    ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][+m-1]; };
+
+  let g = '';
+  ticks.forEach(v => {
+    g += `<line x1="${P.l}" x2="${W-P.r}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--grid)"/>` +
+         `<text class="axis" x="${P.l-10}" y="${Y(v)+4}" text-anchor="end">${F(v)}</text>`;
+  });
+  rows.forEach((d,i) => { if (i % every === 0 || i === rows.length-1)
+    g += `<text class="axis" x="${X(i)}" y="${H-P.b+18}" text-anchor="middle">${dfmt(d.date)}</text>`; });
+
+  // hover columns
+  let hot = '', pts = '';
+  rows.forEach((d,i) => {
+    const w = iw / rows.length;
+    hot += `<rect class="hot" x="${X(i)-w/2}" y="${P.t}" width="${w}" height="${ih}" data-i="${i}"/>`;
+    pts += `<circle class="pt pt${i}" cx="${X(i)}" cy="${Y(d.pageviews)}" r="4"
+              fill="var(--s1)" stroke="var(--surface)" stroke-width="2" opacity="0"/>
+            <circle class="pt pt${i}" cx="${X(i)}" cy="${Y(d.visits)}" r="4"
+              fill="var(--s2)" stroke="var(--surface)" stroke-width="2" opacity="0"/>`;
+  });
+
+  const last = rows.length - 1;
+  const svg = `
+  <svg viewBox="0 0 ${W} ${H}" role="img"
+       aria-label="Page views and visits per day over the last ${rows.length} days">
+    ${g}
+    <line class="crosshair" id="ch" y1="${P.t}" y2="${P.t+ih}"/>
+    <path d="${path('pageviews')}" fill="none" stroke="var(--s1)" stroke-width="2"
+          stroke-linejoin="round" stroke-linecap="round"/>
+    <path d="${path('visits')}" fill="none" stroke="var(--s2)" stroke-width="2"
+          stroke-linejoin="round" stroke-linecap="round"/>
+    <text class="vlab" x="${X(last)+8}" y="${Y(rows[last].pageviews)+4}"
+          fill="var(--s1)">${F(rows[last].pageviews)}</text>
+    <text class="vlab" x="${X(last)+8}" y="${Y(rows[last].visits)+4}"
+          fill="var(--s2)">${F(rows[last].visits)}</text>
+    ${pts}${hot}
+  </svg>`;
+
+  return {svg, bind(root){
+    const ch = root.querySelector('#ch');
+    root.querySelectorAll('.hot').forEach(r => {
+      r.addEventListener('mousemove', e => {
+        const i = +r.dataset.i, d = rows[i];
+        root.querySelectorAll('.pt').forEach(p => p.setAttribute('opacity', 0));
+        root.querySelectorAll('.pt' + i).forEach(p => p.setAttribute('opacity', 1));
+        ch.setAttribute('x1', X(i)); ch.setAttribute('x2', X(i));
+        ch.style.opacity = 1;
+        showTip(`<b>${dfmt(d.date)}</b><br>${F(d.pageviews)} page views<br>${F(d.visits)} visits`,
+                e.clientX, e.clientY);
+      });
+      r.addEventListener('mouseleave', () => {
+        hideTip(); ch.style.opacity = 0;
+        root.querySelectorAll('.pt').forEach(p => p.setAttribute('opacity', 0));
+      });
+    });
+  }};
+}
+
+/* ---------- nominal bars: one hue, length carries the value ---------- */
+function barList(items, key, opts = {}){
+  items = [...items].sort((a,b) => b[key] - a[key]);
+  const max = Math.max(1, ...items.map(d => d[key]));
+  const total = items.reduce((s,d) => s + d[key], 0);
+  return items.map(d => {
+    const pctOfTotal = total ? d[key]/total : 0;
+    const sub = opts.sub ? `<i> ${opts.sub(d)}</i>` : '';
+    return `<div class="bar" data-tip="${F(d[key])} ${opts.unit||'visits'} &middot; ${PCT(pctOfTotal)} of total">
+      <div class="nm" title="${d.label}">${d.label}${sub}</div>
+      <div class="track"><div class="fill" style="width:${(d[key]/max*100).toFixed(1)}%"></div></div>
+      <div class="n">${F(d[key])}</div>
+    </div>`;
+  }).join('');
+}
+
+function bindBars(root){
+  root.querySelectorAll('.bar[data-tip]').forEach(b => {
+    b.addEventListener('mousemove', e => showTip(b.dataset.tip, e.clientX, e.clientY));
+    b.addEventListener('mouseleave', hideTip);
+  });
+}
+
+function table(items, key, head){
+  return `<details><summary>Show as a table</summary><table><thead><tr>
+      <th>${head}</th><th>${key === 'visits' ? 'Visits' : 'Page views'}</th></tr></thead><tbody>
+      ${items.map(d => `<tr><td>${d.label}</td><td>${F(d[key])}</td></tr>`).join('')}
+      </tbody></table></details>`;
+}
+
+/* ---------- render ---------- */
+/* Cloudflare returns ISO region codes ("US"). Intl resolves them to names for
+   every code without shipping a country table; fall back to the raw code. */
+const REGION = (() => {
+  try { const dn = new Intl.DisplayNames(['en'], {type:'region'});
+        return c => { try { return dn.of(c) || c; } catch { return c; } }; }
+  catch { return c => c; }
+})();
+
+function render(d){
+  const app = document.getElementById('app');
+  const t = d.totals || {}, p = d.previous || {};
+
+  document.getElementById('meta').innerHTML =
+    `Last <b>${d.window_days} days</b><br>updated ${new Date(d.generated_at)
+      .toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})}`;
+
+  if (!t.pageviews){
+    app.innerHTML = `<div class="panel state">
+      <h3>No traffic in this window yet.</h3>
+      <p>The beacon is installed and reporting. Once people arrive, this fills in.<br>
+      Refresh the snapshot with<br><code>python3 tools/fetch_cloudflare_analytics.py</code></p>
+    </div>`;
+    return;
+  }
+
+  const dv = delta(t.visits, p.visits), dp = delta(t.pageviews, p.pageviews);
+  const fn = d.funnel || {};
+  const topRef = (d.referrers || []).filter(r => r.name !== '(direct)')[0];
+  const mobile = (d.devices || []).find(x => /mobile/i.test(x.name));
+  const mobShare = mobile && t.visits ? mobile.visits / (d.devices).reduce((s,x)=>s+x.visits,0) : null;
+  const perVisit = t.visits ? (t.pageviews / t.visits) : 0;
+
+  app.innerHTML = `
+  <div class="kpis">
+    <div class="kpi"><div class="lab">Visits</div><div class="val">${F(t.visits)}</div>
+      <div class="foot"><span class="delta ${dv.cls}">${dv.txt}</span></div></div>
+    <div class="kpi"><div class="lab">Page views</div><div class="val">${F(t.pageviews)}</div>
+      <div class="foot"><span class="delta ${dp.cls}">${dp.txt}</span></div></div>
+    <div class="kpi"><div class="lab">Pages per visit</div><div class="val">${perVisit.toFixed(1)}</div>
+      <div class="foot">depth past the landing page</div></div>
+    <div class="kpi"><div class="lab">Top source</div>
+      <div class="val sm">${topRef ? topRef.label : 'Direct only'}</div>
+      <div class="foot">${topRef ? F(topRef.visits) + ' visits' : 'nobody linked in yet'}</div></div>
+  </div>
+
+  <section>
+    <span class="eyebrow">Over time</span>
+    <h2>Arrivals per day</h2>
+    <p class="sub">Visits are people arriving from somewhere else. Page views counts every
+      page load, so the gap between the two lines is people moving around the site.</p>
+    <div class="panel">
+      <div class="legend">
+        <span><i class="swatch" style="background:var(--s1)"></i> Page views</span>
+        <span><i class="swatch" style="background:var(--s2)"></i> Visits</span>
+      </div>
+      <figure class="scroller" id="trend"></figure>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">The one that matters</span>
+    <h2>Does the opt-in convert?</h2>
+    <p class="sub">Everyone who submits the form lands on the thank-you page and nobody
+      reaches it any other way, so the ratio between these two is the signup rate.</p>
+    <div class="panel">
+      <div class="funnel">
+        <div class="fstep"><div class="k">${F(fn.reset_views)}</div>
+          <div class="l">saw the free reset page</div></div>
+        <div class="farrow">&rarr;</div>
+        <div class="fstep"><div class="k">${F(fn.thanks_views)}</div>
+          <div class="l">submitted the form</div></div>
+      </div>
+      <div class="meter"><i style="width:${fn.rate ? Math.min(100, fn.rate*100).toFixed(1) : 0}%"></i></div>
+      <p class="sub" style="margin:12px 0 0">
+        ${fn.rate == null ? 'Not enough traffic to the reset page yet.'
+          : `<b style="color:var(--ink);font-size:1.05rem">${PCT(fn.rate)}</b> of people who
+             land on the reset page hand over an email address.`}</p>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">Where they land</span>
+    <h2>Pages, by traffic</h2>
+    <div class="panel"><div class="bars" id="pages">
+      ${barList(d.pages || [], 'pageviews', {unit:'page views'})}
+    </div>${table(d.pages || [], 'pageviews', 'Page')}</div>
+  </section>
+
+  <section>
+    <span class="eyebrow">Where they come from</span>
+    <h2>Sources</h2>
+    <p class="sub">"(direct)" means no referring page: typed in, a bookmark, or a tap from
+      an app that strips the referrer, which includes most of Instagram.</p>
+    <div class="panel"><div class="bars" id="refs">
+      ${barList(d.referrers || [], 'visits')}
+    </div>${table(d.referrers || [], 'visits', 'Source')}</div>
+  </section>
+
+  <div class="two" style="margin-top:44px">
+    <div class="panel">
+      <span class="eyebrow">Device</span>
+      <h2 style="font-size:1.2rem;margin-bottom:16px">How they read it</h2>
+      <div class="bars" id="devs">${barList(d.devices || [], 'visits')}</div>
+      ${mobShare != null ? `<p class="sub" style="margin:16px 0 0">
+        <b style="color:var(--ink)">${PCT(mobShare)}</b> on a phone.</p>` : ''}
+    </div>
+    <div class="panel">
+      <span class="eyebrow">Country</span>
+      <h2 style="font-size:1.2rem;margin-bottom:16px">Where they are</h2>
+      <div class="bars" id="ctry">${barList(
+        (d.countries||[]).slice(0,6).map(c => ({...c, label: REGION(c.name)})),
+        'visits')}</div>
+    </div>
+  </div>`;
+
+  const tr = trend(d.by_date || []);
+  const fig = document.getElementById('trend');
+  fig.innerHTML = tr.svg;
+  tr.bind(fig);
+  bindBars(app);
+}
+
+fetch('data.json?t=' + Date.now())
+  .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+  .then(render)
+  .catch(err => {
+    document.getElementById('meta').textContent = '';
+    document.getElementById('app').innerHTML = `<div class="panel state">
+      <h3>No snapshot yet.</h3>
+      <p>Generate one, then commit and push:<br>
+      <code>python3 tools/fetch_cloudflare_analytics.py</code></p>
+      <p style="font-size:.8rem;margin-top:16px">(${err.message})</p></div>`;
+  });
+</script>
+</body>
+</html>
